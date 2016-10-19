@@ -1,0 +1,45 @@
+Specifikacija zahteva
+
+1. Registracija korisnika
+
+2. Logovanje korisnika
+
+3. Prikaz pocetne strane u zavisnosti od uloge korisnika
+
+4. Dodavanje novog oglasa 
+
+5. Pregled/filtriranje oglasa
+
+6. Pretraga oglasa
+
+7. Pregled profila korisnika
+
+8. Prijavljivanje neispravnosti oglasa 
+
+9. Produzivanje oglasa
+
+10. Azuriranje oglasa
+
+11. Brisanje oglasa (automatsko brisanje nakon isteka)
+
+12. Azuriranje informacija o korisnicima
+
+13. Placeni oglasi
+
+14. Ocenjivanje oglasa i oglasavaca
+
+15. Dodavanje supervizora
+
+16. Brisanje supervizora
+
+17. Verifikovanje oglasa od strane supervizora
+
+18. Stampanje oglasa
+
+19. Redirekcija sa oglasa na oglase oglasavaca
+
+20. Pregled oglasa oglasavaca
+
+21. Komentarisanje oglasa
+
+22. Brisanje komentara oglasa

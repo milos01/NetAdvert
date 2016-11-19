@@ -78,8 +78,16 @@ public class User {
 	public void setUser_rate(int user_rate) {
 		this.user_rate = user_rate;
 	}
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", first_name='" + first_name + '\'' +
+				", last_name='" + last_name + '\'' +
+				", email='" + email + '\'' +
+				", role=" + role +
+				", user_rate=" + user_rate +
+				'}';
+	}
 }

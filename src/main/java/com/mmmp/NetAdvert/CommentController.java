@@ -58,7 +58,7 @@ public class CommentController {
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public  ResponseEntity<Void> deleteComment(@PathVariable("id") int id){
 		Comment c = this.adverService.findComment(id);
-		this.adverService.deleteComment(c);
+		this.adverService.deleteComment(c); // you could just pass id form comment here, no need to find one.
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	

@@ -6,6 +6,9 @@ import com.mmmp.NetAdvert.model.CompanyStaffs;
 import com.mmmp.NetAdvert.model.Customer;
 import com.mmmp.NetAdvert.model.User;
 
+import com.mmmp.NetAdvert.model.*;
+
+
 public interface AdverService {
 	
 	public  void insert(Customer cus);
@@ -19,8 +22,15 @@ public interface AdverService {
 	public void deleteComment(Comment commentId);
 	
 	public Comment findComment(int id);
+
 	
 	public CompanyStaffs getUserOfCompany(int user_id, int company_id);
 	
 	public void updateCompanyStaff(CompanyStaffs cs);
+
+
+	public Boolean registerUser(User user);
+
+	public Role findRole(int id);
+
 }

@@ -2,6 +2,8 @@ package com.mmmp.NetAdvert.service;
 
 import javax.transaction.Transactional;
 
+import com.mmmp.NetAdvert.DAO.*;
+import com.mmmp.NetAdvert.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,10 @@ public class AdvertServiceImplementation implements AdverService {
 	
 	@Autowired
 	private CompanyDAO companyDAO;
-	
+
+
+	@Autowired
+	private RoleDAO roleDAO;
 	
 	@Override
 	@Transactional
@@ -76,13 +81,25 @@ public class AdvertServiceImplementation implements AdverService {
 	@Override
 	@Transactional
 	public CompanyStaffs getUserOfCompany(int user_id, int company_id) {
-		return this.companyDAO.getUserOfCompany(user_id, company_id);
+        return this.companyDAO.getUserOfCompany(user_id, company_id);
+
+    }
+    @Override
+    @Transactional
+	public Boolean registerUser(User user) {
+		return this.userDAO.RegisterUser(user);
 	}
 
 	@Override
 	@Transactional
 	public void updateCompanyStaff(CompanyStaffs cs) {
-		this.companyDAO.updateCompanyStaff(cs);
+        this.companyDAO.updateCompanyStaff(cs);
+    }
+
+    @Override
+    @Transactional
+	public Role findRole(int id) {
+		return this.roleDAO.findRole(id);
 	}
 
 

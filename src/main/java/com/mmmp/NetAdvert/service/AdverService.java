@@ -2,6 +2,7 @@ package com.mmmp.NetAdvert.service;
 
 import com.mmmp.NetAdvert.model.Advert;
 import com.mmmp.NetAdvert.model.Comment;
+import com.mmmp.NetAdvert.model.CompanyStaffs;
 import com.mmmp.NetAdvert.model.Customer;
 import com.mmmp.NetAdvert.model.User;
 
@@ -18,4 +19,8 @@ public interface AdverService {
 	public void deleteComment(Comment commentId);
 	
 	public Comment findComment(int id);
+	
+	public CompanyStaffs getUserOfCompany(int user_id, int company_id);
+	
+	public void updateCompanyStaff(CompanyStaffs cs);
 }

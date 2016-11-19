@@ -52,6 +52,8 @@
 				<beans:value>com.mmmp.NetAdvert.model.Advert</beans:value>
 				<beans:value>com.mmmp.NetAdvert.model.Role</beans:value>
 				<beans:value>com.mmmp.NetAdvert.model.Comment</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.Company</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.CompanyStaffs</beans:value>
 			</beans:list>
 		</beans:property>
 

@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.mmmp.NetAdvert.DAO.AdvertDAO;
 import com.mmmp.NetAdvert.DAO.CommentDAO;
+import com.mmmp.NetAdvert.DAO.CompanyDAO;
 import com.mmmp.NetAdvert.DAO.TestDAO;
 import com.mmmp.NetAdvert.DAO.UserDAO;
 import com.mmmp.NetAdvert.model.Advert;
 import com.mmmp.NetAdvert.model.Comment;
+import com.mmmp.NetAdvert.model.CompanyStaffs;
 import com.mmmp.NetAdvert.model.Customer;
 import com.mmmp.NetAdvert.model.User;
 
@@ -29,6 +31,9 @@ public class AdvertServiceImplementation implements AdverService {
 	
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private CompanyDAO companyDAO;
 	
 	
 	@Override
@@ -66,6 +71,18 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public Comment findComment(int id) {
 		return this.commnetDAO.findComment(id);
+	}
+
+	@Override
+	@Transactional
+	public CompanyStaffs getUserOfCompany(int user_id, int company_id) {
+		return this.companyDAO.getUserOfCompany(user_id, company_id);
+	}
+
+	@Override
+	@Transactional
+	public void updateCompanyStaff(CompanyStaffs cs) {
+		this.companyDAO.updateCompanyStaff(cs);
 	}
 
 

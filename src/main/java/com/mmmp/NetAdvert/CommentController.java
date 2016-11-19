@@ -24,7 +24,7 @@ import com.mmmp.NetAdvert.service.AdverService;
 @RequestMapping(value="api/comment")
 public class CommentController {
 
-	
+	@Autowired
 	private AdverService adverService;
 	
 	@Autowired(required = true)

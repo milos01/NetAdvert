@@ -1,5 +1,7 @@
 package com.mmmp.NetAdvert.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,6 +33,15 @@ public class User {
 	private Role role;
 	
 	private int user_rate;
+	
+	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	private Set<Picture> pictures;
+	
+	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	private Set<Advert> adverts;
+	
+	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	private Set<Report> reports;
 
 	public int getId() {
 		return id;
@@ -77,6 +89,36 @@ public class User {
 
 	public void setUser_rate(int user_rate) {
 		this.user_rate = user_rate;
+	}
+	
+	
+
+	public Set<Picture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<Picture> pictures) {
+		this.pictures = pictures;
+	}
+	
+	
+
+	public Set<Advert> getAdverts() {
+		return adverts;
+	}
+
+	public void setAdverts(Set<Advert> adverts) {
+		this.adverts = adverts;
+	}
+	
+	
+
+	public Set<Report> getReports() {
+		return reports;
+	}
+
+	public void setReports(Set<Report> reports) {
+		this.reports = reports;
 	}
 
 	@Override

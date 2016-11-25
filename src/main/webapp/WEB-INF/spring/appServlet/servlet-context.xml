@@ -38,7 +38,7 @@
 		<beans:property name="url"
 						value="jdbc:mysql://localhost:3306/netadvert" />
 		<beans:property name="username" value="root" />
-		<beans:property name="password" value="andric01" />
+		<beans:property name="password" value="" />
 	</beans:bean>
 
 	<!-- Hibernate 4 SessionFactory Bean definition -->
@@ -54,6 +54,13 @@
 				<beans:value>com.mmmp.NetAdvert.model.Comment</beans:value>
 				<beans:value>com.mmmp.NetAdvert.model.Company</beans:value>
 				<beans:value>com.mmmp.NetAdvert.model.CompanyStaffs</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.TechnicalEquipment</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.RealestateCategory</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.RealestateType</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.Location</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.Realestate</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.Picture</beans:value>
+				<beans:value>com.mmmp.NetAdvert.model.Report</beans:value>
 			</beans:list>
 		</beans:property>
 
@@ -63,7 +70,7 @@
 				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
 				</beans:prop>
 				<beans:prop key="hibernate.show_sql">true</beans:prop>
-				<!-- <beans:prop key="hibernate.hbm2ddl.auto">create</beans:prop> -->
+				 <beans:prop key="hibernate.hbm2ddl.auto">create</beans:prop> 
 			</beans:props>
 		</beans:property>
 	</beans:bean>

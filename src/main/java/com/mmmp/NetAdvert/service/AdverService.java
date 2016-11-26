@@ -1,10 +1,6 @@
 package com.mmmp.NetAdvert.service;
 
-import com.mmmp.NetAdvert.model.Advert;
-import com.mmmp.NetAdvert.model.Comment;
-import com.mmmp.NetAdvert.model.CompanyStaffs;
-import com.mmmp.NetAdvert.model.Customer;
-import com.mmmp.NetAdvert.model.User;
+import java.util.List;
 
 import com.mmmp.NetAdvert.model.*;
 
@@ -33,4 +29,9 @@ public interface AdverService {
 
 	public Role findRole(int id);
 
+	public List<Comment> allCommentsOfAdvert(int advert_id);
+	
+	public Report addNewReport(Report report);
+	
+	public List<Report> reportList();
 }

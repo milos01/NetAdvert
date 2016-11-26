@@ -1,5 +1,7 @@
 package com.mmmp.NetAdvert.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import com.mmmp.NetAdvert.DAO.*;
@@ -12,11 +14,6 @@ import com.mmmp.NetAdvert.DAO.CommentDAO;
 import com.mmmp.NetAdvert.DAO.CompanyDAO;
 import com.mmmp.NetAdvert.DAO.TestDAO;
 import com.mmmp.NetAdvert.DAO.UserDAO;
-import com.mmmp.NetAdvert.model.Advert;
-import com.mmmp.NetAdvert.model.Comment;
-import com.mmmp.NetAdvert.model.CompanyStaffs;
-import com.mmmp.NetAdvert.model.Customer;
-import com.mmmp.NetAdvert.model.User;
 
 @Service
 public class AdvertServiceImplementation implements AdverService {
@@ -37,9 +34,11 @@ public class AdvertServiceImplementation implements AdverService {
 	@Autowired
 	private CompanyDAO companyDAO;
 
-
 	@Autowired
 	private RoleDAO roleDAO;
+	
+	@Autowired
+	private ReportDAO reportDAO;
 	
 	@Override
 	@Transactional
@@ -100,6 +99,24 @@ public class AdvertServiceImplementation implements AdverService {
     @Transactional
 	public Role findRole(int id) {
 		return this.roleDAO.findRole(id);
+	}
+
+	@Override
+	@Transactional
+	public List<Comment> allCommentsOfAdvert(int advert_id) {
+		return this.commnetDAO.allCommentsOfAdvert(advert_id);
+	}
+
+	@Override
+	@Transactional
+	public Report addNewReport(Report report) {
+		return this.reportDAO.addNewReport(report);
+	}
+
+	@Override
+	@Transactional
+	public List<Report> reportList() {
+		return this.reportDAO.reportList();
 	}
 
 

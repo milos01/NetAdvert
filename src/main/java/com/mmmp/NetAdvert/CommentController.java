@@ -2,6 +2,7 @@ package com.mmmp.NetAdvert;
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -35,8 +36,8 @@ public class CommentController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Comment> createComment(@RequestParam("advert_id") int advert_id,@RequestParam("comment") String text,HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-//		User u = this.adverService.findUser("doslicmm@live.com");
+//		User u = (User) session.getAttribute("logedUser");
+		User u = this.adverService.findUser("doslicmm@live.com");
 		Advert advert = this.adverService.findAdvert(advert_id);
 		Comment comment = new Comment();
 		comment.setAdvert(advert);
@@ -58,8 +59,17 @@ public class CommentController {
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public  ResponseEntity<Void> deleteComment(@PathVariable("id") int id){
 		Comment c = this.adverService.findComment(id);
-		this.adverService.deleteComment(c); // you could just pass id form comment here, no need to find one.
+		this.adverService.deleteComment(c);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<List<Comment>> findComments(@PathVariable("id") int id){
+		List<Comment> list = this.adverService.allCommentsOfAdvert(id);
+		for(Comment l:list){
+			System.out.println(l.getText());
+		}
+		return new ResponseEntity<List<Comment>>(list,HttpStatus.OK);
 	}
 	
 	public Date getFormatedDate(java.util.Date date) throws ParseException {

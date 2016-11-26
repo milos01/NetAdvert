@@ -68,3 +68,6 @@ INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_
 
 INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-28 12:45:00', '2016-11-29 14:05:12', '2016-12-25', 3, '060/123-456', 'description', false, false, true, '1');
 INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 5, '060/123-456', 'description', false, false, true, '2');
+
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'ovo je moj komentar na oglas', '1', '2');
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'open moj komm', '1', '2');

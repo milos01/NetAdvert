@@ -18,12 +18,10 @@ public interface AdverService {
 	public void deleteComment(Comment commentId);
 	
 	public Comment findComment(int id);
-
 	
 	public CompanyStaffs getUserOfCompany(int user_id, int company_id);
 	
 	public void updateCompanyStaff(CompanyStaffs cs);
-
 
 	public Boolean registerUser(User user);
 
@@ -34,4 +32,10 @@ public interface AdverService {
 	public Report addNewReport(Report report);
 	
 	public List<Report> reportList();
+	
+	public void createLocation(Location location);
+
+	public Location findLocation(int id);
+	
+	public void updateLocation(Location location);
 }

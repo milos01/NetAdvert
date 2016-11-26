@@ -40,6 +40,9 @@ public class AdvertServiceImplementation implements AdverService {
 	@Autowired
 	private ReportDAO reportDAO;
 	
+	@Autowired
+	private LocationDAO locationDAO;
+	
 	@Override
 	@Transactional
 	public void insert(Customer customer) {
@@ -117,6 +120,24 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public List<Report> reportList() {
 		return this.reportDAO.reportList();
+	}
+
+	@Override
+	@Transactional
+	public void createLocation(Location location) {
+		this.locationDAO.createLocation(location);
+	}
+
+	@Override
+	@Transactional
+	public Location findLocation(int id) {
+		return this.locationDAO.findLocation(id);
+	}
+
+	@Override
+	@Transactional
+	public void updateLocation(Location location) {
+		this.locationDAO.updateLocation(location);
 	}
 
 

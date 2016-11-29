@@ -38,4 +38,6 @@ public interface AdverService {
 	public Location findLocation(int id);
 	
 	public void updateLocation(Location location);
+	
+	public User updateUser(User user);
 }

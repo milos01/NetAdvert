@@ -2,7 +2,6 @@ package com.mmmp.NetAdvert.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 public class Location {
@@ -31,6 +33,7 @@ public class Location {
 	@Column(name="postal_code")
 	private int postalCode;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="location", fetch=FetchType.LAZY)
 	private Set<Realestate> realestates;
 
@@ -89,7 +92,6 @@ public class Location {
 	public void setRealestates(Set<Realestate> realestates) {
 		this.realestates = realestates;
 	}
-	
-	
+
 
 }

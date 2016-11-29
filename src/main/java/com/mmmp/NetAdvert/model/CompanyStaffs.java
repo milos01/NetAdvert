@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="CompanyStaffs")
 public class CompanyStaffs {
@@ -60,5 +63,6 @@ public class CompanyStaffs {
 	public void setAccepted(int accepted) {
 		this.accepted = accepted;
 	}
+
 	
 }

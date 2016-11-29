@@ -15,6 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 public class Realestate {
 
@@ -25,7 +30,7 @@ public class Realestate {
 	@Column(name="realestate_name")
 	private String realestateName;
 	
-	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="type_id", nullable=false)
 	private RealestateType type;
@@ -34,23 +39,28 @@ public class Realestate {
 	
 	private double area;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="location_id", nullable=false)
 	private Location location;
 	
 	private boolean heating;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="category_id", nullable=false)
 	private RealestateCategory category;
 	
+	@JsonManagedReference
 	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(name="realestate_technical_equipment", joinColumns=@JoinColumn(name="realestate_id"), inverseJoinColumns=@JoinColumn(name="technical_equipment_id"))
 	private Set<TechnicalEquipment> technicalEquipments;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="realestate", fetch=FetchType.EAGER)
 	private Set<Picture> pictures;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="realestate", fetch=FetchType.LAZY)
 	private Set<Advert> adverts;
 
@@ -146,7 +156,6 @@ public class Realestate {
 		this.adverts = adverts;
 	}
 
-	
 	
 	
 }

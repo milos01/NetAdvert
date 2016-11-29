@@ -1,6 +1,6 @@
 package com.mmmp.NetAdvert.model;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,11 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="Advert")
+
 public class Advert {
 
 	@Id
@@ -24,6 +29,7 @@ public class Advert {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@JsonManagedReference
 	@ManyToOne(targetEntity = User.class,fetch=FetchType.EAGER)
 	@JoinColumn(nullable=false, name = "user_id")
 	private User user;
@@ -46,11 +52,13 @@ public class Advert {
 	
 	private Boolean rent_sale;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="realestate_id", nullable=false)
 	private Realestate realestate;
 	
-	@OneToMany(mappedBy="advert", fetch=FetchType.LAZY)
+	@JsonBackReference
+	@OneToMany(mappedBy="advert", fetch=FetchType.EAGER)
 	private Set<Report> reports;
 
 	public int getId() {
@@ -149,6 +157,7 @@ public class Advert {
 		this.realestate = realestate;
 	}
 
+	
 	public Set<Report> getReports() {
 		return reports;
 	}
@@ -156,6 +165,8 @@ public class Advert {
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
 	}
+
+	
 	
 	
 	

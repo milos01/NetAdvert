@@ -28,7 +28,7 @@ public class UserController {
 
     @RequestMapping(value="/api/register", method=RequestMethod.POST)
     public  ResponseEntity<Void> registerUser(User user){
-        Role regular = this.adverService.findRole(1);
+        Role regular = this.adverService.findRole(2);
         user.setRole(regular);
         System.out.print(user.toString());
         if (this.adverService.registerUser(user)){
@@ -36,6 +36,13 @@ public class UserController {
         }else{
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+    
+    @RequestMapping(value="/api/user", method=RequestMethod.POST)
+    public ResponseEntity<User> updateUser(@RequestParam(value="r_id") int r_id, User user){
+    	user.setRole(this.adverService.findRole(r_id));
+    	this.adverService.updateUser(user);
+    	return new ResponseEntity<User>(user,HttpStatus.OK);
+    }
+    
 }

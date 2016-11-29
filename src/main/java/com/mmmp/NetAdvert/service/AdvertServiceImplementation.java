@@ -140,5 +140,11 @@ public class AdvertServiceImplementation implements AdverService {
 		this.locationDAO.updateLocation(location);
 	}
 
+	@Override
+	@Transactional
+	public User updateUser(User user) {
+		return this.userDAO.updateUser(user);
+	}
+
 
 }

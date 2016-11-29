@@ -42,4 +42,11 @@ public class UserDAOImpl implements UserDAO {
 		return true;
 	}
 
+	@Override
+	public User updateUser(User user) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.merge(user);
+		return user;
+	}
+
 }

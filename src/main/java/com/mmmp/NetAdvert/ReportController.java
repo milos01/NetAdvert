@@ -48,6 +48,9 @@ public class ReportController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Report>> allReports(){
 		List<Report> list = this.adverService.reportList();
+		for(Report r:list){
+			System.out.println(r.getAdvert().getDescription());
+		}
 		return new ResponseEntity<List<Report>>(list,HttpStatus.OK);
 	}
 }

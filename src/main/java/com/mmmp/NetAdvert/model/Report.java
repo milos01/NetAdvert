@@ -9,7 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mmmp.NetAdvert.serializer.ReportSerializer;
+
 @Entity
+
 public class Report {
 	
 	@Id
@@ -19,10 +29,13 @@ public class Report {
 	@Column(name="report_description")
 	private String reportDescription;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 	
+	@JsonManagedReference
+	@JsonIgnoreProperties({"realestate"})
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="advert_id", nullable=false)
 	private Advert advert;
@@ -43,6 +56,7 @@ public class Report {
 		this.reportDescription = reportDescription;
 	}
 
+
 	public User getUser() {
 		return user;
 	}
@@ -58,7 +72,6 @@ public class Report {
 	public void setAdvert(Advert advert) {
 		this.advert = advert;
 	}
-	
-	
+
 
 }

@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="Comment")
 public class Comment {
@@ -25,6 +29,7 @@ public class Comment {
 	@JoinColumn(nullable=false, name = "user_id")
 	private User user;
 	
+	@JsonIgnoreProperties({"realestate"})
 	@OneToOne(targetEntity = Advert.class,fetch=FetchType.EAGER)
 	@JoinColumn(nullable=false, name = "advert_id")
 	private Advert advert;
@@ -72,6 +77,7 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
+
 	
 	
 }

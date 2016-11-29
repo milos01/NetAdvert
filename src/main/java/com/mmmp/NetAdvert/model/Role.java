@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="Role")
 public class Role {
@@ -33,6 +36,5 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

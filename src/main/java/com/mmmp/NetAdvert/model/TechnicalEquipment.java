@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="technical_equipment")
 public class TechnicalEquipment {
@@ -22,9 +26,11 @@ public class TechnicalEquipment {
 	@Column(name="equipment_name")
 	private String equipmentName;
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy="equipments", fetch=FetchType.LAZY)
 	private Set<RealestateCategory> categories;
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy="technicalEquipments", fetch=FetchType.LAZY)
 	private Set<Realestate> realestates;
 
@@ -59,7 +65,5 @@ public class TechnicalEquipment {
 	public void setRealestates(Set<Realestate> realestates) {
 		this.realestates = realestates;
 	}
-	
-	
 
 }

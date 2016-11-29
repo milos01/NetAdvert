@@ -13,8 +13,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="User")
+
 public class User {
 
 	@Id
@@ -34,12 +39,15 @@ public class User {
 	
 	private int user_rate;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private Set<Picture> pictures;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private Set<Advert> adverts;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private Set<Report> reports;
 
@@ -102,7 +110,6 @@ public class User {
 	}
 	
 	
-
 	public Set<Advert> getAdverts() {
 		return adverts;
 	}
@@ -112,7 +119,6 @@ public class User {
 	}
 	
 	
-
 	public Set<Report> getReports() {
 		return reports;
 	}
@@ -120,16 +126,5 @@ public class User {
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
 	}
-
-	@Override
-	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", first_name='" + first_name + '\'' +
-				", last_name='" + last_name + '\'' +
-				", email='" + email + '\'' +
-				", role=" + role +
-				", user_rate=" + user_rate +
-				'}';
-	}
+	
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mmmp.NetAdvert.model.Advert;
@@ -34,7 +35,8 @@ public class CommentController {
 		this.adverService = ps;
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(method=RequestMethod.POST, produces="application/json")
+	
 	public ResponseEntity<Comment> createComment(@RequestParam("advert_id") int advert_id,@RequestParam("comment") String text,HttpSession session){
 //		User u = (User) session.getAttribute("logedUser");
 		User u = this.adverService.findUser("doslicmm@live.com");
@@ -51,7 +53,9 @@ public class CommentController {
 		}
 		comment.setText(text);
 		
+		
 		this.adverService.createComment(comment);
+		
 		
 		return new ResponseEntity<Comment>(comment,HttpStatus.OK);
 	}

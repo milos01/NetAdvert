@@ -7,4 +7,6 @@ public interface UserDAO {
 	public User findUser(String email);
 
 	public Boolean RegisterUser(User user);
+	
+	public User updateUser(User user);
 }

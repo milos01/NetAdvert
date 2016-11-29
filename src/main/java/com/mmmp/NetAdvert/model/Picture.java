@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 public class Picture {
 	
@@ -19,10 +23,12 @@ public class Picture {
 	@Column(name="picture_name")
 	private String pictureName;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="realestate_id", nullable=false)
 	private Realestate realestate;
@@ -69,7 +75,7 @@ public class Picture {
 	public void setProfile(boolean isProfile) {
 		this.isProfile = isProfile;
 	}
-	
+
 	
 
 }

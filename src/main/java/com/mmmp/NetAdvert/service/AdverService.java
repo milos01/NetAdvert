@@ -69,4 +69,11 @@ public interface AdverService {
 	public RealestateCategory findRealestateCategory(String name);
 	
 	public List<TechnicalEquipment> allEquipment();
+
+	public void addPicture(Picture i);
+	
+	public void deletePicture(Picture i);
+	
+	public Picture findPicture(int id);
+
 }

@@ -11,6 +11,7 @@ import com.mmmp.NetAdvert.DAO.AdvertDAO;
 import com.mmmp.NetAdvert.DAO.CommentDAO;
 import com.mmmp.NetAdvert.DAO.CompanyDAO;
 import com.mmmp.NetAdvert.DAO.LocationDAO;
+import com.mmmp.NetAdvert.DAO.PictureDAO;
 import com.mmmp.NetAdvert.DAO.RealestateDAO;
 import com.mmmp.NetAdvert.DAO.ReportDAO;
 import com.mmmp.NetAdvert.DAO.RoleDAO;
@@ -27,6 +28,11 @@ import com.mmmp.NetAdvert.model.RealestateType;
 import com.mmmp.NetAdvert.model.Report;
 import com.mmmp.NetAdvert.model.Role;
 import com.mmmp.NetAdvert.model.TechnicalEquipment;
+import com.mmmp.NetAdvert.model.Picture;
+import com.mmmp.NetAdvert.model.Realestate;
+import com.mmmp.NetAdvert.model.RealestateCategory;
+import com.mmmp.NetAdvert.model.Report;
+import com.mmmp.NetAdvert.model.Role;
 import com.mmmp.NetAdvert.model.User;
 
 @Service
@@ -59,6 +65,9 @@ public class AdvertServiceImplementation implements AdverService {
 	
 	@Autowired
 	private RealestateDAO realestateDAO;
+	
+	@Autowired
+	private PictureDAO pictureDAO;
 	
 	@Override
 	@Transactional
@@ -214,8 +223,20 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
+	public void addPicture(Picture i) {
+		this.pictureDAO.addPicture(i);
+	}
+
+	@Override
+	@Transactional
 	public Report findReport(int id) {
 		return this.reportDAO.findReport(id);
+	}
+	
+	@Override
+	@Transactional
+	public void deletePicture(Picture i) {
+		this.pictureDAO.deletePicture(i);
 	}
 
 	@Override
@@ -246,6 +267,12 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public List<TechnicalEquipment> allEquipment() {
 		return this.realestateDAO.allEquipment();
+	}
+	
+	@Override
+	@Transactional
+	public Picture findPicture(int id) {
+		return this.pictureDAO.findPicture(id);
 	}
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mmmp.NetAdvert.DAO.ReportDAO;
+import com.mmmp.NetAdvert.model.Comment;
 import com.mmmp.NetAdvert.model.Report;
 
 @Repository
@@ -34,6 +35,26 @@ public class ReportDAOImpl implements ReportDAO {
 		Query query = session.createQuery("from Report");
 		List<Report> ReportList = query.list();
 		return ReportList;
+	}
+
+	@Override
+	public Report updateReport(Report report) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.merge(report);
+		return report;
+	}
+
+	@Override
+	public Report findReport(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Report u where u.id=:id");
+		query.setParameter("id",id);
+		List<Report> ReportList = query.list();
+		Report rep = null;
+		for(Report a:ReportList){
+			rep = a;
+		}
+		return rep;
 	}
 
 }

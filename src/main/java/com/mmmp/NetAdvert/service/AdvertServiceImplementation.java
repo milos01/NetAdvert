@@ -4,16 +4,30 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.mmmp.NetAdvert.DAO.*;
-import com.mmmp.NetAdvert.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mmmp.NetAdvert.DAO.AdvertDAO;
 import com.mmmp.NetAdvert.DAO.CommentDAO;
 import com.mmmp.NetAdvert.DAO.CompanyDAO;
+import com.mmmp.NetAdvert.DAO.LocationDAO;
+import com.mmmp.NetAdvert.DAO.RealestateDAO;
+import com.mmmp.NetAdvert.DAO.ReportDAO;
+import com.mmmp.NetAdvert.DAO.RoleDAO;
 import com.mmmp.NetAdvert.DAO.TestDAO;
 import com.mmmp.NetAdvert.DAO.UserDAO;
+import com.mmmp.NetAdvert.model.Advert;
+import com.mmmp.NetAdvert.model.Comment;
+import com.mmmp.NetAdvert.model.CompanyStaffs;
+import com.mmmp.NetAdvert.model.Customer;
+import com.mmmp.NetAdvert.model.Location;
+import com.mmmp.NetAdvert.model.Realestate;
+import com.mmmp.NetAdvert.model.RealestateCategory;
+import com.mmmp.NetAdvert.model.RealestateType;
+import com.mmmp.NetAdvert.model.Report;
+import com.mmmp.NetAdvert.model.Role;
+import com.mmmp.NetAdvert.model.TechnicalEquipment;
+import com.mmmp.NetAdvert.model.User;
 
 @Service
 public class AdvertServiceImplementation implements AdverService {
@@ -190,6 +204,48 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public Advert addAdvert(Advert a){
 		return this.adverDAO.addAdvert(a);
+	}
+
+	@Override
+	@Transactional
+	public Report updateReport(Report report) {
+		return this.reportDAO.updateReport(report);
+	}
+
+	@Override
+	@Transactional
+	public Report findReport(int id) {
+		return this.reportDAO.findReport(id);
+	}
+
+	@Override
+	@Transactional
+	public List<RealestateType> findAllRealstateTypes() {
+		return this.realestateDAO.findAllRealstateTypes();
+	}
+
+	@Override
+	@Transactional
+	public RealestateType findRealestateType(String name) {
+		return this.realestateDAO.findRealestateType(name);
+	}
+
+	@Override
+	@Transactional
+	public List<RealestateCategory> findAllRealestateCategory() {
+		return this.realestateDAO.findAllRealestateCategory();
+	}
+
+	@Override
+	@Transactional
+	public RealestateCategory findRealestateCategory(String name) {
+		return this.realestateDAO.findRealestateCategory(name);
+	}
+
+	@Override
+	@Transactional
+	public List<TechnicalEquipment> allEquipment() {
+		return this.realestateDAO.allEquipment();
 	}
 	
 	

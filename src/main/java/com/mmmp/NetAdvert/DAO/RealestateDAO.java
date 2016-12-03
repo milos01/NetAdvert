@@ -1,7 +1,11 @@
 package com.mmmp.NetAdvert.DAO;
 
+import java.util.List;
+
 import com.mmmp.NetAdvert.model.Realestate;
 import com.mmmp.NetAdvert.model.RealestateCategory;
+import com.mmmp.NetAdvert.model.RealestateType;
+import com.mmmp.NetAdvert.model.TechnicalEquipment;
 
 public interface RealestateDAO {
 	
@@ -14,5 +18,15 @@ public interface RealestateDAO {
 	public Realestate updateRealestate(Realestate rs);
 	
 	public Realestate findRealestate(int id);
+	
+	public List<RealestateType> findAllRealstateTypes();
+	
+	public RealestateType findRealestateType(String name);
+	
+	public List<RealestateCategory> findAllRealestateCategory();
+	
+	public RealestateCategory findRealestateCategory(String name);
+	
+	public List<TechnicalEquipment> allEquipment();
 
 }

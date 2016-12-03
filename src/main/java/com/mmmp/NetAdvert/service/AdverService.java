@@ -55,4 +55,18 @@ public interface AdverService {
 	public Realestate findRealestate(int id);
 	
 	public Advert addAdvert(Advert a);
+	
+	public Report updateReport(Report report);
+	
+	public Report findReport(int id);
+	
+	public List<RealestateType> findAllRealstateTypes();
+	
+	public RealestateType findRealestateType(String name);
+	
+	public List<RealestateCategory> findAllRealestateCategory();
+	
+	public RealestateCategory findRealestateCategory(String name);
+	
+	public List<TechnicalEquipment> allEquipment();
 }

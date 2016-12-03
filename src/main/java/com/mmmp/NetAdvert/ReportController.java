@@ -39,7 +39,7 @@ public class ReportController {
 		rep.setAdvert(advert);
 		rep.setUser(u);
 		rep.setReportDescription(text);
-		
+		rep.setVerified(0);
 		this.adverService.addNewReport(rep);
 		
 		return new ResponseEntity<Report>(rep,HttpStatus.OK);
@@ -52,5 +52,14 @@ public class ReportController {
 			System.out.println(r.getAdvert().getDescription());
 		}
 		return new ResponseEntity<List<Report>>(list,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ResponseEntity<Report> updateReport(@RequestParam("report_id") int id,@RequestParam("verify") int verify){
+		
+		Report r = this.adverService.findReport(id);
+		r.setVerified(verify);
+		this.adverService.updateReport(r);
+		return new ResponseEntity<>(r,HttpStatus.OK);
 	}
 }

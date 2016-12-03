@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.mmmp.NetAdvert.DAO.RealestateDAO;
 import com.mmmp.NetAdvert.model.Realestate;
 import com.mmmp.NetAdvert.model.RealestateCategory;
+import com.mmmp.NetAdvert.model.RealestateType;
+import com.mmmp.NetAdvert.model.TechnicalEquipment;
 
 @Repository
 public class RealestateDAOImpl implements RealestateDAO{
@@ -77,6 +79,56 @@ public class RealestateDAOImpl implements RealestateDAO{
 			r = real;
 		}
 		return r;
+	}
+
+	@Override
+	public List<RealestateType> findAllRealstateTypes() {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from RealestateType");
+		List<RealestateType> list=query.list();
+		return list;
+	}
+
+	@Override
+	public RealestateType findRealestateType(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from RealestateType r where r.name=:name");
+		query.setParameter("name", name);
+		List<RealestateType> list=query.list();
+		RealestateType r = null;
+		for(RealestateType real : list){
+			r = real;
+		}
+		return r;
+	}
+
+	@Override
+	public List<RealestateCategory> findAllRealestateCategory() {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from RealestateCategory");
+		List<RealestateCategory> list=query.list();
+		return list;
+	}
+
+	@Override
+	public RealestateCategory findRealestateCategory(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from RealestateCategory r where r.categoryName=:name");
+		query.setParameter("name", name);
+		List<RealestateCategory> list=query.list();
+		RealestateCategory r = null;
+		for(RealestateCategory real : list){
+			r = real;
+		}
+		return r;
+	}
+
+	@Override
+	public List<TechnicalEquipment> allEquipment() {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from TechnicalEquipment");
+		List<TechnicalEquipment> list=query.list();
+		return list;
 	}
 
 }

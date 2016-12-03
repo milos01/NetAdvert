@@ -39,6 +39,8 @@ public class Report {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="advert_id", nullable=false)
 	private Advert advert;
+	
+	private int verified;
 
 	public int getId() {
 		return id;
@@ -73,5 +75,14 @@ public class Report {
 		this.advert = advert;
 	}
 
+	public int getVerified() {
+		return verified;
+	}
+
+	public void setVerified(int verified) {
+		this.verified = verified;
+	}
+
+	
 
 }

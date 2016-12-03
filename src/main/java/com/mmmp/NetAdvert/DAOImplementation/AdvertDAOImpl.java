@@ -34,4 +34,11 @@ public class AdvertDAOImpl implements AdvertDAO {
 		return advert;
 	}
 
+	@Override
+	public Advert addAdvert(Advert a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.save(a);
+		return a;
+	}
+
 }

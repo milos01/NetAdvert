@@ -43,6 +43,9 @@ public class AdvertServiceImplementation implements AdverService {
 	@Autowired
 	private LocationDAO locationDAO;
 	
+	@Autowired
+	private RealestateDAO realestateDAO;
+	
 	@Override
 	@Transactional
 	public void insert(Customer customer) {
@@ -145,6 +148,51 @@ public class AdvertServiceImplementation implements AdverService {
 	public User updateUser(User user) {
 		return this.userDAO.updateUser(user);
 	}
+
+	@Override
+	@Transactional
+	public Location checkForExistingLocation(String street, int street_number, String region, String city,
+			int postal_code) {
+		return this.locationDAO.checkForExistingLocation(street, street_number, region, city, postal_code);
+	}
+
+	@Override
+	@Transactional
+	public boolean checkExistingCategoryType(int category_id, int type_id) {
+		return this.realestateDAO.checkExistingCategoryType(category_id, type_id);
+	}
+
+	@Override
+	@Transactional
+	public RealestateCategory findRealestateCategory(int category_id) {
+		return this.realestateDAO.findRealestateCategory(category_id);
+	}
+
+	@Override
+	@Transactional
+	public Realestate addRealestate(Realestate rs) {
+		return this.realestateDAO.addRealestate(rs);
+	}
+
+	@Override
+	@Transactional
+	public Realestate updateRealestate(Realestate rs) {
+		return this.realestateDAO.updateRealestate(rs);
+	}
+
+	@Override
+	@Transactional
+	public Realestate findRealestate(int id) {
+		return this.realestateDAO.findRealestate(id);
+	}
+	
+	@Override
+	@Transactional
+	public Advert addAdvert(Advert a){
+		return this.adverDAO.addAdvert(a);
+	}
+	
+	
 
 
 }

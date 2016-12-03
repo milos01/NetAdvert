@@ -40,4 +40,19 @@ public interface AdverService {
 	public void updateLocation(Location location);
 	
 	public User updateUser(User user);
+	
+	public Location checkForExistingLocation(String street, int street_number, String region, String city,
+			int postal_code);
+	
+	public boolean checkExistingCategoryType(int category_id, int type_id);
+	
+	public RealestateCategory findRealestateCategory(int category_id);
+	
+	public Realestate addRealestate(Realestate rs);
+	
+	public Realestate updateRealestate(Realestate rs);
+	
+	public Realestate findRealestate(int id);
+	
+	public Advert addAdvert(Advert a);
 }

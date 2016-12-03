@@ -31,7 +31,7 @@ public class Realestate {
 	private String realestateName;
 	
 	@JsonManagedReference
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="type_id", nullable=false)
 	private RealestateType type;
 	
@@ -40,19 +40,19 @@ public class Realestate {
 	private double area;
 	
 	@JsonManagedReference
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="location_id", nullable=false)
 	private Location location;
 	
 	private boolean heating;
 	
 	@JsonManagedReference
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="category_id", nullable=false)
 	private RealestateCategory category;
 	
 	@JsonManagedReference
-	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="realestate_technical_equipment", joinColumns=@JoinColumn(name="realestate_id"), inverseJoinColumns=@JoinColumn(name="technical_equipment_id"))
 	private Set<TechnicalEquipment> technicalEquipments;
 	
@@ -61,7 +61,7 @@ public class Realestate {
 	private Set<Picture> pictures;
 	
 	@JsonBackReference
-	@OneToMany(mappedBy="realestate", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="realestate", fetch=FetchType.EAGER)
 	private Set<Advert> adverts;
 
 	public int getId() {

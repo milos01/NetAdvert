@@ -85,5 +85,8 @@
 	<beans:bean id="adverService"
 				class="com.mmmp.NetAdvert.service.AdvertServiceImplementation">
 	</beans:bean>
+	
+	    <beans:bean id="multipartResolver"   
+    class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>  
 
 </beans:beans>

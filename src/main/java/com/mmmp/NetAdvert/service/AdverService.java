@@ -75,5 +75,9 @@ public interface AdverService {
 	public void deletePicture(Picture i);
 	
 	public Picture findPicture(int id);
+	
+	public RealestateType findRealestateTypeById(int id);
+	
+	public TechnicalEquipment findTechnicalEquipmentById(int id);
 
 }

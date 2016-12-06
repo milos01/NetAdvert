@@ -23,10 +23,14 @@ public interface RealestateDAO {
 	
 	public RealestateType findRealestateType(String name);
 	
+	public RealestateType findRealestateTypeById(int id);
+	
 	public List<RealestateCategory> findAllRealestateCategory();
 	
 	public RealestateCategory findRealestateCategory(String name);
 	
 	public List<TechnicalEquipment> allEquipment();
+	
+	public TechnicalEquipment findTechnicalEquipmentById(int id);
 
 }

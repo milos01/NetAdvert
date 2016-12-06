@@ -274,6 +274,18 @@ public class AdvertServiceImplementation implements AdverService {
 	public Picture findPicture(int id) {
 		return this.pictureDAO.findPicture(id);
 	}
+
+	@Override
+	@Transactional
+	public RealestateType findRealestateTypeById(int id) {
+		return this.realestateDAO.findRealestateTypeById(id);
+	}
+
+	@Override
+	@Transactional
+	public TechnicalEquipment findTechnicalEquipmentById(int id) {
+		return this.realestateDAO.findTechnicalEquipmentById(id);
+	}
 	
 	
 

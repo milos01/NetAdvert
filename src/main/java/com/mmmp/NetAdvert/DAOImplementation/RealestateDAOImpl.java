@@ -131,4 +131,31 @@ public class RealestateDAOImpl implements RealestateDAO{
 		return list;
 	}
 
+	@Override
+	public RealestateType findRealestateTypeById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from RealestateType rt where rt.id=:id");
+		query.setParameter("id", id);
+		List<RealestateType> list=query.list();
+		RealestateType rt = null;
+		for(RealestateType real : list){
+			rt = real;
+		}
+		return rt;
+	}
+
+
+	@Override
+	public TechnicalEquipment findTechnicalEquipmentById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from TechnicalEquipment t where t.id=:id");
+		query.setParameter("id", id);
+		List<TechnicalEquipment> list=query.list();
+		TechnicalEquipment t = null;
+		for(TechnicalEquipment tec : list){
+			t = tec;
+		}
+		return t;
+	}
+
 }

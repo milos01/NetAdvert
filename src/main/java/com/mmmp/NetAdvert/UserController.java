@@ -77,7 +77,7 @@ public class UserController {
 
     /**
      * This method is part of user rest service. Method will update logged user with params sent form form.
-     * If some params are null method will leave them as is. If logged user was not found method will return 404 response.
+     * If some params are null method will leave them as is. If logged user was not found method will return 404 response .
      * @param r_id role id send from form
      * @param user  params from form are mapped on this user object
      * @param session HttpSession object for getting logged user

@@ -32,6 +32,8 @@ public class User {
 	private String last_name;
 	
 	private String email;
+
+	private String password;
 	
 	@OneToOne(targetEntity = Role.class,fetch=FetchType.EAGER)
 	@JoinColumn(nullable=false, name = "role_id")
@@ -50,6 +52,14 @@ public class User {
 	@JsonBackReference
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private Set<Report> reports;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public int getId() {
 		return id;

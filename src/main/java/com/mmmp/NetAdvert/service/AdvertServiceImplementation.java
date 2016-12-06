@@ -38,42 +38,42 @@ import com.mmmp.NetAdvert.model.User;
 @Service
 public class AdvertServiceImplementation implements AdverService {
 
-	
+
 	@Autowired
 	private TestDAO td;
-	
+
 	@Autowired
 	private AdvertDAO adverDAO;
-	
+
 	@Autowired
 	private CommentDAO commnetDAO;
-	
+
 	@Autowired
 	private UserDAO userDAO;
-	
+
 	@Autowired
 	private CompanyDAO companyDAO;
 
 	@Autowired
 	private RoleDAO roleDAO;
-	
+
 	@Autowired
 	private ReportDAO reportDAO;
-	
+
 	@Autowired
 	private LocationDAO locationDAO;
-	
+
 	@Autowired
 	private RealestateDAO realestateDAO;
-	
+
 	@Autowired
 	private PictureDAO pictureDAO;
-	
+
 	@Override
 	@Transactional
 	public void insert(Customer customer) {
 		this.td.insert(customer);
-		
+
 	}
 
 	@Override
@@ -168,8 +168,8 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
-	public User updateUser(User user) {
-		return this.userDAO.updateUser(user);
+	public User updateUser(User luser, User user, Role role) {
+		return this.userDAO.updateUser(luser, user, role);
 	}
 
 	@Override
@@ -208,7 +208,7 @@ public class AdvertServiceImplementation implements AdverService {
 	public Realestate findRealestate(int id) {
 		return this.realestateDAO.findRealestate(id);
 	}
-	
+
 	@Override
 	@Transactional
 	public Advert addAdvert(Advert a){
@@ -232,7 +232,7 @@ public class AdvertServiceImplementation implements AdverService {
 	public Report findReport(int id) {
 		return this.reportDAO.findReport(id);
 	}
-	
+
 	@Override
 	@Transactional
 	public void deletePicture(Picture i) {
@@ -268,7 +268,7 @@ public class AdvertServiceImplementation implements AdverService {
 	public List<TechnicalEquipment> allEquipment() {
 		return this.realestateDAO.allEquipment();
 	}
-	
+
 	@Override
 	@Transactional
 	public Picture findPicture(int id) {
@@ -286,8 +286,18 @@ public class AdvertServiceImplementation implements AdverService {
 	public TechnicalEquipment findTechnicalEquipmentById(int id) {
 		return this.realestateDAO.findTechnicalEquipmentById(id);
 	}
-	
-	
+
+    @Override
+    @Transactional
+    public List<User> getAllUsers() {
+        return this.userDAO.getAllUsers();
+    }
+
+    @Override
+    @Transactional
+    public User findUserByCreds(String username, String password) {
+        return this.userDAO.findUserByCreds(username, password);
+    }
 
 
 }

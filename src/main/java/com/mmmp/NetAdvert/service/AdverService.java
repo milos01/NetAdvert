@@ -39,7 +39,7 @@ public interface AdverService {
 	
 	public void updateLocation(Location location);
 	
-	public User updateUser(User user);
+	public User updateUser(User luser, User user, Role role);
 	
 	public Location checkForExistingLocation(String street, int street_number, String region, String city,
 			int postal_code);
@@ -80,4 +80,7 @@ public interface AdverService {
 	
 	public TechnicalEquipment findTechnicalEquipmentById(int id);
 
+	public  List<User> getAllUsers();
+
+	public User findUserByCreds(String username, String password);
 }

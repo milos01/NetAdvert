@@ -52,9 +52,9 @@ INSERT INTO `netadvert`.`role` (`name`) VALUES ('Regular user');
 INSERT INTO `netadvert`.`role` (`name`) VALUES ('Verifier');
 
 
-INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`email`,`role_id`,`user_rate`) VALUES ('Milos', 'Andric', 'milosa942@gmail.com', '1', 0);
-INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`email`,`role_id`,`user_rate`) VALUES ('Milos', 'Obradovic', 'milossm94@hotmail.com', '2', 4);
-INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`email`,`role_id`,`user_rate`) VALUES ('Mladen', 'Doslic', 'doslicmm@live.com', '3', 0);
+INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Milos', 'Andric','pass', 'milosa942@gmail.com', '1', 0);
+INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Milos', 'Obradovic','pass', 'milossm94@hotmail.com', '2', 4);
+INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Mladen', 'Doslic','pass', 'doslicmm@live.com', '3', 0);
 
 
 INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Spoljasnji izgled', '2', '1', true);

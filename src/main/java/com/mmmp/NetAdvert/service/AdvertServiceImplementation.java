@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.mmmp.NetAdvert.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +18,10 @@ import com.mmmp.NetAdvert.DAO.ReportDAO;
 import com.mmmp.NetAdvert.DAO.RoleDAO;
 import com.mmmp.NetAdvert.DAO.TestDAO;
 import com.mmmp.NetAdvert.DAO.UserDAO;
-import com.mmmp.NetAdvert.model.Advert;
-import com.mmmp.NetAdvert.model.Comment;
-import com.mmmp.NetAdvert.model.CompanyStaffs;
-import com.mmmp.NetAdvert.model.Customer;
-import com.mmmp.NetAdvert.model.Location;
-import com.mmmp.NetAdvert.model.Realestate;
-import com.mmmp.NetAdvert.model.RealestateCategory;
-import com.mmmp.NetAdvert.model.RealestateType;
-import com.mmmp.NetAdvert.model.Report;
-import com.mmmp.NetAdvert.model.Role;
-import com.mmmp.NetAdvert.model.TechnicalEquipment;
-import com.mmmp.NetAdvert.model.Picture;
 import com.mmmp.NetAdvert.model.Realestate;
 import com.mmmp.NetAdvert.model.RealestateCategory;
 import com.mmmp.NetAdvert.model.Report;
 import com.mmmp.NetAdvert.model.Role;
-import com.mmmp.NetAdvert.model.User;
 
 @Service
 public class AdvertServiceImplementation implements AdverService {
@@ -297,6 +285,18 @@ public class AdvertServiceImplementation implements AdverService {
     @Transactional
     public User findUserByCreds(String username, String password) {
         return this.userDAO.findUserByCreds(username, password);
+    }
+
+	@Override
+	@Transactional
+	public User findUserById(int id) {
+		return this.userDAO.findUserById(id);
+	}
+
+    @Override
+    @Transactional
+    public Company addCompany(Company company) {
+        return this.companyDAO.addCompany(company);
     }
 
 

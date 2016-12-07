@@ -2,6 +2,7 @@ package com.mmmp.NetAdvert.DAOImplementation;
 
 import java.util.List;
 
+import com.mmmp.NetAdvert.model.Company;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -40,6 +41,14 @@ public class CompanyDAOImpl implements CompanyDAO {
 	public void updateCompanyStaff(CompanyStaffs cs) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.merge(cs);
+	}
+
+	@Override
+	public Company addCompany(Company company) {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		session.persist(company);
+		return company;
 	}
 
 }

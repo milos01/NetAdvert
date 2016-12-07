@@ -74,4 +74,17 @@ public class UserDAOImpl implements UserDAO {
         return null;
     }
 
+    @Override
+    public User findUserById(int id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User u where u.id=:id");
+        query.setParameter("id",id);
+        List<User> userList = query.list();
+        User user = null;
+        for(User a:userList){
+            user = a;
+        }
+        return user;
+    }
+
 }

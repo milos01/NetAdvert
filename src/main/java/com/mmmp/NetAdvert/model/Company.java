@@ -21,12 +21,13 @@ public class Company {
 	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
+	@Column(unique=true)
 	private String company_name;
-	
+
 	@OneToOne(targetEntity = User.class,fetch=FetchType.EAGER)
 	@JoinColumn(nullable=false, name = "master_user_id")
-	private User companyAdmin;
+	private User user;
 
 	public int getId() {
 		return id;
@@ -44,15 +45,20 @@ public class Company {
 		this.company_name = company_name;
 	}
 
-	public User getCompanyAdmin() {
-		return companyAdmin;
+	public User getUser() {
+		return user;
 	}
 
-	public void setCompanyAdmin(User companyAdmin) {
-		this.companyAdmin = companyAdmin;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	
-	
-	
+	@Override
+	public String toString() {
+		return "Company{" +
+				"company_name='" + company_name + '\'' +
+				", companyAdminko=" + user +
+				", id=" + id +
+				'}';
+	}
 }

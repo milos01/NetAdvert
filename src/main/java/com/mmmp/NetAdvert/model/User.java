@@ -136,5 +136,20 @@ public class User {
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", first_name='" + first_name + '\'' +
+				", last_name='" + last_name + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", role=" + role +
+				", user_rate=" + user_rate +
+				", pictures=" + pictures +
+				", adverts=" + adverts +
+				", reports=" + reports +
+				'}';
+	}
 }

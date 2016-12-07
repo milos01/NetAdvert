@@ -16,4 +16,6 @@ public interface UserDAO {
 	public List<User> getAllUsers();
 
 	public User findUserByCreds(String username, String password);
+
+	public User findUserById(int id);
 }

@@ -83,4 +83,9 @@ public interface AdverService {
 	public  List<User> getAllUsers();
 
 	public User findUserByCreds(String username, String password);
+
+	public User findUserById(int id);
+
+	public Company addCompany(Company company);
+
 }

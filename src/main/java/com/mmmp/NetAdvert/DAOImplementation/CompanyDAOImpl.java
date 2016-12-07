@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mmmp.NetAdvert.DAO.CompanyDAO;
 import com.mmmp.NetAdvert.model.CompanyStaffs;
-import com.mmmp.NetAdvert.model.User;
+
 @Repository
 public class CompanyDAOImpl implements CompanyDAO {
 
@@ -49,6 +49,25 @@ public class CompanyDAOImpl implements CompanyDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.persist(company);
 		return company;
+	}
+
+	@Override
+	public Company findCompany(int cid) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Company cs where cs.id=:id");
+		query.setParameter("id",cid);
+		List<Company> staffs = query.list();
+		Company companyStaffs = null;
+		for(Company a:staffs){
+			companyStaffs = a;
+		}
+		return companyStaffs;
+	}
+
+	@Override
+	public void addCompanyStaff(CompanyStaffs cs) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.persist(cs);
 	}
 
 }

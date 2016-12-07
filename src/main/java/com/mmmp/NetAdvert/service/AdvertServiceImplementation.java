@@ -299,5 +299,17 @@ public class AdvertServiceImplementation implements AdverService {
         return this.companyDAO.addCompany(company);
     }
 
+	@Override
+	@Transactional
+	public Company findCompany(int cid) {
+		return this.companyDAO.findCompany(cid);
+	}
+
+	@Override
+	@Transactional
+	public void addCompanyStaff(CompanyStaffs cs) {
+		this.companyDAO.addCompanyStaff(cs);
+	}
+
 
 }

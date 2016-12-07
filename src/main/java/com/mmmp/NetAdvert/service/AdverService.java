@@ -88,4 +88,7 @@ public interface AdverService {
 
 	public Company addCompany(Company company);
 
+	public Company findCompany(int cid);
+
+	public void addCompanyStaff(CompanyStaffs cs);
 }

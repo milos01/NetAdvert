@@ -64,6 +64,34 @@ public class CompanyController {
             }
 
 	}
+	/**
+	 * This method is part of company rest service. Method will add new user for company.
+	 * If same user and company are not found, method will response with 404 response. After user and company
+	 * were found will save save user as worker in that company.
+	 * @param cid user id send from form
+	 * @param uid user id send from form
+	 * @return Http resonse 200 OK
+	 * @see CompanyStaffs
+	 */
+	@RequestMapping(value="/{cid}/user/{uid}", method = RequestMethod.POST)
+	public ResponseEntity<Company> addUserOnCompany(@PathVariable("cid") int cid,@PathVariable("uid") int uid){
+		User usr = (User)this.adverService.findUserById(uid);
+		Company cmp = (Company)this.adverService.findCompany(cid);
+		if (cmp  != null && usr != null){
+			System.err.print(cmp.getCompany_name());
+			CompanyStaffs cs = new CompanyStaffs();
+			cs.setUser(usr);
+			cs.setAccepted(0);
+			cs.setCompany(cmp);
+			try{
+				this.adverService.addCompanyStaff(cs);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}catch (ConstraintViolationException e){
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 
 	
 }

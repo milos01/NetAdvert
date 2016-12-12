@@ -1,0 +1,19 @@
+{
+  "name": "netadvert",
+  "version": "1.0.0",
+  "description": "Fronend develop for NetAdvert app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Milos Andric",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.2",
+    "gulp": "^3.9.1",
+    "gulp-watch": "^4.3.11"
+  },
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

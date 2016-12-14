@@ -25,6 +25,6 @@ public class UserConstants {
     //number of exams for student with ID DB_ID_REFERENCED
     public static final int DB_COUNT_STUDENT_EXAMS = 2;
 
-    public static final int DB_COUNT = 0;
+    public static final int DB_COUNT = 3;
     public static final int PAGE_SIZE = 5;
 }

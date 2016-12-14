@@ -32,8 +32,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebIntegrationTest(randomPort = true)
 @TestPropertySource(locations="classpath:test.properties")
 public class HomeControllerTest {
+    private static final String URL_PREFIX = "/";
 
     private MockMvc mockMvc;
+
+    private MediaType contentType = new MediaType(
+            MediaType.TEXT_HTML.getType(),
+            MediaType.TEXT_HTML.getSubtype(),
+            Charset.forName("utf8"));
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -46,7 +52,8 @@ public class HomeControllerTest {
 
     @Test
     public void testGetHomePage() throws Exception {
-
+        mockMvc.perform(get(URL_PREFIX))
+                .andExpect(status().isOk());
     }
 
 }

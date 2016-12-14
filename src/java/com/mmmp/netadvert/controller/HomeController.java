@@ -12,6 +12,7 @@ import com.mmmp.netadvert.service.AdverService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Handles requests for the application home page.
@@ -32,7 +33,7 @@ public class HomeController {
 	 * This method will redirect user on index.html, otherwise will respond with 404 error response.
 	 * @return index.html
      */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "text/html")
 	public String home() {
 
 		return "core/index.html";

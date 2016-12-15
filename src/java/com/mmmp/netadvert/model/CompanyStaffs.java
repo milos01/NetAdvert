@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name="CompanyStaffs")
 public class CompanyStaffs {
 
 	@Id

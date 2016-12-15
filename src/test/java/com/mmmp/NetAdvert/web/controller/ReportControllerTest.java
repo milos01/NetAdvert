@@ -1,7 +1,14 @@
-package com.mmmp.netadvert.web.controller;
+package com.mmmp.NetAdvert.web.controller;
 
-import static com.mmmp.netadvert.constants.ReportConstants.db_count_reports;
-import static com.mmmp.netadvert.constants.ReportConstants.text;
+import static com.mmmp.NetAdvert.constants.LocationConstants.city;
+import static com.mmmp.NetAdvert.constants.LocationConstants.postal_code;
+import static com.mmmp.NetAdvert.constants.LocationConstants.region;
+import static com.mmmp.NetAdvert.constants.LocationConstants.street;
+import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
+import static com.mmmp.NetAdvert.constants.ReportConstants.db_count_reports;
+import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
+import static com.mmmp.NetAdvert.constants.ReportConstants.text;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,8 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.Date;
 
 import javax.annotation.PostConstruct;
 
@@ -28,10 +35,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mmmp.NetAdvert.TestUtil;
 import com.mmmp.netadvert.NetAdvertApplication;
 import com.mmmp.netadvert.model.Advert;
+import com.mmmp.netadvert.model.Location;
+import com.mmmp.netadvert.model.Realestate;
+import com.mmmp.netadvert.model.RealestateCategory;
+import com.mmmp.netadvert.model.RealestateType;
 import com.mmmp.netadvert.model.Report;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
@@ -39,92 +49,180 @@ import com.mmmp.netadvert.model.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = NetAdvertApplication.class)
 @WebIntegrationTest(randomPort = true)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 public class ReportControllerTest {
 
-    private static final String URL_PREFIX = "/api/report";
+	private static final String URL_PREFIX = "/api/report";
 
-    private MediaType contentType = new MediaType(
-            MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+	@Autowired
+	private WebApplicationContext webApplicationContext;
 
-    @PostConstruct
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.
-                webAppContextSetup(webApplicationContext).build();
-    }
-    
-    @Test
-    public void testAllReports() throws Exception {
-        mockMvc.perform(get(URL_PREFIX))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$", hasSize(db_count_reports)));
-//                .andExpect(jsonPath("$.[*].id").value(hasItem(report_id)));
-//                .andExpect(jsonPath("$.[*].firstName").value(hasItem(DB_FIRST_NAME)))
-//                .andExpect(jsonPath("$.[*].lastName").value(hasItem(DB_LAST_NAME)))
-//                .andExpect(jsonPath("$.[*].cardNumber").value(hasItem(DB_CARD_NUMBER)));
-    }
-    
+	@PostConstruct
+	public void setup() {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	}
+
+	@Test
+	public void testAllReports() throws Exception {
+		mockMvc.perform(get(URL_PREFIX)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(db_count_reports)))
+				.andExpect(jsonPath("$.[*].id").value(hasItem(report_id)))
+				.andExpect(jsonPath("$.[*].reportDescription").value(hasItem(text)));
+	}
+
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testNewReport() throws Exception {
+		Role r = new Role();
+		r.setId(2);
+		r.setName("Regular user");
 
-		Advert a = new Advert();
-		a.setId(1); 
 		User u = new User();
-		u.setId(1);
+		u.setId(2);
 		u.setEmail("doslicmm@live.com");
 		u.setFirst_name("Mladen");
 		u.setLast_name("Doslic");
 		u.setPassword("123");
-		a.setUser(u);
-		Role r = new Role();
-		r.setId(1);
-		r.setName("regular");
+		u.setUser_rate(0);
 		u.setRole(r);
-		
+
+		RealestateCategory rc = new RealestateCategory();
+		rc.setId(3);
+		rc.setCategoryName("Lot");
+
+		RealestateType rt = new RealestateType();
+		rt.setId(1);
+		rt.setTypeName("House");
+
+		Location l = new Location();
+		l.setCity(city);
+		l.setPostalCode(postal_code);
+		l.setRegion(region);
+		l.setStreet(street);
+		l.setStreetNumber(street_number);
+
+		Realestate rls = new Realestate();
+		rls.setId(5);
+		rls.setCategory(rc);
+		rls.setArea(40000);
+		rls.setCost(123);
+		rls.setHeating(true);
+		rls.setLocation(l);
+
+		Advert a = new Advert();
+		a.setId(4);
+		a.setUser(u);
+		a.setAdvert_rate(2);
+		a.setContact("sss");
+		a.setDescription("haha");
+		a.setCreated_at(new Date(123455));
+		a.setExpire_date(new Date(123455));
+		a.setIs_deleted(false);
+		a.setIs_sold(false);
+		a.setRealestate(rls);
+		a.setRent_sale(false);
+		a.setUpdated_at(new Date(123455));
+
 		Report rep = new Report();
 		rep.setAdvert(a);
 		rep.setReportDescription(text);
-    	rep.setUser(u);
-    	rep.setVerified(0);
-    	String object = json(rep);
-    	
-        this.mockMvc.perform(post(URL_PREFIX)
-        		.contentType(contentType)
-                .content(object))
-				.andExpect(status().isOk());
-////                .andExpect(jsonPath("$", hasSize(db_count_reports)));
-////                .andExpect(jsonPath("$.[*].id").value(hasItem(report_id)));
-////                .andExpect(jsonPath("$.[*].firstName").value(hasItem(DB_FIRST_NAME)))
-////                .andExpect(jsonPath("$.[*].lastName").value(hasItem(DB_LAST_NAME)))
-////                .andExpect(jsonPath("$.[*].cardNumber").value(hasItem(DB_CARD_NUMBER)));
-//	
-//    rep.setAdvert(null);
-//    this.mockMvc.perform(post(URL_PREFIX)
-//    		.contentType(contentType)
-//            .content(object))
-//			.andExpect(status().isNotFound());
-//            .andExpect(jsonPath("$", hasSize(db_count_reports)));
-//            .andExpect(jsonPath("$.[*].id").value(hasItem(report_id)));
-//            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DB_FIRST_NAME)))
-//            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DB_LAST_NAME)))
-//            .andExpect(jsonPath("$.[*].cardNumber").value(hasItem(DB_CARD_NUMBER)));
-}
+		rep.setUser(u);
+		rep.setVerified(0);
+		String object = TestUtil.json(rep);
+
+		this.mockMvc.perform(post(URL_PREFIX + "?reportDescription=" + rep.getReportDescription() + "&advert_id=" + a.getId())
+				.contentType(contentType).content(object)).andExpect(status().isOk());
+
+		rep.setAdvert(null);
+		String object2 = TestUtil.json(rep);
+		this.mockMvc.perform(post(URL_PREFIX + "?reportDescription=" +  rep.getReportDescription() + "&advert_id=" + 111)
+				.contentType(contentType).content(object2)).andExpect(status().isInternalServerError());
+
+		rep.setAdvert(a);
+		rep.setReportDescription("");
+		String object3 = TestUtil.json(rep);
+		this.mockMvc.perform(post(URL_PREFIX + "?reportDescription=" + "" + "&advert_id=" + a.getId())
+				.contentType(contentType).content(object3)).andExpect(status().isInternalServerError());
+	}
 	
-	public static String json(Object object)
-            throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        
-        return mapper.writeValueAsString(object);
-    }
+	@Test
+	@Transactional
+	@Rollback(false)
+	public void testUpdateReport() throws Exception{
+		
+		Role r = new Role();
+		r.setId(2);
+		r.setName("Regular user");
+
+		User u = new User();
+		u.setId(2);
+		u.setEmail("doslicmm@live.com");
+		u.setFirst_name("Mladen");
+		u.setLast_name("Doslic");
+		u.setPassword("123");
+		u.setUser_rate(0);
+		u.setRole(r);
+
+		RealestateCategory rc = new RealestateCategory();
+		rc.setId(3);
+		rc.setCategoryName("Lot");
+
+		RealestateType rt = new RealestateType();
+		rt.setId(1);
+		rt.setTypeName("House");
+
+		Location l = new Location();
+		l.setCity(city);
+		l.setPostalCode(postal_code);
+		l.setRegion(region);
+		l.setStreet(street);
+		l.setStreetNumber(street_number);
+
+		Realestate rls = new Realestate();
+		rls.setId(5);
+		rls.setCategory(rc);
+		rls.setArea(40000);
+		rls.setCost(123);
+		rls.setHeating(true);
+		rls.setLocation(l);
+
+		Advert a = new Advert();
+		a.setId(4);
+		a.setUser(u);
+		a.setAdvert_rate(2);
+		a.setContact("sss");
+		a.setDescription("haha");
+		a.setCreated_at(new Date(123455));
+		a.setExpire_date(new Date(123455));
+		a.setIs_deleted(false);
+		a.setIs_sold(false);
+		a.setRealestate(rls);
+		a.setRent_sale(false);
+		a.setUpdated_at(new Date(123455));
+
+		Report rep = new Report();
+		rep.setId(2);
+		rep.setAdvert(a);
+		rep.setReportDescription(text);
+		rep.setUser(u);
+		rep.setVerified(0);
+		String object = TestUtil.json(rep);
+		
+		this.mockMvc.perform(get(URL_PREFIX+"/update" + "?report_id=" +  rep.getId() + "&verify=" + 1)
+				.contentType(contentType).content(object)).andExpect(status().isOk());
+		
+		rep.setId(555);
+		String object2 = TestUtil.json(rep);
+		this.mockMvc.perform(get(URL_PREFIX  +"/update" + "?report_id=" +  rep.getId() + "&verify=" + 1)
+				.contentType(contentType).content(object2)).andExpect(status().isInternalServerError());
+
+	}
+	
+
 }

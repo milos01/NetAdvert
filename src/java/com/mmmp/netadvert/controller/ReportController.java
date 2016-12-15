@@ -42,7 +42,11 @@ public class ReportController {
 		Advert advert = this.adverService.findAdvert(advert_id);
 		
 		if (advert==null){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (text.equals("")||text==null){
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		Report rep = new Report();
@@ -62,9 +66,7 @@ public class ReportController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Report>> allReports(){
 		List<Report> list = this.adverService.reportList();
-		for(Report r:list){
-			System.out.println(r.getAdvert().getDescription());
-		}
+
 		return new ResponseEntity<List<Report>>(list,HttpStatus.OK);
 	}
 	
@@ -78,6 +80,9 @@ public class ReportController {
 	public ResponseEntity<Report> updateReport(@RequestParam("report_id") int id,@RequestParam("verify") int verify){
 		
 		Report r = this.adverService.findReport(id);
+		if (r==null){
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		r.setVerified(verify);
 		this.adverService.updateReport(r);
 		return new ResponseEntity<>(r,HttpStatus.OK);

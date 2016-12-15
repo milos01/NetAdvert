@@ -1,4 +1,4 @@
-package com.mmmp.netadvert.constants;
+package com.mmmp.NetAdvert.constants;
 
 /**
  * Created by milosandric on 12/12/2016.

@@ -1,4 +1,4 @@
-package com.mmmp.netadvert.web.controller;
+package com.mmmp.NetAdvert.web.controller;
 
 import com.mmmp.netadvert.NetAdvertApplication;
 import org.junit.Test;

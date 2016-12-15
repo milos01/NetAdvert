@@ -145,8 +145,8 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
-	public User updateUser(User luser, User user, Role role) {
-		return this.userDAO.updateUser(luser, user, role);
+	public Boolean updateUser(User luser) {
+		return this.userDAO.updateUser(luser);
 	}
 
 	@Override

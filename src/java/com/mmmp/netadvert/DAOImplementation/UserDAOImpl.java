@@ -6,14 +6,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.mmmp.netadvert.DAO.UserDAO;
-import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.User;
-import com.mmmp.netadvert.model.Role;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -48,13 +44,10 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User updateUser(User luser, User user, Role role) {
+	public Boolean updateUser(User luser) {
 		Session session = this.sessionFactory.getCurrentSession();
-        luser.setRole(role);
-        luser.setFirst_name(user.getFirst_name());
-        luser.setLast_name(user.getLast_name());
 		session.merge(luser);
-		return luser;
+		return true;
 	}
 
 	@Override

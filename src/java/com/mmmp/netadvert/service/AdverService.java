@@ -37,7 +37,7 @@ public interface AdverService {
 	
 	public void updateLocation(Location location);
 	
-	public User updateUser(User luser, User user, Role role);
+	public Boolean updateUser(User luser);
 	
 	public Location checkForExistingLocation(String street, int street_number, String region, String city,
 											 int postal_code);

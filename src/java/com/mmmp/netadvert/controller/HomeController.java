@@ -36,7 +36,7 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "text/html")
 	public String home() {
 
-		return "core/index.html";
+		return "/core/index.html";
 
 	}
 	

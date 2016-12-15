@@ -12,10 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.beans.factory.annotation.Required;
 
 @Entity
 @Table(name="User")
@@ -30,15 +32,16 @@ public class User {
 	private String first_name;
 	
 	private String last_name;
-	
+
 	private String email;
 
+	@NotNull
 	private String password;
 	
 	@OneToOne(targetEntity = Role.class,fetch=FetchType.EAGER)
 	@JoinColumn(nullable=false, name = "role_id")
 	private Role role;
-	
+
 	private int user_rate;
 	
 	@JsonBackReference

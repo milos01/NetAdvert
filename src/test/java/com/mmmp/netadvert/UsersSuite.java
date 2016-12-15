@@ -1,6 +1,5 @@
 package com.mmmp.netadvert;
 
-import com.mmmp.netadvert.service.UserServiceTest;
 import com.mmmp.netadvert.web.controller.UserControllerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,7 +10,6 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        UserServiceTest.class,
         UserControllerTest.class
 })
 public class UsersSuite {

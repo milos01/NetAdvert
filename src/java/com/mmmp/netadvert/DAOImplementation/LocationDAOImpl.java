@@ -24,7 +24,7 @@ public class LocationDAOImpl implements LocationDAO {
 	@Override
 	public void createLocation(Location location) {
 		Session session = this.sessionFactory.getCurrentSession();
-		session.persist(location);
+		session.save(location);
 	}
 
 	@SuppressWarnings("unchecked")

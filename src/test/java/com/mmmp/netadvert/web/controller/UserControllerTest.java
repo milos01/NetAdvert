@@ -1,18 +1,30 @@
 package com.mmmp.netadvert.web.controller;
 
+
+import static com.mmmp.netadvert.constants.UserConstants.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.charset.Charset;
+
+import javax.annotation.PostConstruct;
+
 import com.mmmp.netadvert.NetAdvertApplication;
+
 import com.mmmp.netadvert.TestUtil;
 import com.mmmp.netadvert.constants.UserConstants;
-import com.mmmp.netadvert.controller.UserController;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
-import org.hibernate.exception.ConstraintViolationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
@@ -22,9 +34,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.mmmp.netadvert.constants.UserConstants.*;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -35,6 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.Charset;
+import com.mmmp.netadvert.NetAdvertApplication;
+
 
 /**
  * Created by milosandric on 12/12/2016.

@@ -20,6 +20,7 @@ import com.mmmp.netadvert.constants.UserConstants;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,5 +164,12 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.password").value("pass"))
                 .andExpect(jsonPath("$.user_rate").value(1));
 //                .andExpect(jsonPath("$.role.id").value(2));
+    }
+
+    @Test
+    public void testLoginUser() throws Exception {
+        mockMvc.perform(post(URL_PREFIX + "/login").contentType(contentType).param("email", "milosa942@gmail.com").param("password", "passmkm"))
+                .andExpect(status().isOk());
+
     }
 }

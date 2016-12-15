@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 //import com.mmmp.NetAdvert.serializer.ReportSerializer;
 
 @Entity
-
 public class Report {
 	
 	@Id

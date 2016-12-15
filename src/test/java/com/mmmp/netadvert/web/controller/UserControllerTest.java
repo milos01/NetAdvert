@@ -1,13 +1,22 @@
-package com.mmmp.netadvert.web.controller;
+package com.mmmp.NetAdvert.web.controller;
 
-import com.mmmp.netadvert.NetAdvertApplication;
-import com.mmmp.netadvert.constants.UserConstants;
+import static com.mmmp.NetAdvert.constants.UserConstants.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.charset.Charset;
+
+import javax.annotation.PostConstruct;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,16 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.mmmp.netadvert.constants.UserConstants.*;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import javax.annotation.PostConstruct;
-import java.nio.charset.Charset;
+import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.NetAdvert.constants.UserConstants;
 
 /**
  * Created by milosandric on 12/12/2016.

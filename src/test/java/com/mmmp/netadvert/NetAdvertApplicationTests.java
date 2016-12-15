@@ -1,4 +1,4 @@
-package com.mmmp.netadvert;
+package com.mmmp.NetAdvert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

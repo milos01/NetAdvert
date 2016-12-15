@@ -1,6 +1,6 @@
-package com.mmmp.netadvert.service;
+package com.mmmp.NetAdvert.service;
 
-import static com.mmmp.netadvert.constants.UserConstants.DB_COUNT;
+import static com.mmmp.NetAdvert.constants.UserConstants.DB_COUNT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.mmmp.netadvert.NetAdvertApplication;
 import com.mmmp.netadvert.model.User;
+import com.mmmp.netadvert.service.AdverService;
 
 /**
  * Created by milosandric on 12/12/2016.

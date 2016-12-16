@@ -6,8 +6,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,11 +44,13 @@ public class AdvertController {
 			@RequestParam("real_heating") boolean real_heating, @RequestParam("loc_street") String loc_street,
 			@RequestParam("loc_street_number") int loc_street_number, @RequestParam("loc_region") String loc_region,
 			@RequestParam("loc_city") String loc_city, @RequestParam("loc_postal_code") int loc_postal_code,
-			@RequestParam("equipments") List<Boolean> equipments) {
+			@RequestParam("equipments") List<Boolean> equipments, HttpSession session) {
 
-		// User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("doslicmm@live.com");
-
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		
 		RealestateCategory rc = this.adverService.findRealestateCategory(real_category_id);
 		if (rc == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -61,6 +64,12 @@ public class AdvertController {
 			}
 		}
 		if (!check) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(rc.getEquipments().size()!=equipments.size()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(real_cost<0 || real_area<0){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Location location = this.adverService.checkForExistingLocation(loc_street, loc_street_number, loc_region,
@@ -95,14 +104,7 @@ public class AdvertController {
 		r.setCategory(rc);
 		this.adverService.addRealestate(r);
 		Realestate rs = this.adverService.findRealestate(r.getId());
-		// if(rs.getTechnicalEquipments() ==null){
-		// System.out.println("aaaa");
-		// return null;
-		// }
-		// else if(rs.getTechnicalEquipments().isEmpty()){
-		// System.out.println("emp");
-		// }
-
+		
 		for (int i = 0; i < equipmentList.size(); i++) {
 			if (equipments.get(i) == true) {
 				rs.getTechnicalEquipments().add(equipmentList.get(i));

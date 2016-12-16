@@ -2,8 +2,8 @@ package com.mmmp.netadvert.controller;
 
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Company;
-import com.sun.tools.javac.code.Attribute;
-import com.sun.tools.javac.main.Main;
+//import com.sun.tools.javac.code.Attribute;
+//import com.sun.tools.javac.main.Main;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

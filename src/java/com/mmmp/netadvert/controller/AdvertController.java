@@ -158,6 +158,9 @@ public class AdvertController {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		Advert a = this.adverService.findAdvert(advert.getId());
+		if(a.getIs_deleted()==true){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		a.setContact(advert.getContact().trim());
 		a.setDescription(advert.getDescription());
 		a.setRent_sale(advert.getRent_sale());
@@ -259,12 +262,43 @@ public class AdvertController {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id, HttpSession session){
-		return new ResponseEntity<Advert>(this.adverService.findAdvert(id), HttpStatus.OK);
+		Advert a = this.adverService.findAdvert(id);
+		if(a.getIs_deleted()==true){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Advert>(a, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<Advert>> getAllAdverts(HttpSession session){
-		return new ResponseEntity<List<Advert>>(this.adverService.allAdverts(), HttpStatus.OK);
+		List<Advert> advertList = this.adverService.allAdverts();
+		for(int i = advertList.size()-1; i>=0; i--){
+			if(advertList.get(i).getIs_deleted()==true){
+				advertList.remove(i);
+			}
+		}
+		return new ResponseEntity<List<Advert>>(advertList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}/buy", method = RequestMethod.PUT)
+	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+		if(u!=null){
+			Advert a = this.adverService.findAdvert(aid);
+			if(a.getIs_deleted()==true){
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			if(a.getUser().getId()==u.getId()){
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			if(a.getIs_sold()==true){
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			a.setIs_sold(true);
+			this.adverService.updateAdvert(a);
+			return new ResponseEntity<Advert>(a, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 
 }

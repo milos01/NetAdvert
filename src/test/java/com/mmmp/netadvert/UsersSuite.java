@@ -1,6 +1,6 @@
-package com.mmmp.netadvert;
+package com.mmmp.NetAdvert;
 
-import com.mmmp.netadvert.web.controller.UserControllerTest;
+import com.mmmp.NetAdvert.web.controller.UserControllerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

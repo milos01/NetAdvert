@@ -33,13 +33,23 @@ public class CommentController {
 	public void setAdverService(AdverService ps) {
 		this.adverService = ps;
 	}
-	
-	@RequestMapping(method=RequestMethod.POST, produces="application/json")
-	
+	/**
+	 * 
+	 * @param advert_id - id of advert that you can leave comment
+	 * @param text - text commentary
+	 * @param session
+	 * @return Comment object, http response 200 ok
+	 */
+	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Comment> createComment(@RequestParam("advert_id") int advert_id,@RequestParam("comment") String text,HttpSession session){
 //		User u = (User) session.getAttribute("logedUser");
 		User u = this.adverService.findUser("doslicmm@live.com");
 		Advert advert = this.adverService.findAdvert(advert_id);
+		
+		if (advert==null){
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 		Comment comment = new Comment();
 		comment.setAdvert(advert);
 		comment.setUser(u);
@@ -50,8 +60,12 @@ public class CommentController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		comment.setText(text);
 		
+		if (text==null || text.equals("")){
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		comment.setText(text);
 		
 		this.adverService.createComment(comment);
 		
@@ -59,19 +73,29 @@ public class CommentController {
 		return new ResponseEntity<Comment>(comment,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	/**
+	 * Method will delete an comment of advert. If advert doesn't exist return 500 Internal server error.
+	 * @param id - id of comment
+	 * @return Http response 200 ok
+	 */
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	public  ResponseEntity<Void> deleteComment(@PathVariable("id") int id){
 		Comment c = this.adverService.findComment(id);
+		if (c==null){
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		this.adverService.deleteComment(c);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	/**
+	 * Method will retuns list of comments an advert.
+	 * @param id - id of advert
+	 * @return List of comments, http response 200 ok
+	 */
+	@RequestMapping(value="/advert/{id}", method=RequestMethod.GET)
 	public ResponseEntity<List<Comment>> findComments(@PathVariable("id") int id){
 		List<Comment> list = this.adverService.allCommentsOfAdvert(id);
-		for(Comment l:list){
-			System.out.println(l.getText());
-		}
 		return new ResponseEntity<List<Comment>>(list,HttpStatus.OK);
 	}
 	

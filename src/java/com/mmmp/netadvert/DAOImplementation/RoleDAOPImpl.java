@@ -1,9 +1,7 @@
 package com.mmmp.netadvert.DAOImplementation;
 
 import com.mmmp.netadvert.DAO.RoleDAO;
-import com.mmmp.netadvert.model.Comment;
 import com.mmmp.netadvert.model.Role;
-import com.mmmp.netadvert.model.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

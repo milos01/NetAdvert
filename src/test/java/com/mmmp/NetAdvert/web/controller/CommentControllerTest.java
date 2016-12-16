@@ -1,11 +1,10 @@
-package com.mmmp.NetAdvert.web.controller;
+package com.mmmp.netadvert.web.controller;
 
-import static com.mmmp.NetAdvert.constants.LocationConstants.city;
-import static com.mmmp.NetAdvert.constants.LocationConstants.postal_code;
-import static com.mmmp.NetAdvert.constants.LocationConstants.region;
-import static com.mmmp.NetAdvert.constants.LocationConstants.street;
-import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
-import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
+import static com.mmmp.netadvert.constants.LocationConstants.city;
+import static com.mmmp.netadvert.constants.LocationConstants.postal_code;
+import static com.mmmp.netadvert.constants.LocationConstants.region;
+import static com.mmmp.netadvert.constants.LocationConstants.street;
+import static com.mmmp.netadvert.constants.LocationConstants.street_number;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,11 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static com.mmmp.NetAdvert.constants.CommentConstants.comment_text;
-import static com.mmmp.NetAdvert.constants.CommentConstants.comment_id;
-import static com.mmmp.NetAdvert.constants.CommentConstants.datum;
-import static com.mmmp.NetAdvert.constants.CommentConstants.advert_id;
-import static com.mmmp.NetAdvert.constants.CommentConstants.db_comments_count;
+import static com.mmmp.netadvert.constants.CommentConstants.comment_text;
+import static com.mmmp.netadvert.constants.CommentConstants.comment_id;
+import static com.mmmp.netadvert.constants.CommentConstants.datum;
+import static com.mmmp.netadvert.constants.CommentConstants.advert_id;
+import static com.mmmp.netadvert.constants.CommentConstants.db_comments_count;
 import java.nio.charset.Charset;
 import java.sql.Date;
 
@@ -38,7 +37,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.mmmp.NetAdvert.TestUtil;
+import com.mmmp.netadvert.TestUtil;
 import com.mmmp.netadvert.NetAdvertApplication;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Comment;

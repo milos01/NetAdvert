@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mmmp.netadvert.DAO.ReportDAO;
-import com.mmmp.netadvert.model.Comment;
 import com.mmmp.netadvert.model.Report;
 
 @Repository

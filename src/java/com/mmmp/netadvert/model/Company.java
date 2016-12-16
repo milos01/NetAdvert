@@ -1,17 +1,12 @@
 package com.mmmp.netadvert.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import java.util.Set;
 
 @Entity
 @Table(name="Company")
@@ -29,6 +24,10 @@ public class Company {
 	@JoinColumn(nullable=false, name = "master_user_id")
 	private User user;
 
+	@JsonBackReference
+	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	private Set<CompanyStaffs> cs;
+
 	public int getId() {
 		return id;
 	}
@@ -45,6 +44,14 @@ public class Company {
 		this.company_name = company_name;
 	}
 
+	public Set<CompanyStaffs> getCs() {
+		return cs;
+	}
+
+	public void setCs(Set<CompanyStaffs> cs) {
+		this.cs = cs;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -56,9 +63,10 @@ public class Company {
 	@Override
 	public String toString() {
 		return "Company{" +
-				"company_name='" + company_name + '\'' +
-				", companyAdminko=" + user +
-				", id=" + id +
+				"id=" + id +
+				", company_name='" + company_name + '\'' +
+				", user=" + user +
+				", cs=" + cs +
 				'}';
 	}
 }

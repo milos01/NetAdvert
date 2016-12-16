@@ -56,7 +56,19 @@ public class User {
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private Set<Report> reports;
 
-	public String getPassword() {
+    @JsonBackReference
+    @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+    private Set<CompanyStaffs> cs;
+
+    public Set<CompanyStaffs> getCs() {
+        return cs;
+    }
+
+    public void setCs(Set<CompanyStaffs> cs) {
+        this.cs = cs;
+    }
+
+    public String getPassword() {
 		return password;
 	}
 

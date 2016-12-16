@@ -1,6 +1,5 @@
 package com.mmmp.netadvert.DTO;
 
-import com.mmmp.netadvert.DTO.RoleDTO;
 import com.mmmp.netadvert.model.User;
 
 /**

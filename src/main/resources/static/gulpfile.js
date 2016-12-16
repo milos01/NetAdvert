@@ -4,7 +4,7 @@ var gulp = require('gulp')
 //Gulp tasks
 gulp.task('movetodest', function(){
 	gulp.src('./**')
-	.pipe(gulp.dest('/Users/macbookpro/Documents/NetAdvert/src/main/resources/static'));
+	.pipe(gulp.dest('/Users/macbookpro/Documents/netadvert/src/main/resources/static'));
 });
 
 

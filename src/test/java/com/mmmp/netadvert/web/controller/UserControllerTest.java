@@ -1,7 +1,7 @@
-package com.mmmp.NetAdvert.web.controller;
+package com.mmmp.netadvert.web.controller;
 
 
-import static com.mmmp.NetAdvert.constants.UserConstants.*;
+import static com.mmmp.netadvert.constants.UserConstants.*;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,12 +15,11 @@ import javax.annotation.PostConstruct;
 
 import com.mmmp.netadvert.NetAdvertApplication;
 
-import com.mmmp.NetAdvert.TestUtil;
-import com.mmmp.NetAdvert.constants.UserConstants;
+import com.mmmp.netadvert.TestUtil;
+import com.mmmp.netadvert.constants.UserConstants;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpSession;
-import java.nio.charset.Charset;
-import com.mmmp.netadvert.NetAdvertApplication;
 
 
 /**
@@ -168,7 +160,7 @@ public class UserControllerTest {
 
     @Test
     public void testLoginUser() throws Exception {
-        mockMvc.perform(post(URL_PREFIX + "/login").contentType(contentType).param("email", "milosa942@gmail.com").param("password", "passmkm"))
+        mockMvc.perform(post(URL_PREFIX + "/login").contentType(contentType).param("email", "milosa942@gmail.com").param("password", "pass"))
                 .andExpect(status().isOk());
 
     }

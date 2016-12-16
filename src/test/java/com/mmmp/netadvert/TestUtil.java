@@ -1,4 +1,4 @@
-package com.mmmp.NetAdvert;
+package com.mmmp.netadvert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

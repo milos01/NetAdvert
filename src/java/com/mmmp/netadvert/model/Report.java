@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-//import com.mmmp.NetAdvert.serializer.ReportSerializer;
+//import com.mmmp.netadvert.serializer.ReportSerializer;
 
 @Entity
 public class Report {

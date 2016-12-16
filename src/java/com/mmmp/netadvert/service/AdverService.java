@@ -91,4 +91,6 @@ public interface AdverService {
 	public void addCompanyStaff(CompanyStaffs cs);
 	
 	public Picture findPictureByName(String name);
+	
+	public Advert updateAdvert(Advert a);
 }

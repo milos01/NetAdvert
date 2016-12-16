@@ -302,5 +302,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.pictureDAO.findPictureByName(name);
 	}
 
+	@Transactional
+	@Override
+	public Advert updateAdvert(Advert a) {
+		return this.advertDAO.updateAdvert(a);
+	}
+
 
 }

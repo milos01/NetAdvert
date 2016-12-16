@@ -11,4 +11,6 @@ public interface AdvertDAO {
 	public Advert findAdvert(int id);
 	
 	public Advert addAdvert(Advert a);
+	
+	public Advert updateAdvert(Advert a);
 }

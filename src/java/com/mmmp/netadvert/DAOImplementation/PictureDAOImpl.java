@@ -46,4 +46,17 @@ public class PictureDAOImpl implements PictureDAO {
 		return p;
 	}
 
+	@Override
+	public Picture findPictureByName(String name) {
+		Session session = this.sessionFactory.getCurrentSession();		
+		Query query=session.createQuery("from Picture p where p.pictureName=:name");
+		query.setParameter("name", name);
+		List<Picture> list=query.list();
+		Picture p = null;
+		for(Picture pic : list){
+			p = pic;
+		}
+		return p;
+	}
+
 }

@@ -10,6 +10,6 @@ public interface PictureDAO {
 	
 	public Picture findPicture(int id);
 	
-	
+	public Picture findPictureByName(String name);
 
 }

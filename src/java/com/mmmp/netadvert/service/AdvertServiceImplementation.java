@@ -17,10 +17,6 @@ import com.mmmp.netadvert.DAO.RealestateDAO;
 import com.mmmp.netadvert.DAO.ReportDAO;
 import com.mmmp.netadvert.DAO.RoleDAO;
 import com.mmmp.netadvert.DAO.UserDAO;
-import com.mmmp.netadvert.model.Realestate;
-import com.mmmp.netadvert.model.RealestateCategory;
-import com.mmmp.netadvert.model.Report;
-import com.mmmp.netadvert.model.Role;
 
 @Service
 public class AdvertServiceImplementation implements AdverService {
@@ -298,6 +294,12 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public void addCompanyStaff(CompanyStaffs cs) {
 		this.companyDAO.addCompanyStaff(cs);
+	}
+
+	@Override
+	@Transactional
+	public Picture findPictureByName(String name) {
+		return this.pictureDAO.findPictureByName(name);
 	}
 
 

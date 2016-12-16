@@ -89,4 +89,6 @@ public interface AdverService {
 	public Company findCompany(int cid);
 
 	public void addCompanyStaff(CompanyStaffs cs);
+	
+	public Picture findPictureByName(String name);
 }

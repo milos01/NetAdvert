@@ -93,4 +93,6 @@ public interface AdverService {
 	public Picture findPictureByName(String name);
 	
 	public Advert updateAdvert(Advert a);
+	
+	public boolean deleteAdvert(Advert a);
 }

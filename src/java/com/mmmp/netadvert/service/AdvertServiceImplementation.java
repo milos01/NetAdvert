@@ -308,5 +308,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.advertDAO.updateAdvert(a);
 	}
 
+	@Override
+	@Transactional
+	public boolean deleteAdvert(Advert a) {
+		return this.advertDAO.deleteAdvert(a);
+	}
+
 
 }

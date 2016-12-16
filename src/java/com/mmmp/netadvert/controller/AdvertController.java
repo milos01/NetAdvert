@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -229,6 +230,31 @@ public class AdvertController {
 		this.adverService.updateAdvert(a);
 		
 		return new ResponseEntity<Advert> (a, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteAdvert(@PathVariable("id") int id, HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+		if(u!=null){
+			Set<Advert> userAdverts = u.getAdverts();
+			if(userAdverts==null){
+				return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+			}
+			else{
+				boolean exists=false;
+				for(Advert a : userAdverts){
+					if(a.getId()==id){
+						this.adverService.deleteAdvert(a);
+						exists = true;
+						return new ResponseEntity<Void>(HttpStatus.OK);
+					}
+				}
+				if(exists==false){
+					return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+				}
+			}
+		}
+		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
 
 }

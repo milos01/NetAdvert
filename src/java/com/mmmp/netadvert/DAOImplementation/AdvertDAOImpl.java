@@ -48,4 +48,11 @@ public class AdvertDAOImpl implements AdvertDAO {
 		return a;
 	}
 
+	@Override
+	public boolean deleteAdvert(Advert a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.delete(a);
+		return true;
+	}
+
 }

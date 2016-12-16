@@ -1,6 +1,8 @@
 package com.mmmp.netadvert.controller;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.DTO.UserDTO;
@@ -142,5 +144,13 @@ public class UserController {
         }
         return new ResponseEntity<User>(luser,HttpStatus.OK);
     }
+    
+    @RequestMapping(value="/api/user/{id}/adverts", method=RequestMethod.GET)
+	public ResponseEntity<List<Advert>> getAllUserAdverts(@PathVariable("id") int id, HttpSession session){
+    	User u = this.adverService.findUserById(id);
+    	List<Advert> adverts = new ArrayList<Advert>();
+    	adverts.addAll(u.getAdverts());
+		return new ResponseEntity<List<Advert>>(adverts, HttpStatus.OK);
+	}
     
 }

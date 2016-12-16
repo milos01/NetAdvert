@@ -314,5 +314,17 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.advertDAO.deleteAdvert(a);
 	}
 
+	@Override
+	@Transactional
+	public List<Advert> findAdvertByName(String name) {
+		return this.advertDAO.findAdvertByName(name);
+	}
+
+	@Override
+	@Transactional
+	public List<Advert> allAdverts() {
+		return this.advertDAO.allAdverts();
+	}
+
 
 }

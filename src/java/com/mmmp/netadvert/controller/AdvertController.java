@@ -256,5 +256,15 @@ public class AdvertController {
 		}
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id, HttpSession session){
+		return new ResponseEntity<Advert>(this.adverService.findAdvert(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<Advert>> getAllAdverts(HttpSession session){
+		return new ResponseEntity<List<Advert>>(this.adverService.allAdverts(), HttpStatus.OK);
+	}
 
 }

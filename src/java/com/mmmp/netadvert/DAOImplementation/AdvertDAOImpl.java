@@ -55,4 +55,21 @@ public class AdvertDAOImpl implements AdvertDAO {
 		return true;
 	}
 
+	@Override
+	public List<Advert> findAdvertByName(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Advert u where u.name=:name");
+		query.setParameter("name",name);
+		List<Advert> advertList = query.list();
+		return advertList;
+	}
+
+	@Override
+	public List<Advert> allAdverts() {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Advert");
+		List<Advert> advertList = query.list();
+		return advertList;
+	}
+
 }

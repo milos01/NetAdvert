@@ -1,4 +1,4 @@
-package com.mmmp.NetAdvert.constants;
+package com.mmmp.netadvert.constants;
 
 
 public class ReportConstants {

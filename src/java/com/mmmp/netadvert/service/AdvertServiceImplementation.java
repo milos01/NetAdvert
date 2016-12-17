@@ -56,6 +56,7 @@ public class AdvertServiceImplementation implements AdverService {
 	@Autowired
 	private UserRatingDAO userRatingDAO;
 
+
 	@Override
 	@Transactional
 	public Advert findAdvert(int id) {
@@ -345,7 +346,12 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.userRatingDAO.addUserRating(a);
 	}
 
-	
+	@Override
+	@Transactional
+	public List<CompanyStaffs> allCompanyStaff() {
+		return this.companyDAO.allCompanyStaff();
+	}
+
 
 
 }

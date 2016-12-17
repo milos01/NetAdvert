@@ -70,4 +70,11 @@ public class CompanyDAOImpl implements CompanyDAO {
 		session.persist(cs);
 	}
 
+	@Override
+	public List<CompanyStaffs> allCompanyStaff() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<CompanyStaffs> companyStaffsList = session.createCriteria(CompanyStaffs.class).list();
+		return companyStaffsList;
+	}
+
 }

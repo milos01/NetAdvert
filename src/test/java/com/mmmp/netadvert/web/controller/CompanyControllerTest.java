@@ -1,27 +1,32 @@
-package com.mmmp.NetAdvert.web.controller;
+package com.mmmp.netadvert.web.controller;
 
 import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.netadvert.TestUtil;
+import com.mmmp.netadvert.model.Company;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
 
-import static com.mmmp.NetAdvert.constants.ReportConstants.db_count_reports;
-import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
-import static com.mmmp.NetAdvert.constants.ReportConstants.text;
+import static com.mmmp.netadvert.constants.ReportConstants.db_count_reports;
+import static com.mmmp.netadvert.constants.ReportConstants.report_id;
+import static com.mmmp.netadvert.constants.ReportConstants.text;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebIntegrationTest(randomPort = true)
 @TestPropertySource(locations="classpath:test.properties")
 public class CompanyControllerTest {
-    private static final String URL_PREFIX = "/api/report";
+    private static final String URL_PREFIX = "/api";
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -51,11 +56,58 @@ public class CompanyControllerTest {
     }
 
     @Test
-    public void testAllReports() throws Exception {
-        mockMvc.perform(get(URL_PREFIX)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$", hasSize(db_count_reports)))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(report_id)))
-                .andExpect(jsonPath("$.[*].reportDescription").value(hasItem(text)));
+    public void getCompany() throws Exception {
+        mockMvc.perform(get(URL_PREFIX + "/company/2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.company_name").value("TestComp"))
+                .andExpect(jsonPath("$.user.id").value(1));
+    }
+
+    @Test
+    public void getAllCompanyUsers() throws Exception {
+        mockMvc.perform(get(URL_PREFIX + "/company/2/allusers"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(2)))
+                .andExpect(jsonPath("$.[*].email").value(hasItem("milossm94@hotmail.com")))
+                .andExpect(jsonPath("$.[*].first_name").value(hasItem("Milos")))
+                .andExpect(jsonPath("$.[*].last_name").value(hasItem("Obradovic")))
+                .andExpect(jsonPath("$.[*].password").value(hasItem("pass")))
+                .andExpect(jsonPath("$.[*].user_rate").value(hasItem(4)))
+                .andExpect(jsonPath("$.[*].role.id").value(hasItem(2)));
+    }
+
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void postNewCompany() throws Exception {
+        Company cmp = new Company();
+        cmp.setCompany_name("TestComp3");
+
+        String json = TestUtil.json(cmp);
+        mockMvc.perform(post(URL_PREFIX + "/company").contentType(contentType).param("u_id", "1").content(json))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void postUserForCompany() throws Exception {
+        mockMvc.perform(post(URL_PREFIX + "/company/2/user/1").contentType(contentType))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void acceptUserTest() throws Exception {
+        mockMvc.perform(get(URL_PREFIX + "/company/2/activate/2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType));
     }
 
 

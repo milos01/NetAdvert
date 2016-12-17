@@ -76,7 +76,7 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$.[*].first_name").value(hasItem("Milos")))
                 .andExpect(jsonPath("$.[*].last_name").value(hasItem("Obradovic")))
                 .andExpect(jsonPath("$.[*].password").value(hasItem("pass")))
-                .andExpect(jsonPath("$.[*].user_rate").value(hasItem(4)))
+                .andExpect(jsonPath("$.[*].user_rate").value(hasItem(4.0)))
                 .andExpect(jsonPath("$.[*].role.id").value(hasItem(2)));
     }
 

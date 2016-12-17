@@ -18,6 +18,7 @@ import com.mmmp.netadvert.DAO.RealestateDAO;
 import com.mmmp.netadvert.DAO.ReportDAO;
 import com.mmmp.netadvert.DAO.RoleDAO;
 import com.mmmp.netadvert.DAO.UserDAO;
+import com.mmmp.netadvert.DAO.UserRatingDAO;
 
 @Service
 public class AdvertServiceImplementation implements AdverService {
@@ -51,7 +52,9 @@ public class AdvertServiceImplementation implements AdverService {
 	
 	@Autowired
 	private AdvertRatingDAO advertRatingDAO;
-
+	
+	@Autowired
+	private UserRatingDAO userRatingDAO;
 
 	@Override
 	@Transactional
@@ -334,6 +337,12 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public AdvertRating addAdvertRating(AdvertRating a) {
 		return this.advertRatingDAO.addAdvertRating(a);
+	}
+
+	@Override
+	@Transactional
+	public UserRating addUserRating(UserRating a) {
+		return this.userRatingDAO.addUserRating(a);
 	}
 
 	

@@ -53,6 +53,7 @@
                 <value>com.mmmp.netadvert.model.Picture</value>
                 <value>com.mmmp.netadvert.model.Report</value>
                 <value>com.mmmp.netadvert.model.AdvertRating</value>
+                <value>com.mmmp.netadvert.model.UserRating</value>
             </list>
         </property>
 

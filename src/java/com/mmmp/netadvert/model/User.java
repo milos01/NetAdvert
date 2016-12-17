@@ -42,7 +42,7 @@ public class User {
 	@JoinColumn(nullable=false, name = "role_id")
 	private Role role;
 
-	private int user_rate;
+	private double user_rate;
 	
 	@JsonBackReference
 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
@@ -63,6 +63,14 @@ public class User {
     @JsonBackReference
     @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
     private Set<AdvertRating> advertRatings;
+    
+    @JsonBackReference
+    @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+    private Set<UserRating> userRatings;
+    
+    @JsonBackReference
+    @OneToMany(mappedBy="user_rated", fetch=FetchType.EAGER)
+    private Set<UserRating> userRatedRatings;
 
     public Set<CompanyStaffs> getCs() {
         return cs;
@@ -120,11 +128,11 @@ public class User {
 		this.role = role;
 	}
 
-	public int getUser_rate() {
+	public double getUser_rate() {
 		return user_rate;
 	}
 
-	public void setUser_rate(int user_rate) {
+	public void setUser_rate(double user_rate) {
 		this.user_rate = user_rate;
 	}
 	
@@ -164,6 +172,23 @@ public class User {
 
 	public void setAdvertRatings(Set<AdvertRating> advertRatings) {
 		this.advertRatings = advertRatings;
+	}
+	
+
+	public Set<UserRating> getUserRatings() {
+		return userRatings;
+	}
+
+	public void setUserRatings(Set<UserRating> userRatings) {
+		this.userRatings = userRatings;
+	}
+
+	public Set<UserRating> getUserRatedRatings() {
+		return userRatedRatings;
+	}
+
+	public void setUserRatedRatings(Set<UserRating> userRatedRatings) {
+		this.userRatedRatings = userRatedRatings;
 	}
 
 	@Override

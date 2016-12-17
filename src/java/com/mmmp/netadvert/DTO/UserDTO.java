@@ -11,7 +11,7 @@ public class UserDTO {
     private String first_name;
     private String last_name;
     private String password;
-    private int user_rate;
+    private double user_rate;
     private RoleDTO role;
 
     public UserDTO() {
@@ -37,11 +37,11 @@ public class UserDTO {
         this.role = role;
     }
 
-    public int getUser_rate() {
+    public double getUser_rate() {
         return user_rate;
     }
 
-    public void setUser_rate(int user_rate) {
+    public void setUser_rate(double user_rate) {
         this.user_rate = user_rate;
     }
 

@@ -101,4 +101,6 @@ public interface AdverService {
 	public List<Advert> allAdverts();
 	
 	public AdvertRating addAdvertRating(AdvertRating a);
+	
+	public UserRating addUserRating(UserRating a);
 }

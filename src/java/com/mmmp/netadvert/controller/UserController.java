@@ -144,17 +144,27 @@ public class UserController {
         return new ResponseEntity<User>(luser,HttpStatus.OK);
     }
     
-    @RequestMapping(value="/api/user/{id}/adverts", method=RequestMethod.GET)
-	public ResponseEntity<List<Advert>> getAllUserAdverts(@PathVariable("id") int id, HttpSession session){
-    	User u = this.adverService.findUserById(id);
-    	List<Advert> adverts = new ArrayList<Advert>();
-    	adverts.addAll(u.getAdverts());
-		return new ResponseEntity<List<Advert>>(adverts, HttpStatus.OK);
+    @RequestMapping(value="/api/user/{uid}/adverts", method=RequestMethod.GET)
+	public ResponseEntity<List<Advert>> getAllUserAdverts(@PathVariable("uid") int uid, HttpSession session){
+
+        User user = (User)session.getAttribute("logedUser");
+
+        if (user == null || user.getId() != uid){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        User u = this.adverService.findUserById(uid);
+        if (u != null){
+            List<Advert> adverts = new ArrayList<Advert>();
+            adverts.addAll(u.getAdverts());
+            return new ResponseEntity<List<Advert>>(adverts, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 	}
     
     @RequestMapping(value="/api/user/{uid}/advert/{aid}/expiredate", method=RequestMethod.PUT)
     public ResponseEntity<Advert> updateAdvertExireDate(HttpSession session, @PathVariable("uid") int uid, @PathVariable("aid") int aid){
-    	User user = (User)session.getAttribute("logedUser");
+        User user = (User)session.getAttribute("logedUser");
         if(user == null || user.getId()!=uid){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

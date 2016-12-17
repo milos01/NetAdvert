@@ -14,7 +14,7 @@ public class UserConstants {
     public static final String DB_FIRST_NAME = "Milos";
     public static final String DB_LAST_NAME = "Andric";
     public static final String DB_PASSWORD = "pass";
-    public static final Long DB_USER_RATE = 0L;
+    public static final Double DB_USER_RATE = 0.0;
 
     public static final Long DB_FIND_ONE = 1L;
 

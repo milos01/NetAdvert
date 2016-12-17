@@ -78,7 +78,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.[*].first_name").value(hasItem(DB_FIRST_NAME)))
                 .andExpect(jsonPath("$.[*].last_name").value(hasItem(DB_LAST_NAME)))
                 .andExpect(jsonPath("$.[*].password").value(hasItem(DB_PASSWORD)))
-                .andExpect(jsonPath("$.[*].user_rate").value(hasItem(UserConstants.DB_USER_RATE.intValue())))
+                .andExpect(jsonPath("$.[*].user_rate").value(hasItem(UserConstants.DB_USER_RATE.doubleValue())))
                 .andExpect(jsonPath("$.[*].role.id").value(hasItem(UserConstants.DB_USER_ROLE_ID.intValue())));
     }
 
@@ -163,5 +163,25 @@ public class UserControllerTest {
         mockMvc.perform(post(URL_PREFIX + "/login").contentType(contentType).param("email", "milosa942@gmail.com").param("password", "pass"))
                 .andExpect(status().isOk());
 
+    }
+
+    @Test
+    public void getAllUserAdvertsTest() throws Exception {
+        Role r = new Role();
+        r.setId(1);
+        r.setName("Admin");
+
+        User logUser = new User();
+        logUser.setId(1);
+        logUser.setEmail("milosa942@gmail.com");
+        logUser.setLast_name("Milos");
+        logUser.setLast_name("Andric");
+        logUser.setPassword("pass");
+        logUser.setUser_rate(0);
+        logUser.setRole(r);
+
+        mockMvc.perform(get(URL_PREFIX + "/user/1/adverts").sessionAttr("logedUser", logUser))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType));
     }
 }

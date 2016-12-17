@@ -1,6 +1,5 @@
 package com.mmmp.netadvert.controller;
 
-import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Company;
 //import com.sun.tools.javac.code.Attribute;
 //import com.sun.tools.javac.main.Main;

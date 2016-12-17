@@ -4,9 +4,7 @@ import com.mmmp.netadvert.model.Advert;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface AdvertDAO {
 
 	

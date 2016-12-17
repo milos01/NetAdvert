@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mmmp.netadvert.DAO.AdvertDAO;
+import com.mmmp.netadvert.DAO.AdvertRatingDAO;
 import com.mmmp.netadvert.DAO.CommentDAO;
 import com.mmmp.netadvert.DAO.CompanyDAO;
 import com.mmmp.netadvert.DAO.LocationDAO;
@@ -47,6 +48,9 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Autowired
 	private PictureDAO pictureDAO;
+	
+	@Autowired
+	private AdvertRatingDAO advertRatingDAO;
 
 
 	@Override
@@ -325,6 +329,14 @@ public class AdvertServiceImplementation implements AdverService {
 	public List<Advert> allAdverts() {
 		return this.advertDAO.allAdverts();
 	}
+
+	@Override
+	@Transactional
+	public AdvertRating addAdvertRating(AdvertRating a) {
+		return this.advertRatingDAO.addAdvertRating(a);
+	}
+
+	
 
 
 }

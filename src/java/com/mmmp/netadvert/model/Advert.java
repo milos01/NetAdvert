@@ -40,7 +40,7 @@ public class Advert {
 	
 	private Date expire_date;
 	
-	private int advert_rate;
+	private double advert_rate;
 	
 	private String contact;
 	
@@ -60,6 +60,10 @@ public class Advert {
 	@JsonBackReference
 	@OneToMany(mappedBy="advert", fetch=FetchType.EAGER)
 	private Set<Report> reports;
+	
+	@JsonBackReference
+	@OneToMany(mappedBy="advert", fetch=FetchType.EAGER)
+	private Set<AdvertRating> advertRatings;
 
 	public int getId() {
 		return id;
@@ -101,11 +105,11 @@ public class Advert {
 		this.expire_date = expire_date;
 	}
 
-	public int getAdvert_rate() {
+	public double getAdvert_rate() {
 		return advert_rate;
 	}
 
-	public void setAdvert_rate(int advert_rate) {
+	public void setAdvert_rate(double advert_rate) {
 		this.advert_rate = advert_rate;
 	}
 
@@ -164,6 +168,14 @@ public class Advert {
 
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
+	}
+
+	public Set<AdvertRating> getAdvertRatings() {
+		return advertRatings;
+	}
+
+	public void setAdvertRatings(Set<AdvertRating> advertRatings) {
+		this.advertRatings = advertRatings;
 	}
 
 	

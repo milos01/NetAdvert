@@ -59,6 +59,10 @@ public class User {
     @JsonBackReference
     @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
     private Set<CompanyStaffs> cs;
+    
+    @JsonBackReference
+    @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+    private Set<AdvertRating> advertRatings;
 
     public Set<CompanyStaffs> getCs() {
         return cs;
@@ -150,6 +154,16 @@ public class User {
 
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
+	}
+	
+	
+
+	public Set<AdvertRating> getAdvertRatings() {
+		return advertRatings;
+	}
+
+	public void setAdvertRatings(Set<AdvertRating> advertRatings) {
+		this.advertRatings = advertRatings;
 	}
 
 	@Override

@@ -99,4 +99,6 @@ public interface AdverService {
 	public List<Advert> findAdvertByName(String name);
 	
 	public List<Advert> allAdverts();
+	
+	public AdvertRating addAdvertRating(AdvertRating a);
 }

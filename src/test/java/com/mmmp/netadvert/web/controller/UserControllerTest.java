@@ -184,4 +184,26 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType));
     }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void updateAdvertExpireDateTest() throws Exception {
+        Role r = new Role();
+        r.setId(1);
+        r.setName("Admin");
+
+        User logUser = new User();
+        logUser.setId(1);
+        logUser.setEmail("milosa942@gmail.com");
+        logUser.setLast_name("Milos");
+        logUser.setLast_name("Andric");
+        logUser.setPassword("pass");
+        logUser.setUser_rate(0);
+        logUser.setRole(r);
+
+        mockMvc.perform(put(URL_PREFIX + "/user/2/advert/1/expiredate").sessionAttr("logedUser", logUser).contentType(contentType))
+                .andExpect(status().isOk());
+
+    }
 }

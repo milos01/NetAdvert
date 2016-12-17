@@ -135,6 +135,12 @@ public class UserController {
         return new ResponseEntity<List<User>>(users,HttpStatus.OK);
     }
 
+    /**
+     * This method is part of user rest service. Method will return user who is logged on application.
+     * @param session
+     * @return JSON formatted user object
+     * @see User
+     */
     @RequestMapping(value="/api/user", method=RequestMethod.GET)
     public ResponseEntity<User> getUser(HttpSession session){
         User luser = (User)session.getAttribute("logedUser");
@@ -143,7 +149,15 @@ public class UserController {
         }
         return new ResponseEntity<User>(luser,HttpStatus.OK);
     }
-    
+
+    /**
+     *  This method is part of user rest service. Method will return all adverts form specific user.
+     *  Only logged user can get his adverts otherwise method will respond with 400 response.
+     * @param uid user id sent from url
+     * @param session
+     * @return Http response 200 OK
+     * @see Advert
+     */
     @RequestMapping(value="/api/user/{uid}/adverts", method=RequestMethod.GET)
 	public ResponseEntity<List<Advert>> getAllUserAdverts(@PathVariable("uid") int uid, HttpSession session){
 
@@ -161,28 +175,40 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 	}
-    
+
+    /**
+     *  This method is part of user rest service. This method will update expire date of some advert. User and Advert can't be null
+     *  User must be logged in to run this method properly. If user is logged and he is the one who created advert method will extend expire date for 1 month otherwise
+     *  will respond with 400 response
+     * @param session
+     * @param uid user id sent from url
+     * @param aid advert id sent from url
+     * @return Http response 200 OK
+     * @see Advert
+     */
     @RequestMapping(value="/api/user/{uid}/advert/{aid}/expiredate", method=RequestMethod.PUT)
-    public ResponseEntity<Advert> updateAdvertExireDate(HttpSession session, @PathVariable("uid") int uid, @PathVariable("aid") int aid){
+    public ResponseEntity<Advert> updateAdvertExpireDate(HttpSession session, @PathVariable("uid") int uid, @PathVariable("aid") int aid){
         User user = (User)session.getAttribute("logedUser");
         if(user == null || user.getId()!=uid){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Advert a = this.adverService.findAdvert(aid);
-        if(a.getUser().getId()!=user.getId()){
-        	return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        if(a.getIs_deleted()==true || a.getIs_sold()==true){
-        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        java.sql.Date d = a.getExpire_date();
-        java.sql.Date currentDate = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate()+7);
-        if(currentDate.compareTo(d)>=0){
-        	d.setMonth(d.getMonth()+1);
-        	a.setExpire_date(d);
-        }
-        else{
-        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (a != null){
+            if(a.getUser().getId()!=user.getId()){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            if(a.getIs_deleted()==true || a.getIs_sold()==true){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            java.sql.Date d = a.getExpire_date();
+            java.sql.Date currentDate = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate()+7);
+            if(currentDate.compareTo(d)>=0){
+                d.setMonth(d.getMonth()+1);
+                a.setExpire_date(d);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
         this.adverService.updateAdvert(a);
     	return new ResponseEntity<Advert>(a, HttpStatus.OK);

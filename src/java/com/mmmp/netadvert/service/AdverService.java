@@ -105,4 +105,8 @@ public interface AdverService {
 	public UserRating addUserRating(UserRating a);
 
 	public List<CompanyStaffs> allCompanyStaff();
+	
+	public AdvertRating updateAdvertRating(AdvertRating a);
+	
+	public void deleteAdvertRating(AdvertRating a);
 }

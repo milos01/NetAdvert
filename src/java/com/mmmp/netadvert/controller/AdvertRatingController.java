@@ -98,4 +98,101 @@ public class AdvertRatingController {
 		ret.addAll(allAdvertRatings);
 		return new ResponseEntity<List<AdvertRating>>(ret, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/{id}/rating", method = RequestMethod.PUT)
+	public ResponseEntity<Advert> updateAdvertRating(@PathVariable("id") int aid, HttpSession session, @RequestParam("rating") int addedRating){
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		Advert a = this.adverService.findAdvert(aid);
+		if(a==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(a.getIs_deleted()==true){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(addedRating<=0){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Set<AdvertRating> ratings = u.getAdvertRatings();
+		boolean exists = false;
+		AdvertRating updatedR = new AdvertRating();
+		for(AdvertRating ar : ratings){
+			if(ar.getAdvert().getId()==a.getId()){
+				exists = true;
+				updatedR = ar;
+				break;
+			}
+		}
+		if(exists==false){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		updatedR.setRating(addedRating);
+		this.adverService.updateAdvertRating(updatedR);
+		
+		this.adverService.updateAdvert(a);
+		a=this.adverService.findAdvert(aid);
+		Set<AdvertRating> allAdvertRatings = a.getAdvertRatings();
+		int count = allAdvertRatings.size();
+		int sum = 0;
+		for(AdvertRating r : allAdvertRatings){
+			sum+=r.getRating();
+		}
+		double updatedRating = sum/count;
+		a.setAdvert_rate(updatedRating);
+		
+		
+		this.adverService.updateAdvert(a);
+		
+		return new ResponseEntity<Advert>(a, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}/rating", method = RequestMethod.DELETE)
+	public ResponseEntity<Advert> deleteAdvertRating(@PathVariable("id") int aid, HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		Advert a = this.adverService.findAdvert(aid);
+		if(a==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(a.getIs_deleted()==true){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Set<AdvertRating> ratings = u.getAdvertRatings();
+		boolean exists = false;
+		AdvertRating deleteR = new AdvertRating();
+		for(AdvertRating ar : ratings){
+			if(ar.getAdvert().getId()==a.getId()){
+				exists = true;
+				deleteR = ar;
+				break;
+			}
+		}
+		if(exists==false){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		this.adverService.deleteAdvertRating(deleteR);
+		
+		a=this.adverService.findAdvert(aid);
+		Set<AdvertRating> allAdvertRatings = a.getAdvertRatings();
+		int count = allAdvertRatings.size();
+		if(count==0){
+			a.setAdvert_rate(0);
+		}
+		else{
+			int sum = 0;
+			for(AdvertRating r : allAdvertRatings){
+				sum+=r.getRating();
+			}
+			double updatedRating = sum/count;
+			a.setAdvert_rate(updatedRating);
+		}
+		this.adverService.updateAdvert(a);
+		
+		return new ResponseEntity<Advert>(a, HttpStatus.OK);
+	}
+	
 }

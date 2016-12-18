@@ -25,4 +25,16 @@ public class AdvertRatingDAOImpl implements AdvertRatingDAO{
 		return a;
 	}
 
+	@Override
+	public AdvertRating updateAdvertRating(AdvertRating a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.merge(a);
+		return a;
+	}
+
+	@Override
+	public void deleteAdvertRating(AdvertRating a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.delete(a);	}
+
 }

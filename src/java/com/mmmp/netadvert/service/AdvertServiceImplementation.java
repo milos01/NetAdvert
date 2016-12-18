@@ -352,6 +352,18 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.companyDAO.allCompanyStaff();
 	}
 
+	@Override
+	@Transactional
+	public AdvertRating updateAdvertRating(AdvertRating a) {
+		return this.advertRatingDAO.updateAdvertRating(a);
+	}
+
+	@Override
+	@Transactional
+	public void deleteAdvertRating(AdvertRating a) {
+		this.advertRatingDAO.deleteAdvertRating(a);
+	}
+
 
 
 }

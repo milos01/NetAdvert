@@ -1,5 +1,7 @@
 package com.mmmp.netadvert.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -78,6 +80,25 @@ public class UserRatingController {
 		this.adverService.updateUser(u);
 		
 		return new ResponseEntity<User>(userRated, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}/rating", method = RequestMethod.GET)
+	public ResponseEntity<List<UserRating>> getUserRatings(@PathVariable("id") int uid, HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		User a = this.adverService.findUserById(uid);
+		if(a==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(a.getRole().getId()!=2){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Set<UserRating> allUserRatings = a.getUserRatedRatings();
+		List<UserRating> ret = new ArrayList<UserRating>();
+		ret.addAll(allUserRatings);
+		return new ResponseEntity<List<UserRating>>(ret, HttpStatus.OK);
 	}
 
 }

@@ -1,7 +1,7 @@
-package com.mmmp.netadvert.web.controller;
+package com.mmmp.NetAdvert.web.controller;
 
 import com.mmmp.netadvert.NetAdvertApplication;
-import com.mmmp.netadvert.TestUtil;
+import com.mmmp.NetAdvert.TestUtil;
 import com.mmmp.netadvert.model.Company;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +20,9 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
 
-import static com.mmmp.netadvert.constants.ReportConstants.db_count_reports;
-import static com.mmmp.netadvert.constants.ReportConstants.report_id;
-import static com.mmmp.netadvert.constants.ReportConstants.text;
+import static com.mmmp.NetAdvert.constants.ReportConstants.db_count_reports;
+import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
+import static com.mmmp.NetAdvert.constants.ReportConstants.text;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

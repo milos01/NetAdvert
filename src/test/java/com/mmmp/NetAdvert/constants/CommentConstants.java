@@ -1,4 +1,4 @@
-package com.mmmp.netadvert.constants;
+package com.mmmp.NetAdvert.constants;
 
 import java.sql.Date;
 

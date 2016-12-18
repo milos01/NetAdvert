@@ -364,6 +364,18 @@ public class AdvertServiceImplementation implements AdverService {
 		this.advertRatingDAO.deleteAdvertRating(a);
 	}
 
+	@Override
+	@Transactional	
+	public UserRating updateUserRating(UserRating ur) {
+		return this.userRatingDAO.updateUserRating(ur);
+	}
+
+	@Override
+	@Transactional
+	public void deleteUserRating(UserRating ur) {
+		this.userRatingDAO.deleteUserRating(ur);
+	}
+
 
 
 }

@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mmmp.netadvert.model.Advert;
-import com.mmmp.netadvert.model.AdvertRating;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.model.UserRating;
 import com.mmmp.netadvert.service.AdverService;
@@ -99,6 +97,104 @@ public class UserRatingController {
 		List<UserRating> ret = new ArrayList<UserRating>();
 		ret.addAll(allUserRatings);
 		return new ResponseEntity<List<UserRating>>(ret, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}/rating", method = RequestMethod.PUT)
+	public ResponseEntity<User> updateUserRating(@PathVariable("id") int aid, HttpSession session, @RequestParam("rating") int addedRating){
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		User a = this.adverService.findUserById(aid);
+		if(a==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(a.getRole().getId()!=2){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(addedRating<=0){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Set<UserRating> ratings = u.getUserRatings();
+		boolean exists = false;
+		UserRating updatedR = new UserRating();
+		for(UserRating ar : ratings){
+			System.out.println(ar.getId());
+			if(ar.getUser_rated().getId()==a.getId()){
+				exists = true;
+				updatedR = ar;
+				break;
+			}
+		}
+		if(exists==false){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		updatedR.setRating(addedRating);
+		this.adverService.updateUserRating(updatedR);
+		
+		
+		a=this.adverService.findUserById(aid);
+		Set<UserRating> allUserRatings = a.getUserRatedRatings();
+		int count = allUserRatings.size();
+		int sum = 0;
+		for(UserRating r : allUserRatings){
+			sum+=r.getRating();
+		}
+		double updatedRating = sum/count;
+		a.setUser_rate(updatedRating);
+		
+		
+		this.adverService.updateUser(a);
+		
+		return new ResponseEntity<User>(a, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}/rating", method = RequestMethod.DELETE)
+	public ResponseEntity<User> deleteUserRating(@PathVariable("id") int aid, HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		User a = this.adverService.findUserById(aid);
+		if(a==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(a.getRole().getId()!=2){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Set<UserRating> ratings = u.getUserRatings();
+		boolean exists = false;
+		UserRating deleteR = new UserRating();
+		for(UserRating ar : ratings){
+			if(ar.getUser_rated().getId()==a.getId()){
+				exists = true;
+				deleteR = ar;
+				break;
+			}
+		}
+		if(exists==false){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		this.adverService.deleteUserRating(deleteR);
+		
+		a=this.adverService.findUserById(aid);
+		Set<UserRating> allUserRatings = a.getUserRatedRatings();
+		int count = allUserRatings.size();
+		if(count==0){
+			a.setUser_rate(0);;
+		}
+		else{
+			int sum = 0;
+			for(UserRating r : allUserRatings){
+				sum+=r.getRating();
+			}
+			double updatedRating = sum/count;
+			a.setUser_rate(updatedRating);
+		}
+		this.adverService.updateUser(a);
+		
+		return new ResponseEntity<User>(a, HttpStatus.OK);
 	}
 
 }

@@ -109,4 +109,8 @@ public interface AdverService {
 	public AdvertRating updateAdvertRating(AdvertRating a);
 	
 	public void deleteAdvertRating(AdvertRating a);
+	
+	public UserRating updateUserRating(UserRating ur);
+	
+	public void deleteUserRating(UserRating ur);
 }

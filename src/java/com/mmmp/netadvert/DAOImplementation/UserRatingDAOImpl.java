@@ -25,4 +25,17 @@ public class UserRatingDAOImpl implements UserRatingDAO{
 		return u;
 	}
 
+	@Override
+	public UserRating updateUserRating(UserRating ur) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.merge(ur);
+		return ur;
+	}
+
+	@Override
+	public void deleteUserRating(UserRating ur) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.delete(ur);
+	}
+
 }

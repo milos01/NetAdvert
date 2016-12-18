@@ -40,8 +40,8 @@ public class CommentController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Comment> createComment(@RequestParam("advert_id") int advert_id,@RequestParam("comment") String text,HttpSession session){
-//		User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("doslicmm@live.com");
+		User u = (User) session.getAttribute("logedUser");
+//		User u = this.adverService.findUser("doslicmm@live.com");
 		Advert advert = this.adverService.findAdvert(advert_id);
 		
 		if (advert==null){
@@ -94,6 +94,9 @@ public class CommentController {
 	@RequestMapping(value="/advert/{id}", method=RequestMethod.GET)
 	public ResponseEntity<List<Comment>> findComments(@PathVariable("id") int id){
 		List<Comment> list = this.adverService.allCommentsOfAdvert(id);
+		if (list==null || list.isEmpty()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<List<Comment>>(list,HttpStatus.OK);
 	}
 	

@@ -11,6 +11,7 @@ import static com.mmmp.NetAdvert.constants.ReportConstants.text;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -137,29 +138,29 @@ public class ReportControllerTest {
 		rep.setVerified(0);
 		String object = TestUtil.json(rep);
 
-		this.mockMvc.perform(post(URL_PREFIX + "?reportDescription=" + rep.getReportDescription() + "&advert_id=" + a.getId())
-				.contentType(contentType).content(object)).andExpect(status().isOk());
+		this.mockMvc.perform(post(URL_PREFIX)
+				.contentType(contentType).sessionAttr("logedUser", u).param("reportDescription", rep.getReportDescription()).param("advert_id", a.getId()+"").content(object)).andExpect(status().isOk());
 
 		rep.setAdvert(null);
 		String object2 = TestUtil.json(rep);
-		this.mockMvc.perform(post(URL_PREFIX + "?reportDescription=" +  rep.getReportDescription() + "&advert_id=" + 111)
-				.contentType(contentType).content(object2)).andExpect(status().isInternalServerError());
+		this.mockMvc.perform(post(URL_PREFIX)
+				.contentType(contentType).sessionAttr("logedUser", u).param("reportDescription", rep.getReportDescription()).param("advert_id", 111+"").content(object2)).andExpect(status().isInternalServerError());
 
 		rep.setAdvert(a);
 		rep.setReportDescription("");
 		String object3 = TestUtil.json(rep);
-		this.mockMvc.perform(post(URL_PREFIX + "?reportDescription=" + "" + "&advert_id=" + a.getId())
-				.contentType(contentType).content(object3)).andExpect(status().isInternalServerError());
+		this.mockMvc.perform(post(URL_PREFIX)
+				.contentType(contentType).sessionAttr("logedUser", u).param("reportDescription", "").param("advert_id", a.getId()+"").content(object3)).andExpect(status().isInternalServerError());
 	}
 	
 	@Test
 	@Transactional
-	@Rollback(false)
+	@Rollback(true)
 	public void testUpdateReport() throws Exception{
 		
 		Role r = new Role();
-		r.setId(2);
-		r.setName("Regular user");
+		r.setId(3);
+		r.setName("Verifier");
 
 		User u = new User();
 		u.setId(2);
@@ -208,21 +209,40 @@ public class ReportControllerTest {
 		a.setUpdated_at(new Date(123455));
 
 		Report rep = new Report();
-		rep.setId(2);
+		
 		rep.setAdvert(a);
 		rep.setReportDescription(text);
 		rep.setUser(u);
 		rep.setVerified(0);
-		String object = TestUtil.json(rep);
-		
-		this.mockMvc.perform(get(URL_PREFIX+"/update" + "?report_id=" +  rep.getId() + "&verify=" + 1)
-				.contentType(contentType).content(object)).andExpect(status().isOk());
-		
 		rep.setId(555);
 		String object2 = TestUtil.json(rep);
-		this.mockMvc.perform(get(URL_PREFIX  +"/update" + "?report_id=" +  rep.getId() + "&verify=" + 1)
-				.contentType(contentType).content(object2)).andExpect(status().isInternalServerError());
+		this.mockMvc.perform(put(URL_PREFIX+"/update")
+				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object2)).andExpect(status().isInternalServerError());
 
+		rep.setId(1);
+		rep.setVerified(1);
+		String object3 = TestUtil.json(rep);
+		this.mockMvc.perform(put(URL_PREFIX+"/update")
+				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object3)).andExpect(status().isInternalServerError());
+
+		Role roleN = new Role();
+		roleN.setId(2);
+		roleN.setName("Regular user");
+		u.setRole(roleN);
+		rep.setId(2);
+		rep.setVerified(0);
+		String object4 = TestUtil.json(rep);
+		this.mockMvc.perform(put(URL_PREFIX+"/update")
+				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object4)).andExpect(status().isForbidden());
+		
+		
+		rep.setId(2);
+		rep.setVerified(0);
+		u.setRole(r);
+		String object = TestUtil.json(rep);
+		this.mockMvc.perform(put(URL_PREFIX+"/update")
+				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object)).andExpect(status().isOk());
+		
 	}
 	
 

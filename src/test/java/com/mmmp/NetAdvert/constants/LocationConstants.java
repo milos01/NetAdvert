@@ -2,7 +2,7 @@ package com.mmmp.NetAdvert.constants;
 
 public class LocationConstants {
 
-	public static final int location_id = 42;
+	public static final int location_id = 2;
 	
 	public static final String street = "Momcila Tapavice";
 	

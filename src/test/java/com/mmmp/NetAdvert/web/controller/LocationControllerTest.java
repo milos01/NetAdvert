@@ -92,7 +92,7 @@ public class LocationControllerTest {
     
     @Test
     @Transactional
-    @Rollback(false)
+    @Rollback(true)
     public void testUpdateLocation() throws Exception {
     	Location l = new Location();
     	l.setId(location_id);
@@ -126,7 +126,7 @@ public class LocationControllerTest {
     
     @Test
     public void testFindLocation() throws Exception{
-    	mockMvc.perform(get(URL_PREFIX+"?id=42"))
+    	mockMvc.perform(get(URL_PREFIX+"?id=2"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(contentType))
         .andExpect(jsonPath("$.id").value(location_id))

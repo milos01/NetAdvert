@@ -2,6 +2,8 @@ package com.mmmp.netadvert.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +37,9 @@ public class ReportController {
 	 * @return Report object, Http response 200 ok
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Report> newReport(@RequestParam("reportDescription") String text,@RequestParam("advert_id") int advert_id){
-//		User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("doslicmm@live.com");
+	public ResponseEntity<Report> newReport(@RequestParam("reportDescription") String text,@RequestParam("advert_id") int advert_id,HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+//		User u = this.adverService.findUser("doslicmm@live.com");
 		Advert advert = this.adverService.findAdvert(advert_id);
 		
 		if (advert==null){
@@ -75,15 +77,21 @@ public class ReportController {
 	 * @param verify - the eligibility status
 	 * @return updated Report object, Http response 200 ok
 	 */
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public ResponseEntity<Report> updateReport(@RequestParam("report_id") int id,@RequestParam("verify") int verify){
-		
-		Report r = this.adverService.findReport(id);
-		if (r==null){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	public ResponseEntity<Report> updateReport(@RequestParam("report_id") int id,@RequestParam("verify") int verify,HttpSession session){
+		User u = (User) session.getAttribute("logedUser");
+		if (u.getRole().getName().equals("Verifier")){
+			Report r = this.adverService.findReport(id);
+			if (r==null){
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			if (r.getVerified()==1){
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			r.setVerified(verify);
+			this.adverService.updateReport(r);
+			return new ResponseEntity<>(r,HttpStatus.OK);
 		}
-		r.setVerified(verify);
-		this.adverService.updateReport(r);
-		return new ResponseEntity<>(r,HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 }

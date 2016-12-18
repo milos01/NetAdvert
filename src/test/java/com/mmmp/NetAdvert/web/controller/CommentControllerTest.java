@@ -131,21 +131,21 @@ public class CommentControllerTest {
 		
 		String object = TestUtil.json(comment);
 		
-		this.mockMvc.perform(post(URL_PREFIX + "?advert_id=" + a.getId() + "&comment=" + comment.getText())
-				.contentType(contentType).content(object))
+		this.mockMvc.perform(post(URL_PREFIX)
+				.contentType(contentType).sessionAttr("logedUser", u).param("advert_id", a.getId()+"").param("comment", comment.getText()).content(object))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.text").value(comment.getText()));
 		
 		comment.setAdvert(null);
 		String object2 = TestUtil.json(comment);
-		this.mockMvc.perform(post(URL_PREFIX + "?advert_id=" + 999 + "&comment=" + comment.getText())
-				.contentType(contentType).content(object2))
+		this.mockMvc.perform(post(URL_PREFIX)
+				.contentType(contentType).sessionAttr("logedUser", u).param("advert_id", 999+"").param("comment", comment.getText()).content(object2))
 		.andExpect(status().isInternalServerError());
 		
 		comment.setText(null);
 		String object3 = TestUtil.json(comment);
-		this.mockMvc.perform(post(URL_PREFIX + "?advert_id=" + a.getId() + "&comment=" + "")
-				.contentType(contentType).content(object3))
+		this.mockMvc.perform(post(URL_PREFIX)
+				.contentType(contentType).sessionAttr("logedUser", u).param("advert_id", a.getId()+"").param("comment", "").content(object3))
 		.andExpect(status().isInternalServerError());
 //		jsonPath("$.[*].id").value(hasItem(report_id))
 	}
@@ -156,11 +156,13 @@ public class CommentControllerTest {
 				.andExpect(jsonPath("$", hasSize(db_comments_count)))
 				.andExpect(jsonPath("$.[*].id").value(hasItem(comment_id)))
 				.andExpect(jsonPath("$.[*].text").value(hasItem(comment_text)));
+		
+		mockMvc.perform(get(URL_PREFIX + "/advert/"+999)).andExpect(status().isBadRequest());
 	}
 	
 	@Test
 	@Transactional
-	@Rollback(false)
+	@Rollback(true)
 	public void testDeleteComments() throws Exception{
 		mockMvc.perform(delete(URL_PREFIX + "/delete/"+comment_id))
 		.andExpect(status().isOk());

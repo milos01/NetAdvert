@@ -20,6 +20,7 @@ import com.mmmp.netadvert.model.AdvertRating;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.service.AdverService;
 
+
 @RestController
 @RequestMapping(value = "/api/advert")
 public class AdvertRatingController {

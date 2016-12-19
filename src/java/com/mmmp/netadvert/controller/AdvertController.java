@@ -43,24 +43,29 @@ public class AdvertController {
 		this.adverService = adverService;
 	}
 	/**
-	 * 
-	 * @param contact
-	 * @param description
-	 * @param rent_sale
-	 * @param real_name
-	 * @param real_type_id
-	 * @param real_cost
-	 * @param real_area
-	 * @param real_category_id
-	 * @param real_heating
-	 * @param loc_street
-	 * @param loc_street_number
-	 * @param loc_region
-	 * @param loc_city
-	 * @param loc_postal_code
-	 * @param equipments
-	 * @param session
-	 * @return
+	 * This method is part of advert rest service. Method will add new advert with params sent from form. 
+	 * User will be send in session, and in this method it will be checked for possible errors like send params are wrong,
+	 * like area and cost are negative numbers,
+	 * or if equipment list size of send category doesnt match size of sent equipment list,
+	 * and it checkes if location already exists so it wont be made again in database 
+	 * @param contact  advert contant sent in form
+	 * @param description advert description sent in form
+	 * @param rent_sale true if advert is for sale, false if advert is for rent
+	 * @param real_name new realestate name sent in form
+	 * @param real_type_id type of new realestate sent in form 
+	 * @param real_cost cost of realestate that is being advertised in form
+	 * @param real_area realestate area sent in form
+	 * @param real_category_id realestate category sent in form
+	 * @param real_heating true if realestate has heating otherwise false
+	 * @param loc_street realestate street location sent in form
+	 * @param loc_street_number realestate street number sent in form
+	 * @param loc_region realestate region location sent in form
+	 * @param loc_city realestate city location sent in form
+	 * @param loc_postal_code realestate postal code sent in form
+	 * @param equipments realestate equipments sent in form
+	 * @param session HttpSession object for setting user on session
+	 * @return Http response 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Advert> createAdvert(@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
@@ -163,25 +168,31 @@ public class AdvertController {
 	}
 
 	/**
-	 * 
-	 * @param advert_id
-	 * @param contact
-	 * @param description
-	 * @param rent_sale
-	 * @param real_name
-	 * @param real_type_id
-	 * @param real_cost
-	 * @param real_area
-	 * @param real_category_id
-	 * @param real_heating
-	 * @param loc_street
-	 * @param loc_street_number
-	 * @param loc_region
-	 * @param loc_city
-	 * @param loc_postal_code
-	 * @param equipments
-	 * @param session
-	 * @return
+	 * This method is part of advert rest service. Method will update existing advert with params sent from form. 
+	 * User will be send in session, and in this method it will be checked for possible errors like send params are wrong,
+	 * like area and cost are negative numbers,
+	 * or if equipment list size of send category doesnt match size of sent equipment list,
+	 * and it checkes if location already exists so it wont be made again in database 
+	 * and if advert doesnt exist or is deleted before
+	 * @param advert_id advert id information send in form that already exists
+	 * @param contact advert contant sent in form
+	 * @param description advert description
+	 * @param rent_sale true if advert is for sale, false if advert is for rent
+	 * @param real_name new realestate name sent in form
+	 * @param real_type_id type of new realestate sent in form 
+	 * @param real_cost cost of realestate that is being advertised in form
+	 * @param real_area realestate area sent in form
+	 * @param real_category_id realestate category sent in form
+	 * @param real_heating true if realestate has heating otherwise false
+	 * @param loc_street realestate street location sent in form
+	 * @param loc_street_number realestate street number sent in form
+	 * @param loc_region realestate region location sent in form
+	 * @param loc_city realestate city location sent in form
+	 * @param loc_postal_code realestate postal code sent in form
+	 * @param equipments realestate equipments sent in form
+	 * @param session HttpSession object for setting user on session
+	 * @return Http response 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Advert> updateAdvert(@RequestParam("advert_id") int advert_id,@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
@@ -294,6 +305,12 @@ public class AdvertController {
 		return new ResponseEntity<Advert> (a, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAdvert(@PathVariable("id") int id, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
@@ -320,6 +337,12 @@ public class AdvertController {
 		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id, HttpSession session){
 		Advert a = this.adverService.findAdvert(id);
@@ -329,6 +352,11 @@ public class AdvertController {
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<Advert>> getAllAdverts(HttpSession session){
 		List<Advert> advertList = this.adverService.allAdverts();
@@ -340,6 +368,12 @@ public class AdvertController {
 		return new ResponseEntity<List<Advert>>(advertList, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * @param aid
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value="/{id}/buy", method = RequestMethod.PUT)
 	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
@@ -365,6 +399,12 @@ public class AdvertController {
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
 	
+	/**
+	 * 
+	 * @param session
+	 * @param search
+	 * @return
+	 */
 	@RequestMapping(value="/search", method = RequestMethod.POST)
 	public ResponseEntity<List<Advert>> searchAdvert(HttpSession session, @RequestBody SearchDTO search){
 		if(search.getRent_sale()==null || search.getHeating()==null){

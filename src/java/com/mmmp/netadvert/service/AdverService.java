@@ -2,6 +2,7 @@ package com.mmmp.netadvert.service;
 
 import java.util.List;
 
+import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.model.*;
 
 
@@ -113,4 +114,6 @@ public interface AdverService {
 	public UserRating updateUserRating(UserRating ur);
 	
 	public void deleteUserRating(UserRating ur);
+	
+	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech);
 }

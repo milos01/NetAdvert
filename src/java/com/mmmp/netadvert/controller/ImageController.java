@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.controller;
 
+import java.awt.Image;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class ImageController {
 	private AdverService adverService;
 
 	@RequestMapping(value="/api/upload", method=RequestMethod.POST)
-	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file,HttpSession session, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile){
+	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file,HttpSession session, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile) throws IllegalStateException, IOException{
 		User u = (User) session.getAttribute("logedUser");
         if(u==null){
         	return new ResponseEntity<> (HttpStatus.FORBIDDEN);
@@ -40,6 +42,19 @@ public class ImageController {
         if(file==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
+        File convFile = new File( file.getOriginalFilename());
+        file.transferTo(convFile);
+        Image image;
+		try {
+			image = ImageIO.read(convFile);
+			if (image == null) {
+				return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
+	        }
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
+		}
+        
         Realestate r = this.adverService.findRealestate(id);
         if(r==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
@@ -96,6 +111,9 @@ public class ImageController {
         	return new ResponseEntity<Void> (HttpStatus.FORBIDDEN);
         }
 		Picture pic = this.adverService.findPictureByName(name);
+		if(pic==null){
+			return new ResponseEntity<Void> (HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		if(pic.getUser().getId()!=u.getId()){
 			return new ResponseEntity<Void> (HttpStatus.FORBIDDEN);
 		}

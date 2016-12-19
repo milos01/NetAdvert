@@ -119,7 +119,6 @@ public class UserRatingController {
 		boolean exists = false;
 		UserRating updatedR = new UserRating();
 		for(UserRating ar : ratings){
-			System.out.println(ar.getId());
 			if(ar.getUser_rated().getId()==a.getId()){
 				exists = true;
 				updatedR = ar;

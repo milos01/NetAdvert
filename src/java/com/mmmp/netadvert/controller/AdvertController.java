@@ -13,12 +13,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Location;
 import com.mmmp.netadvert.model.Realestate;
@@ -320,6 +323,42 @@ public class AdvertController {
 			return new ResponseEntity<Advert>(a, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+	}
+	
+	@RequestMapping(value="/search", method = RequestMethod.POST)
+	public ResponseEntity<List<Advert>> searchAdvert(HttpSession session, @RequestBody SearchDTO search){
+		if(search.getRent_sale()==null || search.getHeating()==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(search.getPrice_from()>search.getPrice_to()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(search.getArea_from()>search.getArea_to()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(search.getPrice_from()<0 || search.getPrice_to()<0 || search.getArea_from()<0 || search.getArea_to()<0){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		List<TechnicalEquipment> te = this.adverService.allEquipment();
+		Collections.sort(te, new Comparator<TechnicalEquipment>() {
+			public int compare(TechnicalEquipment m1, TechnicalEquipment m2) {
+				if (m1.getId() > m2.getId()) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		});
+		List<TechnicalEquipment> tech = new ArrayList<TechnicalEquipment>();
+		for(TechnicalEquipment tt : te){
+			for(String s : search.getEquipments()){
+				if(tt.getEquipmentName().equals(s.trim())){
+					tech.add(tt);
+					break;
+				}
+			}
+		}
+		return null;
 	}
 
 }

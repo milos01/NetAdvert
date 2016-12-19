@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mmmp.netadvert.DAO.AdvertDAO;
+import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.model.Advert;
+import com.mmmp.netadvert.model.TechnicalEquipment;
 @Repository
 public class AdvertDAOImpl implements AdvertDAO {
 
@@ -70,6 +72,13 @@ public class AdvertDAOImpl implements AdvertDAO {
 		Query query = session.createQuery("from Advert");
 		List<Advert> advertList = query.list();
 		return advertList;
+	}
+
+	@Override
+	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Advert a");
+		return null;
 	}
 
 }

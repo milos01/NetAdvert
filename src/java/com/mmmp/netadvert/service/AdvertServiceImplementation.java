@@ -19,6 +19,7 @@ import com.mmmp.netadvert.DAO.ReportDAO;
 import com.mmmp.netadvert.DAO.RoleDAO;
 import com.mmmp.netadvert.DAO.UserDAO;
 import com.mmmp.netadvert.DAO.UserRatingDAO;
+import com.mmmp.netadvert.DTO.SearchDTO;
 
 @Service
 public class AdvertServiceImplementation implements AdverService {
@@ -374,6 +375,12 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public void deleteUserRating(UserRating ur) {
 		this.userRatingDAO.deleteUserRating(ur);
+	}
+
+	@Override
+	@Transactional
+	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech) {
+		return this.advertDAO.searchAdverts(search, tech);
 	}
 
 

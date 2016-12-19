@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -22,7 +23,9 @@ import org.springframework.beans.factory.annotation.Required;
 @Entity
 @Table(name="User")
 
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = -2184795033586333876L;
 
 	@Id
 	@Column(name="Id")
@@ -49,7 +52,7 @@ public class User {
 	private Set<Picture> pictures;
 
 	@JsonBackReference
-	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private Set<Advert> adverts;
 	
 	@JsonBackReference

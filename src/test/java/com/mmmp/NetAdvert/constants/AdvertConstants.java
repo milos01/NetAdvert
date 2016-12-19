@@ -24,5 +24,5 @@ public class AdvertConstants {
 	
 	public static final Boolean rent_sale = false;
 	
-	public static final int db_advert_count = 2;
+	public static final int db_advert_count = 3;
 }

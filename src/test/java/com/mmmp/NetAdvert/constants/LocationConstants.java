@@ -6,7 +6,7 @@ public class LocationConstants {
 	
 	public static final String street = "Momcila Tapavice";
 	
-	public static final int street_number = 42;
+	public static final int street_number = 55;
 	
 	public static final String city = "Novi Sad";
 

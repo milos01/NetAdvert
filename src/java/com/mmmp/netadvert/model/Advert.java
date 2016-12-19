@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
@@ -22,7 +23,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name="Advert")
 
-public class Advert {
+public class Advert implements Serializable {
+
+	private static final long serialVersionUID = 8771866581641465356L;
 
 	@Id
 	@Column(name="Id")

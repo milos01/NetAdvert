@@ -3,6 +3,8 @@ package com.mmmp.netadvert.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -10,8 +12,11 @@ import java.util.Set;
  */
 
 @Entity
-public class Location {
-    @Id
+public class Location implements Serializable {
+    
+	private static final long serialVersionUID = -7354773052507981930L;
+
+	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
@@ -31,6 +36,8 @@ public class Location {
     @OneToMany(mappedBy="location", fetch=FetchType.LAZY)
     private Set<Realestate> realestates;
 
+    public Location(){}
+    
     public int getId() {
         return id;
     }

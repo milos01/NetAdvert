@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -11,8 +13,11 @@ import java.util.Set;
  */
 
 @Entity
-public class Realestate {
-    @Id
+public class Realestate implements Serializable {
+   
+	private static final long serialVersionUID = 8161444052140930997L;
+
+	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 

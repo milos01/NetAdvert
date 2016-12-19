@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class AdvertController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Advert> createAdvert(Advert advert, @RequestParam("real_name") String real_name,
+	public ResponseEntity<Advert> createAdvert(@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
 			@RequestParam("real_type_id") int real_type_id, @RequestParam("real_cost") double real_cost,
 			@RequestParam("real_area") double real_area, @RequestParam("real_category_id") int real_category_id,
 			@RequestParam("real_heating") boolean real_heating, @RequestParam("loc_street") String loc_street,
@@ -48,33 +49,33 @@ public class AdvertController {
 			@RequestParam("loc_city") String loc_city, @RequestParam("loc_postal_code") int loc_postal_code,
 			@RequestParam("equipments") List<Boolean> equipments, HttpSession session) {
 
-//		User u = (User) session.getAttribute("logedUser");
-//		if(u==null){
-//	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
-//	    }
-//		
-//		RealestateCategory rc = this.adverService.findRealestateCategory(real_category_id);
-//		if (rc == null) {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//		boolean check = false;
-//		RealestateType type = null;
-//		for (RealestateType t : rc.getTypes()) {
-//			if (t.getId() == real_type_id) {
-//				check = true;
-//				type = t;
-//				break;
-//			}
-//		}
-//		if (!check) {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//		if(rc.getEquipments().size()!=equipments.size()){
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//		if(real_cost<0 || real_area<0){
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
+		User u = (User) session.getAttribute("logedUser");
+		if(u==null){
+	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
+	    }
+		
+		RealestateCategory rc = this.adverService.findRealestateCategory(real_category_id);
+		if (rc == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		boolean check = false;
+		RealestateType type = null;
+		for (RealestateType t : rc.getTypes()) {
+			if (t.getId() == real_type_id) {
+				check = true;
+				type = t;
+				break;
+			}
+		}
+		if (!check) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(rc.getEquipments().size()!=equipments.size()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(real_cost<=0 || real_area<=0){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Location location = this.adverService.checkForExistingLocation(loc_street, loc_street_number, loc_region,
 				loc_city, loc_postal_code);
 		if (location == null) {
@@ -86,61 +87,75 @@ public class AdvertController {
 			location.setStreetNumber(loc_street_number);
 			this.adverService.createLocation(location);
 		}
-//		List<TechnicalEquipment> equipmentList = new ArrayList<TechnicalEquipment>();
-//		equipmentList.addAll(rc.getEquipments());
-//		Collections.sort(equipmentList, new Comparator<TechnicalEquipment>() {
-//			public int compare(TechnicalEquipment m1, TechnicalEquipment m2) {
-//				if (m1.getId() > m2.getId()) {
-//					return 1;
-//				} else {
-//					return -1;
-//				}
-//			}
-//		});
-//		Realestate r = new Realestate();
-//		r.setRealestateName(real_name);
-//		r.setType(type);
-//		r.setCost(real_cost);
-//		r.setArea(real_area);
-//		r.setHeating(real_heating);
-//		r.setLocation(location);
-//		r.setCategory(rc);
-//		this.adverService.addRealestate(r);
-//		Realestate rs = this.adverService.findRealestate(r.getId());
-//		
-//		for (int i = 0; i < equipmentList.size(); i++) {
-//			if (equipments.get(i) == true) {
-//				rs.getTechnicalEquipments().add(equipmentList.get(i));
-//			}
-//		}
-//		this.adverService.updateRealestate(rs);
-//
-//		advert.setUser(u);
-//		advert.setRealestate(rs);
-//		Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
-//		advert.setCreated_at(d);
-//		advert.setUpdated_at(d);
-//		Date expire = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth() + 1, new java.util.Date().getDate());
-//		advert.setExpire_date(expire);
-//		this.adverService.addAdvert(advert);
+		List<TechnicalEquipment> equipmentList = new ArrayList<TechnicalEquipment>();
+		equipmentList.addAll(rc.getEquipments());
+		Collections.sort(equipmentList, new Comparator<TechnicalEquipment>() {
+			public int compare(TechnicalEquipment m1, TechnicalEquipment m2) {
+				if (m1.getId() > m2.getId()) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		});
+		Realestate r = new Realestate();
+		r.setRealestateName(real_name);
+		r.setType(type);
+		r.setCost(real_cost);
+		r.setArea(real_area);
+		r.setHeating(real_heating);
+		r.setLocation(location);
+		r.setCategory(rc);
+		r.setTechnicalEquipments(new HashSet<TechnicalEquipment>());
+		this.adverService.addRealestate(r);
+		Realestate rs = this.adverService.findRealestate(r.getId());
 		
-		return new ResponseEntity<Advert> ( HttpStatus.OK);
+		for (int i = 0; i < equipmentList.size(); i++) {
+			if (equipments.get(i) == true) {
+				rs.getTechnicalEquipments().add(equipmentList.get(i));
+			}
+		}
+		this.adverService.updateRealestate(rs);
+		Advert advert = new Advert();
+		advert.setUser(u);
+		advert.setRealestate(rs);
+		Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
+		advert.setCreated_at(d);
+		advert.setUpdated_at(d);
+		Date expire = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth() + 1, new java.util.Date().getDate());
+		advert.setExpire_date(expire);
+		advert.setIs_sold(false);
+		advert.setIs_deleted(false);
+		advert.setAdvert_rate(0);
+		advert.setContact(contact);
+		advert.setRent_sale(rent_sale);
+		advert.setDescription(description);
+		this.adverService.addAdvert(advert);
+		if(u.getAdverts()==null){
+			u.setAdverts(new HashSet<Advert>());
+		}
+		u.getAdverts().add(advert);
+		this.adverService.updateUser(u);
+		
+		return new ResponseEntity<Advert> (advert,HttpStatus.OK);
 	}
-
+//********************************************************************************************************
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Advert> updateAdvert(Advert advert, @RequestParam("real_name") String real_name,
+	public ResponseEntity<Advert> updateAdvert(@RequestParam("advert_id") int advert_id,@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
 			@RequestParam("real_type_id") int real_type_id, @RequestParam("real_cost") double real_cost,
 			@RequestParam("real_area") double real_area, @RequestParam("real_category_id") int real_category_id,
 			@RequestParam("real_heating") boolean real_heating, @RequestParam("loc_street") String loc_street,
 			@RequestParam("loc_street_number") int loc_street_number, @RequestParam("loc_region") String loc_region,
 			@RequestParam("loc_city") String loc_city, @RequestParam("loc_postal_code") int loc_postal_code,
 			@RequestParam("equipments") List<Boolean> equipments, HttpSession session) {
-//		User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("doslicmm@live.com");
+		User u = (User) session.getAttribute("logedUser");
+		u=this.adverService.findUser(u.getEmail());
+		Advert advert = this.adverService.findAdvert(advert_id);
+		
 		if(u!=null){
 			Set<Advert> userAdverts = u.getAdverts();
-			if(userAdverts==null){
-				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			if(userAdverts== null){
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			else{
 				boolean exists=false;
@@ -151,7 +166,6 @@ public class AdvertController {
 					}
 				}
 				if(exists==false){
-					System.out.println(1);
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				}
 			}

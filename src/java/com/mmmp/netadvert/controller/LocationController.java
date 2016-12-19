@@ -30,19 +30,21 @@ public class LocationController {
 	 * @param location - the mapped object from the form 
 	 * @return location object, http response 200 ok
 	 */
-	@RequestMapping(method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity<Location> newLocation(@RequestBody LocationDTO location){
-		
-		if (location.getStreet() == null || location.getStreet().equals("") || location.getCity() == null
-				|| location.getCity().equals("") || (location.getStreetNumber()+"") == null || (location.getStreetNumber()+"").equals("")) {
-			return new ResponseEntity<Location>(HttpStatus.INTERNAL_SERVER_ERROR);
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Location> newLocation(@RequestParam("city") String city,
+			@RequestParam("region") String region, @RequestParam("street") String street,
+			@RequestParam("postalCode") int postal, @RequestParam("streetNumber") int streetNumber) {
+	
+		if (street == null || street.equals("") || city == null
+				|| city.equals("") || streetNumber+"" == null || (streetNumber+"").equals("")) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		Location loc = new Location();
-		loc.setCity(location.getCity());
-		loc.setPostalCode(location.getPostalCode());
-		loc.setRegion(location.getRegion());
-		loc.setStreet(location.getStreet());
-		loc.setStreetNumber(location.getStreetNumber());
+		loc.setCity(city);
+		loc.setPostalCode(postal);
+		loc.setRegion(region);
+		loc.setStreet(street);
+		loc.setStreetNumber(streetNumber);
 		this.adverService.createLocation(loc);
 		return new ResponseEntity<Location>(loc,HttpStatus.OK);
 		
@@ -52,21 +54,23 @@ public class LocationController {
 	 * @param location - the mapped object from the form 
 	 * @return location object, http response 200 ok
 	 */
-	@RequestMapping(method=RequestMethod.PUT,consumes="application/json")
-	public ResponseEntity<Location> updateLocation(@RequestBody LocationDTO location){
+	@RequestMapping(method=RequestMethod.PUT)
+	public ResponseEntity<Location> updateLocation(@RequestParam("id") int idL,@RequestParam("city") String city,
+			@RequestParam("region") String region, @RequestParam("street") String street,
+			@RequestParam("postalCode") int postal, @RequestParam("streetNumber") int streetNumber){
 		
-		if (location.getStreet() == null || location.getStreet().equals("") || location.getCity() == null
-				|| location.getCity().equals("") || (location.getStreetNumber()+"") == null || (location.getStreetNumber()+"").equals("")) {
+		if (street == null || street.equals("") || city == null
+				|| city.equals("") || streetNumber+"" == null || (streetNumber+"").equals("")) {
 			return new ResponseEntity<Location>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		Location loc = new Location();
-		loc.setId(location.getId());
-		loc.setCity(location.getCity());
-		loc.setPostalCode(location.getPostalCode());
-		loc.setRegion(location.getRegion());
-		loc.setStreet(location.getStreet());
-		loc.setStreetNumber(location.getStreetNumber());
+		loc.setId(idL);
+		loc.setCity(city);
+		loc.setPostalCode(postal);
+		loc.setRegion(region);
+		loc.setStreet(street);
+		loc.setStreetNumber(streetNumber);
 		this.adverService.updateLocation(loc);
 		return new ResponseEntity<Location>(loc,HttpStatus.OK);
 		

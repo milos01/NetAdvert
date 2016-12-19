@@ -7,9 +7,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-/**
- * Created by milosandric on 12/12/2016.
- */
 
 @Entity
 public class Location implements Serializable {

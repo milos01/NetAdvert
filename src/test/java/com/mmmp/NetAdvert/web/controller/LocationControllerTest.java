@@ -69,24 +69,32 @@ public class LocationControllerTest {
     	l.setRegion(region);
     	l.setStreet(street);
     	l.setStreetNumber(street_number);
-    	String object = TestUtil.json(l);
     	   this.mockMvc.perform(post(URL_PREFIX)
                    .contentType(contentType)
-                   .content(object))
+                   .param("city", l.getCity())
+                   .param("region", l.getRegion())
+                   .param("street", l.getStreet())
+                   .param("postalCode", l.getPostalCode()+"")
+                   .param("streetNumber", l.getStreetNumber()+""))
                    .andExpect(status().isOk());
     	   
-        l.setCity(null);
-       	String object2 = TestUtil.json(l);
-    	   	this.mockMvc.perform(put(URL_PREFIX)
-                   .contentType(contentType)
-                   .content(object2))
-                   .andExpect(status().isInternalServerError());
+    	  this.mockMvc.perform(post(URL_PREFIX)
+    	   			.contentType(contentType)
+                    .param("city", "")
+                    .param("region", l.getRegion())
+                    .param("street", l.getStreet())
+                    .param("postalCode", l.getPostalCode()+"")
+                    .param("streetNumber", l.getStreetNumber()+""))
+    	   	.andExpect(status().isInternalServerError());
     	   	
     	l.setStreet("");
-       	String object3 = TestUtil.json(l);
-    	   	this.mockMvc.perform(put(URL_PREFIX)
-                   .contentType(contentType)
-                   .content(object3))
+    	   	this.mockMvc.perform(post(URL_PREFIX)
+    	   			.contentType(contentType)
+                    .param("city", l.getCity())
+                    .param("region", l.getRegion())
+                    .param("street", l.getStreet())
+                    .param("postalCode", l.getPostalCode()+"")
+                    .param("streetNumber", l.getStreetNumber()+""))
                    .andExpect(status().isInternalServerError());
     }
     
@@ -101,25 +109,36 @@ public class LocationControllerTest {
     	l.setRegion(region);
     	l.setStreet(street);
     	l.setStreetNumber(street_number);
-    	String object = TestUtil.json(l);
     	   this.mockMvc.perform(put(URL_PREFIX)
-                   .contentType(contentType)
-                   .content(object))
+    			   .contentType(contentType)
+    			   .param("id", l.getId()+"")
+                   .param("city", l.getCity())
+                   .param("region", l.getRegion())
+                   .param("street", l.getStreet())
+                   .param("postalCode", l.getPostalCode()+"")
+                   .param("streetNumber", l.getStreetNumber()+""))
                    .andExpect(status().isOk());
     	   
     	   
-        l.setCity(null);
-    	String object2 = TestUtil.json(l);
  	   	this.mockMvc.perform(put(URL_PREFIX)
-                .contentType(contentType)
-                .content(object2))
+ 	   		.contentType(contentType)
+ 	   		.param("id", l.getId()+"")
+            .param("city", "")
+            .param("region", l.getRegion())
+            .param("street", l.getStreet())
+            .param("postalCode", l.getPostalCode()+"")
+            .param("streetNumber", l.getStreetNumber()+""))
                 .andExpect(status().isInternalServerError());
  	   	
  	   	l.setStreet("");
-    	String object3 = TestUtil.json(l);
  	   	this.mockMvc.perform(put(URL_PREFIX)
-                .contentType(contentType)
-                .content(object3))
+ 	   		.contentType(contentType)
+ 	   		.param("id", l.getId()+"")
+            .param("city", l.getCity())
+            .param("region", l.getRegion())
+            .param("street", l.getStreet())
+            .param("postalCode", l.getPostalCode()+"")
+            .param("streetNumber", l.getStreetNumber()+""))
                 .andExpect(status().isInternalServerError());
  	   	
     }

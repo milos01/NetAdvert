@@ -42,7 +42,26 @@ public class AdvertController {
 	public void setAdverService(AdverService adverService) {
 		this.adverService = adverService;
 	}
-
+	/**
+	 * 
+	 * @param contact
+	 * @param description
+	 * @param rent_sale
+	 * @param real_name
+	 * @param real_type_id
+	 * @param real_cost
+	 * @param real_area
+	 * @param real_category_id
+	 * @param real_heating
+	 * @param loc_street
+	 * @param loc_street_number
+	 * @param loc_region
+	 * @param loc_city
+	 * @param loc_postal_code
+	 * @param equipments
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Advert> createAdvert(@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
 			@RequestParam("real_type_id") int real_type_id, @RequestParam("real_cost") double real_cost,
@@ -142,7 +161,28 @@ public class AdvertController {
 		
 		return new ResponseEntity<Advert> (advert,HttpStatus.OK);
 	}
-//********************************************************************************************************
+
+	/**
+	 * 
+	 * @param advert_id
+	 * @param contact
+	 * @param description
+	 * @param rent_sale
+	 * @param real_name
+	 * @param real_type_id
+	 * @param real_cost
+	 * @param real_area
+	 * @param real_category_id
+	 * @param real_heating
+	 * @param loc_street
+	 * @param loc_street_number
+	 * @param loc_region
+	 * @param loc_city
+	 * @param loc_postal_code
+	 * @param equipments
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Advert> updateAdvert(@RequestParam("advert_id") int advert_id,@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
 			@RequestParam("real_type_id") int real_type_id, @RequestParam("real_cost") double real_cost,
@@ -256,8 +296,8 @@ public class AdvertController {
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAdvert(@PathVariable("id") int id, HttpSession session){
-//		User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("doslicmm@live.com");
+		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser(u.getEmail());
 		if(u!=null){
 			Set<Advert> userAdverts = u.getAdverts();
 			if(userAdverts==null){

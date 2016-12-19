@@ -76,7 +76,7 @@ public class ImageControllerTest {
         r.setName("Regular user");
 
         User logUser = new User();
-        logUser.setId(8);
+        logUser.setId(2);
         logUser.setEmail("milossm94@hotmail.com");
         logUser.setLast_name("Milos");
         logUser.setLast_name("Obradovic");

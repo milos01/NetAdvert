@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class AdvertConstants {
 
-	public static final int advert_id = 4;
+	public static final int advert_id = 1;
 	
 	public static final Date created_at = new Date(123455);
 	
@@ -16,7 +16,7 @@ public class AdvertConstants {
 	
 	public static final String contact = "060/123-456";
 	
-	public static final String description = "Na kraj sela zuta kuca";
+	public static final String description = "description";
 	
 	public static final Boolean is_sold = false;
 	
@@ -24,5 +24,5 @@ public class AdvertConstants {
 	
 	public static final Boolean rent_sale = false;
 	
-	public static final int db_advert_count = 3;
+	public static final int db_advert_count = 1;
 }

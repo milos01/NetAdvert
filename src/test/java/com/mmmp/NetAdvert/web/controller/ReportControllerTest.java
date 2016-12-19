@@ -8,6 +8,9 @@ import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
 import static com.mmmp.NetAdvert.constants.ReportConstants.db_count_reports;
 import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
 import static com.mmmp.NetAdvert.constants.ReportConstants.text;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_id;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -82,17 +85,17 @@ public class ReportControllerTest {
 	@Rollback(true)
 	public void testNewReport() throws Exception {
 		Role r = new Role();
-		r.setId(2);
-		r.setName("Regular user");
+        r.setId(2);
+        r.setName("Regular user");
 
-		User u = new User();
-		u.setId(2);
-		u.setEmail("doslicmm@live.com");
-		u.setFirst_name("Mladen");
-		u.setLast_name("Doslic");
-		u.setPassword("123");
-		u.setUser_rate(0);
-		u.setRole(r);
+        User u = new User();
+        u.setId(2);
+        u.setEmail("milossm94@hotmail.com");
+        u.setLast_name("Milos");
+        u.setLast_name("Obradovic");
+        u.setPassword("pass");
+        u.setUser_rate(0);
+        u.setRole(r);
 
 		RealestateCategory rc = new RealestateCategory();
 		rc.setId(3);
@@ -118,11 +121,11 @@ public class ReportControllerTest {
 		rls.setLocation(l);
 
 		Advert a = new Advert();
-		a.setId(4);
+		a.setId(advert_id);
 		a.setUser(u);
 		a.setAdvert_rate(2);
-		a.setContact("sss");
-		a.setDescription("haha");
+		a.setContact(contact);
+		a.setDescription(description);
 		a.setCreated_at(new Date(123455));
 		a.setExpire_date(new Date(123455));
 		a.setIs_deleted(false);
@@ -219,7 +222,7 @@ public class ReportControllerTest {
 		this.mockMvc.perform(put(URL_PREFIX+"/update")
 				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object2)).andExpect(status().isInternalServerError());
 
-		rep.setId(1);
+		rep.setId(3);
 		rep.setVerified(1);
 		String object3 = TestUtil.json(rep);
 		this.mockMvc.perform(put(URL_PREFIX+"/update")

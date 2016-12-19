@@ -115,12 +115,12 @@ public class AdvertControllerTest {
         r.setName("Regular user");
 
         User logUser = new User();
-        logUser.setId(3);
-        logUser.setEmail("doslicmm@live.com");
-        logUser.setLast_name("Mladen");
-        logUser.setLast_name("Doslic");
-        logUser.setPassword("123");
-        logUser.setUser_rate(1);
+        logUser.setId(2);
+        logUser.setEmail("milossm94@hotmail.com");
+        logUser.setLast_name("Milos");
+        logUser.setLast_name("Obradovic");
+        logUser.setPassword("pass");
+        logUser.setUser_rate(0);
         logUser.setRole(r);
         
 		RealestateCategory rc = new RealestateCategory();
@@ -166,12 +166,13 @@ public class AdvertControllerTest {
 		.perform(put(URL_PREFIX +"/"+ 1000+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object))
 				.andExpect(status().isBadRequest());
         
+		logUser.setId(4);
 		this.mockMvc
 		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object))
 				.andExpect(status().isOk());
 		
 		a.setIs_sold(true);
-		logUser.setId(3);
+		logUser.setId(2);
 		
 		String object2 = TestUtil.json(a);
 		this.mockMvc
@@ -197,44 +198,19 @@ public class AdvertControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testDeleteAdvert() throws Exception{
-		
-		Role r = new Role();
-		r.setId(2);
-	    r.setName("Regular user");
-		
-        User logUser = new User();
-        logUser.setId(2);
-        logUser.setEmail("doslicmm@live.com");
-        logUser.setLast_name("Mladen");
-        logUser.setLast_name("Doslic");
-        logUser.setPassword("123");
-        logUser.setUser_rate(1);
-        logUser.setRole(r);
-        
-		mockMvc
-		.perform(delete(URL_PREFIX + "/" + 50).sessionAttr("logedUser", logUser).contentType(contentType)).andExpect(status().isInternalServerError());
-		
-		mockMvc
-		.perform(delete(URL_PREFIX + "/" + advert_id).sessionAttr("logedUser", logUser).contentType(contentType)).andExpect(status().isOk());
-	}
-	
-	@Test
-	@Transactional
-	@Rollback(true)
 	public void testCreateAdvert() throws Exception{
 		Role r = new Role();
 		r.setId(2);
 		r.setName("Regular user");
 
-		User u = new User();
-		u.setId(2);
-		u.setEmail("doslicmm@live.com");
-		u.setFirst_name("Mladen");
-		u.setLast_name("Doslic");
-		u.setPassword("123");
-		u.setUser_rate(0);
-		u.setRole(r);
+        User logUser = new User();
+        logUser.setId(3);
+        logUser.setEmail("milossm94@hotmail.com");
+        logUser.setLast_name("Milos");
+        logUser.setLast_name("Obradovic");
+        logUser.setPassword("pass");
+        logUser.setUser_rate(0);
+        logUser.setRole(r);
 
 		RealestateCategory rc = new RealestateCategory();
 		rc.setId(1);
@@ -260,7 +236,7 @@ public class AdvertControllerTest {
 		rls.setLocation(l);
 
 		Advert a = new Advert();
-		a.setUser(u);
+		a.setUser(logUser);
 		a.setAdvert_rate(advert_rate);
 		a.setContact(contact);
 		a.setDescription(description);
@@ -273,7 +249,7 @@ public class AdvertControllerTest {
 		String object = TestUtil.json(a);
 
 		this.mockMvc
-				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object)
+				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object)
 						.param("contact", a.getContact())
 						.param("description", a.getDescription())
 						.param("rent_sale",false+"")
@@ -300,7 +276,7 @@ public class AdvertControllerTest {
 		rc = null;
 		String object2 = TestUtil.json(a);
 		this.mockMvc
-				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object2)
+				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object2)
 						.param("contact", a.getContact())
 						.param("description", a.getDescription())
 						.param("rent_sale",false+"")
@@ -324,7 +300,7 @@ public class AdvertControllerTest {
 		
 		
 		this.mockMvc
-		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object2)
+		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object2)
 				.param("contact", a.getContact())
 				.param("description", a.getDescription())
 				.param("rent_sale",false+"")
@@ -352,7 +328,7 @@ public class AdvertControllerTest {
 		rc.setCategoryName("Lot");
 		String object3 = TestUtil.json(a);
 		this.mockMvc
-				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object3)
+				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object3)
 						.param("contact", a.getContact())
 						.param("description", a.getDescription())
 						.param("rent_sale",false+"")
@@ -382,7 +358,7 @@ public class AdvertControllerTest {
 		String object4 = TestUtil.json(a);
 		
 		this.mockMvc
-		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object4)
+		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object4)
 				.param("contact", a.getContact())
 				.param("description", a.getDescription())
 				.param("rent_sale",false+"")
@@ -408,20 +384,20 @@ public class AdvertControllerTest {
 	
 	@Test
 	@Transactional
-	@Rollback(false)
+	@Rollback(true)
 	public void testUpdateAdvert() throws Exception{
 		Role r = new Role();
 		r.setId(2);
 		r.setName("Regular user");
 
-		User u = new User();
-		u.setId(2);
-		u.setEmail("doslicmm@live.com");
-		u.setFirst_name("Mladen");
-		u.setLast_name("Doslic");
-		u.setPassword("123");
-		u.setUser_rate(0);
-		u.setRole(r);
+        User u = new User();
+        u.setId(3);
+        u.setEmail("milossm94@hotmail.com");
+        u.setLast_name("Milos");
+        u.setLast_name("Obradovic");
+        u.setPassword("pass");
+        u.setUser_rate(0);
+        u.setRole(r);
 
 		RealestateCategory rc = new RealestateCategory();
 		rc.setId(1);
@@ -488,7 +464,7 @@ public class AdvertControllerTest {
 	
 		String object2 = TestUtil.json(a);
 		u.setId(1);
-		u.setEmail("milossm94@hotmail.com");
+		u.setEmail("milan@gmail.com");
 		this.mockMvc
 				.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object2)
 						.param("advert_id", a.getId()+"")
@@ -614,6 +590,31 @@ public class AdvertControllerTest {
 		.andExpect(status().isBadRequest());
 	}
 	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDeleteAdvert() throws Exception{
+		
+		Role r = new Role();
+		r.setId(2);
+	    r.setName("Regular user");
+		
+        User logUser = new User();
+        logUser.setId(2);
+        logUser.setEmail("milossm94@hotmail.com");
+        logUser.setLast_name("Milos");
+        logUser.setLast_name("Obradovic");
+        logUser.setPassword("pass");
+        logUser.setUser_rate(0);
+        logUser.setRole(r);
+        
+    	mockMvc
+		.perform(delete(URL_PREFIX + "/" + 50).sessionAttr("logedUser", logUser).contentType(contentType)).andExpect(status().isInternalServerError());
+		
+        
+    	mockMvc
+		.perform(delete(URL_PREFIX + "/" + advert_id).sessionAttr("logedUser", logUser).contentType(contentType)).andExpect(status().isOk());
+	}
 	
     public static class CustomMockMvcResultHandlers {
 

@@ -7,6 +7,8 @@ import static com.mmmp.NetAdvert.constants.LocationConstants.street;
 import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -74,17 +76,17 @@ public class CommentControllerTest {
 	@Rollback(true)
 	public void testCreateComment() throws Exception{
 		Role r = new Role();
-		r.setId(2);
-		r.setName("Regular user");
+        r.setId(2);
+        r.setName("Regular user");
 
-		User u = new User();
-		u.setId(2);
-		u.setEmail("doslicmm@live.com");
-		u.setFirst_name("Mladen");
-		u.setLast_name("Doslic");
-		u.setPassword("123");
-		u.setUser_rate(0);
-		u.setRole(r);
+        User u = new User();
+        u.setId(2);
+        u.setEmail("milossm94@hotmail.com");
+        u.setLast_name("Milos");
+        u.setLast_name("Obradovic");
+        u.setPassword("pass");
+        u.setUser_rate(0);
+        u.setRole(r);
 
 		RealestateCategory rc = new RealestateCategory();
 		rc.setId(3);
@@ -110,11 +112,11 @@ public class CommentControllerTest {
 		rls.setLocation(l);
 
 		Advert a = new Advert();
-		a.setId(4);
+		a.setId(advert_id);
 		a.setUser(u);
 		a.setAdvert_rate(2);
-		a.setContact("sss");
-		a.setDescription("haha");
+		a.setContact(contact);
+		a.setDescription(description);
 		a.setCreated_at(new Date(123455));
 		a.setExpire_date(new Date(123455));
 		a.setIs_deleted(false);
@@ -152,12 +154,12 @@ public class CommentControllerTest {
 	
 	@Test
 	public void testFindComments() throws Exception {
+		mockMvc.perform(get(URL_PREFIX + "/advert/"+999)).andExpect(status().isBadRequest());
+		
 		mockMvc.perform(get(URL_PREFIX + "/advert/"+advert_id)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$", hasSize(db_comments_count)))
 				.andExpect(jsonPath("$.[*].id").value(hasItem(comment_id)))
 				.andExpect(jsonPath("$.[*].text").value(hasItem(comment_text)));
-		
-		mockMvc.perform(get(URL_PREFIX + "/advert/"+999)).andExpect(status().isBadRequest());
 	}
 	
 	@Test

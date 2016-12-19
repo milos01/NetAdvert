@@ -61,7 +61,7 @@ public class LocationControllerTest {
     
     @Test
     @Transactional
-    @Rollback(false)
+    @Rollback(true)
     public void testNewLocation() throws Exception {
     	Location l = new Location();
     	l.setCity(city);

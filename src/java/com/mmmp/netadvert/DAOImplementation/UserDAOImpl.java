@@ -52,9 +52,10 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public List<User> getAllUsers() {
-		Session session = this.sessionFactory.getCurrentSession();
 
-		List<User> userList = session.createCriteria(User.class).list();
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User");
+		List<User> userList = query.list();
         return userList;
 	}
 

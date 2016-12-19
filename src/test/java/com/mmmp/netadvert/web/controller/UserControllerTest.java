@@ -68,7 +68,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetAllStudents() throws Exception {
+    public void testGetAllUsers() throws Exception {
         mockMvc.perform(get(URL_PREFIX + "/allusers"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -190,14 +190,14 @@ public class UserControllerTest {
     @Rollback(true)
     public void updateAdvertExpireDateTest() throws Exception {
         Role r = new Role();
-        r.setId(1);
-        r.setName("Admin");
+        r.setId(2);
+        r.setName("Regular user");
 
         User logUser = new User();
-        logUser.setId(1);
-        logUser.setEmail("milosa942@gmail.com");
+        logUser.setId(2);
+        logUser.setEmail("milossm94@hotmail.com");
         logUser.setLast_name("Milos");
-        logUser.setLast_name("Andric");
+        logUser.setLast_name("Obradovic");
         logUser.setPassword("pass");
         logUser.setUser_rate(0);
         logUser.setRole(r);

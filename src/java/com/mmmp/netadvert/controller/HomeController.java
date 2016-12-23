@@ -12,6 +12,8 @@ import com.mmmp.netadvert.service.AdverService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.Principal;
+
 /**
  * Handles requests for the application home page.
  */
@@ -37,5 +39,7 @@ public class HomeController {
 		return "/core/index.html";
 
 	}
+
+
 	
 }

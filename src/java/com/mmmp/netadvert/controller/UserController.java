@@ -1,4 +1,5 @@
 package com.mmmp.netadvert.controller;
+import java.security.Principal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,9 @@ import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.service.AdverService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpSession;
  * Created by milosandric on 19/11/2016.
  */
 
+
 @RestController
 public class UserController {
     private AdverService adverService;
@@ -30,6 +34,11 @@ public class UserController {
         this.adverService = ps;
     }
 
+
+    @RequestMapping(value="/api/userr", method=RequestMethod.GET)
+    public Principal user(Principal user) {
+        return user;
+    }
     /**
      * This method is part of user rest service. Method will register user with params sent form form. By default user role will
      * be set to 'Regular user'. If role was not found method will response with 404 error and if user can not be registered method will response
@@ -38,7 +47,7 @@ public class UserController {
      * @return  Http response 200 OK
      * @see User
      */
-    @RequestMapping(value="/api/register", method=RequestMethod.POST)
+    @RequestMapping(value="/api/register",consumes = "application/json")
     public  ResponseEntity<Void> registerUser(@RequestBody UserDTO user){
         Role regular = this.adverService.findRole(2);
         if(regular != null) {
@@ -97,31 +106,31 @@ public class UserController {
      * @return JSON formatted user updated object
      * @see User
      */
-    @RequestMapping(value="/api/user", method=RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@RequestBody UserDTO user, HttpSession session){
-
-        User luser = (User) session.getAttribute("logedUser");
-
-        if (luser != null) {
-            luser.setEmail(user.getEmail());
-            luser.setFirst_name(user.getFirst_name());
-            luser.setLast_name(user.getLast_name());
-            luser.setPassword(user.getPassword());
-            luser.setUser_rate(user.getUser_rate());
-
-            Role role = (Role)this.adverService.findRole(1);
-            try {
-                this.adverService.updateUser(luser);
-                return new ResponseEntity<User>(luser, HttpStatus.OK);
-            }catch(HibernateException e){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-
-
-        }else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @RequestMapping(value="/api/user", method=RequestMethod.PUT)
+//    public ResponseEntity<User> updateUser(@RequestBody UserDTO user, HttpSession session){
+//
+//        User luser = (User) session.getAttribute("logedUser");
+//
+//        if (luser != null) {
+//            luser.setEmail(user.getEmail());
+//            luser.setFirst_name(user.getFirst_name());
+//            luser.setLast_name(user.getLast_name());
+//            luser.setPassword(user.getPassword());
+//            luser.setUser_rate(user.getUser_rate());
+//
+//            Role role = (Role)this.adverService.findRole(1);
+//            try {
+//                this.adverService.updateUser(luser);
+//                return new ResponseEntity<User>(luser, HttpStatus.OK);
+//            }catch(HibernateException e){
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//            }
+//
+//
+//        }else {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     /**
      * This method is part of user rest service. Method will return list of all users registrated on application.
@@ -209,6 +218,8 @@ public class UserController {
             else{
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         this.adverService.updateAdvert(a);
     	return new ResponseEntity<Advert>(a, HttpStatus.OK);

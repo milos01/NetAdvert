@@ -39,6 +39,7 @@ public class User implements Serializable {
 	private String email;
 
 	@NotNull
+	@JsonBackReference
 	private String password;
 	
 	@OneToOne(targetEntity = Role.class,fetch=FetchType.EAGER)

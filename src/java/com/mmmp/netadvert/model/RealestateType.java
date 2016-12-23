@@ -13,8 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="realestate_type")
@@ -66,6 +64,4 @@ public class RealestateType {
 	public void setRealestates(Set<Realestate> realestates) {
 		this.realestates = realestates;
 	}
-	
-
 }

@@ -99,10 +99,12 @@
 
     </div>
 </div>
+
+
 <!--    Login Form -->
 <div class="container" style="width: 500px; color: black" novalidate>
     <div
-            style="width: 500px; font-size: 35px; text-align: center; margin-top: 21vh;">
+            style="width: 500px; font-size: 35px; text-align: center; margin-top: 37vh;">
 
         <p style="margin-top: -30px; font-family: 'Lobster Two', cursive;">Net Advert</p>
         <form role="form" ng-submit="login()" novalidate>
@@ -113,7 +115,7 @@
                        placeholder="Email"
                        style="width: 300px; height: 45px; margin: auto auto; margin-top: 35px;"
                        ng-model-options="{ updateOn: 'blur' }"
-                       email-available name="username" ng-model="credentials.email" required>
+                       email-available name="username" ng-model="credentials.username" required>
             </div>
             <p ng-show="lognForm.loginEmail.$error.required && !lognForm.loginEmail.$pristine"
                style="font-size:17px;position:absolute;margin-left:-58px;color:#a94442;margin-top:-48px">Email is
@@ -132,6 +134,7 @@
                        style="width: 300px; height: 45px; margin: auto auto; margin-top: 15px;"
                        ng-model-options="{ updateOn: 'blur' }" name="password" ng-model="credentials.password" required>
             </div>
+            <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
             <p ng-show="lognForm.loginPassword.$invalid && !lognForm.loginPassword.$pristine"
                style="font-size:17px;position:absolute;margin-left:-90px;color:#a94442;margin-top:-48px">Password is
                 required.</p>

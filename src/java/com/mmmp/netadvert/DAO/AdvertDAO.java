@@ -2,6 +2,7 @@ package com.mmmp.netadvert.DAO;
 
 import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.model.Advert;
+import com.mmmp.netadvert.model.Picture;
 import com.mmmp.netadvert.model.TechnicalEquipment;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface AdvertDAO {
 	public List<Advert> allAdverts();
 	
 	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech);
+
 }

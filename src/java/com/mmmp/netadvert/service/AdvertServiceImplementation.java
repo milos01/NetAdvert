@@ -383,6 +383,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.advertDAO.searchAdverts(search, tech);
 	}
 
+	@Override
+	@Transactional
+	public Picture getAdvertMainPicture(int id) {
+		return this.pictureDAO.getAdvertMainPicture(id);
+	}
 
 
 }

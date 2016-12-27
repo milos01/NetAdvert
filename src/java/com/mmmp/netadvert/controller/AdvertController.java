@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.mmmp.netadvert.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mmmp.netadvert.DTO.SearchDTO;
-import com.mmmp.netadvert.model.Advert;
-import com.mmmp.netadvert.model.Location;
-import com.mmmp.netadvert.model.Realestate;
-import com.mmmp.netadvert.model.RealestateCategory;
-import com.mmmp.netadvert.model.RealestateType;
-import com.mmmp.netadvert.model.TechnicalEquipment;
-import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.service.AdverService;
 
 @RestController
@@ -358,7 +352,7 @@ public class AdvertController {
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Advert>> getAllAdverts(HttpSession session){
+	public ResponseEntity<List<Advert>> getAllAdverts(){
 		List<Advert> advertList = this.adverService.allAdverts();
 		for(int i = advertList.size()-1; i>=0; i--){
 			if(advertList.get(i).getIs_deleted()==true){
@@ -366,6 +360,16 @@ public class AdvertController {
 			}
 		}
 		return new ResponseEntity<List<Advert>>(advertList, HttpStatus.OK);
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	@RequestMapping(value="/{id}/mainPicture", method=RequestMethod.GET)
+	public ResponseEntity<Picture> getAdvertMainPicture(@PathVariable("id") int id){
+		Picture pic = this.adverService.getAdvertMainPicture(id);
+		return new ResponseEntity<Picture>(pic, HttpStatus.OK);
 	}
 	
 	/**

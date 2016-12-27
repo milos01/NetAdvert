@@ -51,7 +51,7 @@ public class Realestate implements Serializable {
     private Set<TechnicalEquipment> technicalEquipments;
 
     @JsonBackReference
-    @OneToMany(mappedBy="realestate", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="realestate", fetch=FetchType.LAZY)
     private Set<Picture> pictures;
 
     @JsonBackReference

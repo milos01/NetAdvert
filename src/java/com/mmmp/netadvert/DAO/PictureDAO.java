@@ -12,4 +12,6 @@ public interface PictureDAO {
 	
 	public Picture findPictureByName(String name);
 
+	public Picture getAdvertMainPicture(int id);
+
 }

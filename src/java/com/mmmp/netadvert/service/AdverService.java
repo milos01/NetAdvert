@@ -116,4 +116,6 @@ public interface AdverService {
 	public void deleteUserRating(UserRating ur);
 	
 	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech);
+
+    public Picture getAdvertMainPicture(int id);
 }

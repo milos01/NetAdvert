@@ -11,8 +11,8 @@
         $stateProvider
             .state('login', {
                 url: "/",
-                templateUrl: "core/views/home.html"
-                // controller: 'navigation'
+                templateUrl: "core/views/home.html",
+                controller: 'home'
             })
             .state('test', {
                 url: "/test",

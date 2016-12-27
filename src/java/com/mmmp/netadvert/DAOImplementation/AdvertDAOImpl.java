@@ -2,6 +2,7 @@ package com.mmmp.netadvert.DAOImplementation;
 
 import java.util.List;
 
+import com.mmmp.netadvert.model.Picture;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -80,5 +81,7 @@ public class AdvertDAOImpl implements AdvertDAO {
 		Query query = session.createQuery("from Advert a");
 		return null;
 	}
+
+
 
 }

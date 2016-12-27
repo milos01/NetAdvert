@@ -5,8 +5,9 @@
         'ui.bootstrap',
         'lodash',
         'ngAnimate']);
-	app.config(	function($stateProvider, $httpProvider) {
+	app.config(	function($stateProvider, $urlRouterProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+        $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('login', {
                 url: "/",
@@ -17,8 +18,6 @@
                 url: "/test",
                 templateUrl: "core/views/main.html"
             })
-
-
     })
     .run(function(Restangular, $log, $rootScope, $state) {
         $rootScope.state = $state;

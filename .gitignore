@@ -24,3 +24,16 @@ nbdist/
 .nb-gradle/
 src/main/resources/static/bower_components
 src/main/resources/static/node_modules
+src/main/resources/static/css/
+src/main/resources/static/font-awesome/
+src/main/resources/static/fonts/
+src/main/resources/static/img/
+src/main/resources/static/js/
+
+src/main/resources/static/core/animate.css
+src/main/resources/static/core/bootstrap.css
+src/main/resources/static/core/bootstrap.css.map
+src/main/resources/static/core/bootstrap.min.css
+src/main/resources/static/core/bootstrap.min.css.map
+src/main/resources/static/core/patterns/
+src/main/resources/static/core/plugins/

@@ -1,21 +1,40 @@
 (function(angular){
-	app = angular.module('NetAdvertApp', ["ngRoute"]);
-	app.config(	function($routeProvider, $httpProvider) {
+	app = angular.module('NetAdvertApp', ['ngResource',
+        'ui.router',
+        'restangular',
+        'ui.bootstrap',
+        'lodash',
+        'ngAnimate']);
+	app.config(	function($stateProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-		$routeProvider
-			.when('/', {
-                templateUrl: 'core/views/login.html',
-	            controller: 'navigation'
-	      })
-	      .when('/home', {
-              templateUrl: 'core/views/home.html',
-              controller: 'home'
+        $stateProvider
+            .state('login', {
+                url: "/",
+                templateUrl: "core/views/home.html"
+                // controller: 'navigation'
+            })
+            .state('test', {
+                url: "/test",
+                templateUrl: "core/views/main.html"
+            })
 
-	      })
-	      .otherwise({
-	        redirectTo: '/'
-	      });
-		});
+
+    })
+    .run(function(Restangular, $log, $rootScope, $state) {
+        $rootScope.state = $state;
+
+        Restangular.setBaseUrl("api");
+        Restangular.setErrorInterceptor(function(response) {
+            if (response.status === 500) {
+                $log.info("internal server error");
+                return true;
+            }
+            return true; // greska nije obradjena
+        });
+    });
+
+
+
 	app.controller('navigation', function($rootScope, $scope, $http, $location){
 		var authenticate = function(credentials, callback) {
 
@@ -26,7 +45,7 @@
             $http.get('http://localhost:8080/api/userr', {headers : headers}).then(function(response){
                 if (response) {
                     $rootScope.authenticated = true;
-                    $location.path("/home");
+                    $location.path("/");
                 } else {
                     $rootScope.authenticated = false;
                     console.log("not logged");
@@ -45,7 +64,7 @@
             authenticate($scope.credentials, function() {
 
                 if ($rootScope.authenticated) {
-                    $location.path("/home");
+
 
                 } else {
                     $location.path("/");
@@ -56,9 +75,27 @@
 
 	});
 
-    app.controller('home', function($rootScope, $location){
-        if(!$rootScope.authenticated){
-            $location.path("/");
+	app.controller('testCtr', function ($scope) {
+        $scope.testfx = function(){
+            alert('radi');
         }
+    })
+    app.directive('myCustomer', function($rootScope, $log) {
+        return {
+            link: function (rootScope, scope) {
+                rootScope.$watch('authenticated', function(newval, oldval) {
+                    $log.info(newval + " " + oldval);
+
+                    if(newval){
+                        $rootScope.testt = 'u';
+                    }else{
+                        $rootScope.testt = 'u+';
+                    }
+                })
+            },
+            template: '<div>{{testt}}</div>'
+        };
     });
+
+
 })(angular);

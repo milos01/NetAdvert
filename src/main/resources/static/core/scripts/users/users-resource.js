@@ -10,6 +10,15 @@
                 return entries;
             });
         };
+
+        retVal.updateUser = function(email, first_name, last_name) {
+            console.log(first_name+" "+last_name);
+            var p = Restangular.one('user');
+            p.first_name = first_name;
+            p.last_name = last_name;
+            p.email = email;
+            p.put().then(function(response) {});
+        };
         return retVal;
     })
 })(angular);

@@ -56,9 +56,12 @@
                 <ul class="nav navbar-nav">
                     <li><a ng-href="/#!/test">Test</a></li>
                 </ul>
+                <ul class="nav navbar-nav" ng-show="authenticated">
+                    <li><a ng-href="/#!/profile" ng-cloak>{{user.fname}} {{user.lname}}</a></li>
+                </ul>
                 <div class="ng-cloak">
                 <div class="btn-group" uib-dropdown dropdown-append-to-body ng-show="!authenticated" >
-                    <button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle style="margin-top: 6px;">
+                    <button id="btn-append-to-body" type="button" class="btn btn-primary" ng-cloak uib-dropdown-toggle style="margin-top: 6px;">
                         Login<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu  ng-controller="navigation" style="width: 300px; text-align: center">
@@ -119,7 +122,7 @@
 
 <body ng-app="NetAdvertApp">
 
-<div class="container" style="width: 80%;" ui-view></div>
+<div class="container" style="width: 80%;" ui-view="mainView"></div>
  <!--Main view-->
 <!--<div class="row border-bottom white-bg">-->
     <!--<nav class="navbar navbar-static-top ng-cloak" role="navigation" style="margin-bottom: 0px" ng-cloak>-->
@@ -265,6 +268,7 @@
 <!-- NetAdvert js -->
 <script src="core/scripts/app.js"></script>
 <script src="core/scripts/home/home-controller.js"></script>
+<script src="core/scripts/profile/profile-controller.js"></script>
 <script src="core/scripts/users/users-resource.js"></script>
 <script src="core/scripts/advert/advert-resource.js"></script>
 <script src="core/scripts/picture/picture-resource.js"></script>

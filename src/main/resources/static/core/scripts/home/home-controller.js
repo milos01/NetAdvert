@@ -7,6 +7,7 @@
             $location.path("/");
         }
 
+
         UsersResource.getStudents().then(function (items) {
             $scope.students = items;
         })

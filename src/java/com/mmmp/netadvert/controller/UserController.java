@@ -106,31 +106,23 @@ public class UserController {
      * @return JSON formatted user updated object
      * @see User
      */
-//    @RequestMapping(value="/api/user", method=RequestMethod.PUT)
-//    public ResponseEntity<User> updateUser(@RequestBody UserDTO user, HttpSession session){
-//
-//        User luser = (User) session.getAttribute("logedUser");
-//
-//        if (luser != null) {
-//            luser.setEmail(user.getEmail());
-//            luser.setFirst_name(user.getFirst_name());
-//            luser.setLast_name(user.getLast_name());
-//            luser.setPassword(user.getPassword());
-//            luser.setUser_rate(user.getUser_rate());
-//
-//            Role role = (Role)this.adverService.findRole(1);
-//            try {
-//                this.adverService.updateUser(luser);
-//                return new ResponseEntity<User>(luser, HttpStatus.OK);
-//            }catch(HibernateException e){
-//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//            }
-//
-//
-//        }else {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @RequestMapping(value="/api/user", method=RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO user, HttpSession session){
+        System.err.print(user.getFirst_name()+" "+user.getLast_name() + user.getEmail());
+            User us = (User)this.adverService.findUser(user.getEmail());
+            if (user != null) {
+                us.setFirst_name(user.getFirst_name());
+                us.setLast_name(user.getLast_name());
+                Role role = (Role) this.adverService.findRole(1);
+                try {
+                    this.adverService.updateUser(us);
+                    return new ResponseEntity<User>(us, HttpStatus.OK);
+                } catch (HibernateException e) {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            }
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
 
     /**
      * This method is part of user rest service. Method will return list of all users registrated on application.
@@ -144,6 +136,16 @@ public class UserController {
         return new ResponseEntity<List<User>>(users,HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param email
+     * @return
+     */
+    @RequestMapping(value="/api/getuser", method=RequestMethod.GET)
+    public ResponseEntity<User> getUser(@RequestParam (value="email") String email){
+        User user = (User)this.adverService.findUser(email);
+        return new ResponseEntity<User>(user,HttpStatus.OK);
+    }
     /**
      * This method is part of user rest service. Method will return user who is logged on application.
      * @param session

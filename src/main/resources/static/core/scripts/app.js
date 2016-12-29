@@ -11,13 +11,33 @@
         $stateProvider
             .state('login', {
                 url: "/",
-                templateUrl: "core/views/home.html",
-                controller: 'home'
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/home.html",
+                        controller: 'home'
+                    }
+                }
+
             })
-            .state('test', {
-                url: "/test",
-                templateUrl: "core/views/main.html"
+            .state('profile', {
+                url: "/profile",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/profile.html"
+                    }
+                }
             })
+            .state('creds', {
+                parent: 'profile',
+                views: {
+                    'profileView@profile': {
+                        templateUrl: "core/views/creds.html",
+                        controller: "usercred"
+                    }
+                }
+
+            })
+
     })
     .run(function(Restangular, $log, $rootScope, $state) {
         $rootScope.state = $state;
@@ -42,15 +62,26 @@
                 } : {};
 
             $http.get('http://localhost:8080/api/userr', {headers : headers}).then(function(response){
+                console.log(response.data);
                 if (response) {
+                    $http.get('http://localhost:8080/api/getuser', {params: {email : response.data.name}}).then(function(response){
+                        $rootScope.user = {
+                            fname :response.data.first_name,
+                            lname :response.data.last_name,
+                            email :response.data.email
+                        }
+                    });
+
                     $rootScope.authenticated = true;
                     $location.path("/");
                 } else {
+                    $rootScope.user = {}
                     $rootScope.authenticated = false;
                     console.log("not logged");
                 }
                 callback && callback();
             }, function() {
+                $rootScope.user = {}
                 $rootScope.authenticated = false;
                 callback && callback();
             });

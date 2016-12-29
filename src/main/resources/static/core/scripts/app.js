@@ -23,7 +23,8 @@
                 url: "/profile",
                 views: {
                     'mainView@': {
-                        templateUrl: "core/views/profile.html"
+                        templateUrl: "core/views/profile.html",
+                        controller: 'profile'
                     }
                 }
             })
@@ -33,6 +34,15 @@
                     'profileView@profile': {
                         templateUrl: "core/views/creds.html",
                         controller: "usercred"
+                    }
+                }
+
+            })
+            .state('creds2', {
+                parent: 'profile',
+                views: {
+                    'profileView@profile': {
+                        templateUrl: "core/views/creds2.html"
                     }
                 }
 

@@ -19,6 +19,13 @@
             p.email = email;
             p.put().then(function(response) {});
         };
+        
+        retVal.getUserAdverts =  function (uid) {
+            return Restangular.one("user", uid).
+            getList("adverts").then(function(entries) {
+                return entries;
+            });
+        }
         return retVal;
     })
 })(angular);

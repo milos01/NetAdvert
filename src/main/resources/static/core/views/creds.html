@@ -37,3 +37,59 @@
             </form>
         </div>
     </div>
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Your advert list</h5>
+            <div class="ibox-tools">
+                <!--<a href="" class="btn btn-primary btn-xs">Add new issue</a>-->
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <div class="m-b-lg">
+
+                <!--<div class="input-group">-->
+                    <!--&lt;!&ndash;<input type="text" placeholder="Search issue by name..." class=" form-control">&ndash;&gt;-->
+                    <!--<span class="input-group-btn">-->
+                                        <!--<button type="button" class="btn btn-white"> Search</button>-->
+                                    <!--</span>-->
+                <!--</div>-->
+                <div class="m-t-md">
+                    <strong>Found {{userAdverts.length}} adverts.</strong>
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover issue-tracker">
+                    <tbody>
+                    <tr ng-repeat="advert in userAdverts">
+                        <td class="issue-info">
+                            <a href="#">
+                                {{advert.realestate.realestateName}}
+                            </a>
+
+                            <small>
+                                {{advert.realestate.type.typeName}}
+                            </small>
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            <!--<span class="pie">0.52,1.041</span>-->
+                            <!--2d-->
+                        </td>
+                        <td class="text-right">
+                            {{advert.created_at}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>

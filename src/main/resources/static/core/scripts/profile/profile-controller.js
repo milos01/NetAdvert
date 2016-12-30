@@ -10,6 +10,10 @@
             $scope.user.fname = $scope.updateFname;
             UsersResource.updateUser($scope.user.email, $scope.user.fname, $scope.user.lname);
         }
+
+        UsersResource.getUserAdverts($scope.user.uid).then(function (response) {
+            $scope.userAdverts = response;
+        });
     })
     
     app.controller('profile',function ($state) {

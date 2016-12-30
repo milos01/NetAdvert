@@ -172,7 +172,8 @@ public class UserController {
     @RequestMapping(value="/api/user/{uid}/adverts", method=RequestMethod.GET)
 	public ResponseEntity<List<Advert>> getAllUserAdverts(@PathVariable("uid") int uid, HttpSession session){
 
-        User user = (User)session.getAttribute("logedUser");
+        User user = (User)this.adverService.findUserById(uid);
+
 
         if (user == null || user.getId() != uid){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

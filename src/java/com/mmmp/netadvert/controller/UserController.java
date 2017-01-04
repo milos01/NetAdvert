@@ -9,11 +9,10 @@ import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.service.AdverService;
+import com.mmmp.netadvert.service.AdvertService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +32,9 @@ public class UserController {
     public void setAdverService(AdverService ps) {
         this.adverService = ps;
     }
+
+    @Autowired
+    private AdvertService advertService;
 
 
     @RequestMapping(value="/api/userr", method=RequestMethod.GET)

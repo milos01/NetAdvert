@@ -46,5 +46,14 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
+<ul class="pagination">
+
+    <li ng-repeat="n in pageList" ng-class="{active: n === page.number}">
+        <a  ng-click="loadNewPage(n)" ng-cloak>{{n}}</a>
+    </li>
+
+</ul>

@@ -11,10 +11,12 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import com.mmmp.netadvert.model.*;
+import com.mmmp.netadvert.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,9 @@ public class AdvertController {
 
 	@Autowired
 	private AdverService adverService;
+
+	@Autowired
+	private AdvertService advertService;
 
 	@Autowired(required = true)
 	public void setAdverService(AdverService adverService) {
@@ -348,18 +353,12 @@ public class AdvertController {
 	
 	/**
 	 * 
-	 * @param session
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Advert>> getAllAdverts(){
-		List<Advert> advertList = this.adverService.allAdverts();
-		for(int i = advertList.size()-1; i>=0; i--){
-			if(advertList.get(i).getIs_deleted()==true){
-				advertList.remove(i);
-			}
-		}
-		return new ResponseEntity<List<Advert>>(advertList, HttpStatus.OK);
+	public ResponseEntity<Page<Advert>> getAllAdverts(Pageable page){
+		Page<Advert> advertList = this.advertService.findAll(page);
+		return new ResponseEntity<Page<Advert>>(advertList, HttpStatus.OK);
 	}
 
 	/**

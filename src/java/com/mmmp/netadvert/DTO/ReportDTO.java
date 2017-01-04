@@ -9,7 +9,7 @@ public class ReportDTO {
 	
 	private UserDTO user;
 	
-	private AdvertDTO advert;
+
 	
 	private int verified;
 
@@ -37,13 +37,6 @@ public class ReportDTO {
 		this.user = user;
 	}
 
-	public AdvertDTO getAdvert() {
-		return advert;
-	}
-
-	public void setAdvert(AdvertDTO advert) {
-		this.advert = advert;
-	}
 
 	public int getVerified() {
 		return verified;

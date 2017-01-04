@@ -7,18 +7,40 @@
             $location.path("/");
         }
 
-
         UsersResource.getStudents().then(function (items) {
+
             $scope.students = items;
         })
 
-        AdvertResource.getAdverts().then(function (items) {
-            angular.forEach(items, function(value, key) {
-                PictureResource.getAdvertMainPicture(value.realestate.id).then(function (item) {
-                    value.main_pic = item.pictureName;
-                })
-            });
-            $scope.adverts = items;
+        $scope.loadNewPage = function (page) {
+            AdvertResource.getAdverts(page).then(function (items) {
+                var pageList = [];
+                for (i = 0; i < items.totalPages; i++) {
+                    pageList[i] = i;
+                }
+                $scope.page = items;
+                $scope.pageList = pageList;
+                $scope.adverts = items.content;
+            })
+        }
+
+        AdvertResource.getAdverts(0).then(function (items) {
+            // angular.forEach(items, function(value, key) {
+            //     PictureResource.getAdvertMainPicture(value.realestate.id).then(function (item) {
+            //         value.main_pic = item.pictureName;
+            //     })
+            // });
+            console.log(items);
+            var pageList = [];
+            for (i = 0; i < items.totalPages; i++) {
+                pageList[i] = i;
+            }
+            console.log(items.totalPages);
+            $scope.page = items;
+            $scope.pageList = pageList;
+            $scope.adverts = items.content;
         })
+        
+
     })
 })(angular);

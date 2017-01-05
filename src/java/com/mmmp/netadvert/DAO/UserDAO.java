@@ -17,4 +17,6 @@ public interface UserDAO {
 	public User findUserByCreds(String username, String password);
 
 	public User findUserById(int id);
+
+    public User getlikeUser(String email);
 }

@@ -1,6 +1,7 @@
 package com.mmmp.netadvert.controller;
 
 import com.mmmp.netadvert.DTO.CompanyDTO;
+import com.mmmp.netadvert.DTO.NewCompanyDTO;
 import com.mmmp.netadvert.model.Company;
 //import com.sun.tools.javac.code.Attribute;
 //import com.sun.tools.javac.main.Main;
@@ -88,8 +89,8 @@ public class CompanyController {
      * @see Company
      */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Company> addCompany(@RequestParam(value = "u_id") int id, @RequestBody CompanyDTO company){
-            User usr = (User)this.adverService.findUserById(id);
+	public ResponseEntity<Company> addCompany(@RequestBody NewCompanyDTO company){
+            User usr = (User)this.adverService.findUser(company.getUser_email());
             if(usr != null){
                 Company comp = new Company();
                 comp.setUser(usr);
@@ -104,7 +105,6 @@ public class CompanyController {
             }else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-
 	}
 
     /**

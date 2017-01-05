@@ -118,4 +118,6 @@ public interface AdverService {
 	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech);
 
     public Picture getAdvertMainPicture(int id);
+
+    public User findlikeUser(String email);
 }

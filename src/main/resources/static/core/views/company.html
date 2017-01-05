@@ -1,0 +1,97 @@
+<div id="wrapper">
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-lg-12">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Add new company</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form role="form" class="form-inline" ng-submit="addCompany()" name="addNewCompany" novalidate>
+                        <div class="form-group" ng-class="{ 'has-error' : addNewCompany.companyName.$invalid && !addNewCompany.companyName.$pristine }">
+                            <label for="exampleInputEmail2" class="control-label">Company name</label>
+                            <input type="text" id="exampleInputEmail2"
+                                   class="form-control" name="companyName" ng-model="companyName" required>
+                        </div>
+                        <div class="form-group" style="margin-left: 24px;width: 430px" ng-class="{ 'has-error' : addNewCompany.masterEmail.$invalid && !addNewCompany.masterEmail.$pristine }">
+                            <label for="exampleInputPassword2" class="control-label">Master user email</label>
+                            <input type="text"  id="exampleInputPassword2"
+                                   class="form-control" name="masterEmail" ng-model="masterEmail" ng-change="searchUser()" style="width:300px" required>
+                            <sapn  ng-show="addNewCompany.masterEmail.$invalid && !addNewCompany.masterEmail.$pristine" style="color:red;margin-left:-70px" ng-cloak>not found</sapn>
+                        </div>
+
+                        <button class="btn btn-white" type="submit" style="margin-top: 5px" ng-disabled="addNewCompany.$invalid">Add new company</button>
+                    </form>
+                </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Your advert list</h5>
+                    <div class="ibox-tools">
+                        <!--<a href="" class="btn btn-primary btn-xs">Add new issue</a>-->
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="m-b-lg">
+
+                        <!--<div class="input-group">-->
+                        <!--&lt;!&ndash;<input type="text" placeholder="Search issue by name..." class=" form-control">&ndash;&gt;-->
+                        <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-white"> Search</button>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                        <div class="m-t-md">
+                            <strong>Found {{userAdverts.length}} adverts.</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover issue-tracker">
+                            <tbody>
+                            <tr ng-repeat="advert in userAdverts">
+                                <td class="issue-info">
+                                    <a href="#">
+                                        {{advert.realestate.realestateName}}
+                                    </a>
+
+                                    <small>
+                                        {{advert.realestate.type.typeName}}
+                                    </small>
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <!--<span class="pie">0.52,1.041</span>-->
+                                    <!--2d-->
+                                </td>
+                                <td class="text-right">
+                                    {{advert.created_at}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -389,5 +389,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.pictureDAO.getAdvertMainPicture(id);
 	}
 
+	@Override
+	@Transactional
+	public User findlikeUser(String email) {
+		return this.userDAO.getlikeUser(email);
+	}
+
 
 }

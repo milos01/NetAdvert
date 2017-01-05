@@ -26,6 +26,13 @@
                 return entries;
             });
         }
+
+        retVal.findKeywordsUser =  function (email) {
+            return Restangular.one("getlikeUser").
+            get({email: email}).then(function(entries) {
+                return entries;
+            });
+        }
         return retVal;
     })
 })(angular);

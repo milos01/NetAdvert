@@ -983,6 +983,9 @@ fieldset[disabled] .btn-white.active {
 .progress-bar {
   box-shadow: none;
 }
+.has-error:focus{
+  border-color: #ed5565;
+}
 .btn-outline {
   color: inherit;
   background-color: transparent;
@@ -1894,7 +1897,7 @@ div.dt-button-info {
 }
 .form-control:focus,
 .single-line:focus {
-  border-color: #1ab394 !important;
+  border-color: #1ab394;
 }
 .has-success .form-control {
   border-color: #1ab394;

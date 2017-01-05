@@ -145,7 +145,15 @@ public class UserController {
      */
     @RequestMapping(value="/api/getuser", method=RequestMethod.GET)
     public ResponseEntity<User> getUser(@RequestParam (value="email") String email){
+
         User user = (User)this.adverService.findUser(email);
+        return new ResponseEntity<User>(user,HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/api/getlikeUser", method=RequestMethod.GET)
+    public ResponseEntity<User> getlikeUser(@RequestParam (value="email") String email){
+
+        User user = (User)this.adverService.findlikeUser(email);
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
     /**

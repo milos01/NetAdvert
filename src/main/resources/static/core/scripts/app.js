@@ -28,6 +28,15 @@
                     }
                 }
             })
+            .state('company', {
+                url: "/company",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/company.html",
+                        controller: 'company'
+                    }
+                }
+            })
             .state('creds', {
                 parent: 'profile',
                 views: {
@@ -73,13 +82,16 @@
 
             $http.get('http://localhost:8080/api/userr', {headers : headers}).then(function(response){
                 console.log(response.data);
+                var role = response.data.authorities[0].authority;
+                console.log(role);
                 if (response) {
                     $http.get('http://localhost:8080/api/getuser', {params: {email : response.data.name}}).then(function(response){
                         $rootScope.user = {
                             uid: response.data.id,
                             fname :response.data.first_name,
                             lname :response.data.last_name,
-                            email :response.data.email
+                            email :response.data.email,
+                            role: role
                         }
                     });
 

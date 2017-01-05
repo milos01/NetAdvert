@@ -85,4 +85,18 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
+	@Override
+	public User getlikeUser(String email) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User u where lower(u.email) = :email");
+		String finalEmail= email.toLowerCase().trim();
+		query.setParameter("email", finalEmail);
+		List<User> userList = query.list();
+		User user = null;
+		for(User a:userList){
+			user = a;
+		}
+		return user;
+	}
+
 }

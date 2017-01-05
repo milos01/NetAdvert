@@ -33,8 +33,8 @@ INSERT INTO `netadvert`.`realestate_category_realestate_type` (`realestate_categ
 INSERT INTO `netadvert`.`realestate_category_realestate_type` (`realestate_category_id`, `realestate_type_id`) VALUES ('2', '2');
 
 
-INSERT INTO `netadvert`.`realestate` (`realestate_name`,`area`,`cost`,`heating`,`category_id`,`type_id`,`location_id`) VALUES ('Stan na grbavici', 45, 25000, false, 1, 2, 1);
-INSERT INTO `netadvert`.`realestate` (`realestate_name`,`area`,`cost`,`heating`,`category_id`,`type_id`,`location_id`) VALUES ('Kuca na novom naselju', 60, 40000, true, 1, 1, 2);
+INSERT INTO `netadvert`.`realestate` (`realestate_name`,`area`,`heating`,`category_id`,`type_id`,`location_id`) VALUES ('Stan na grbavici', 45, false, 1, 2, 1);
+INSERT INTO `netadvert`.`realestate` (`realestate_name`,`area`,`heating`,`category_id`,`type_id`,`location_id`) VALUES ('Kuca na novom naselju', 60, true, 1, 1, 2);
 
 
 INSERT INTO `netadvert`.`realestate_technical_equipment` (`realestate_id`,`technical_equipment_id`) VALUES ('1', '2');
@@ -57,18 +57,16 @@ INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`rol
 INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Mladen', 'Doslic','pass', 'doslicmm@live.com', '3', 0);
 INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Milan', 'Milanovic','pass', 'milan@gmail.com', '2', 0);
 
+INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-28 12:45:00', '2016-11-29 14:05:12', '2016-12-25', 25000, 3, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 40000, 5, '060/123-456', 'description', false, false, true, '2');
 
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Spoljasnji izgled', '2', '1', true);
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Dnevna soba', '2', '1', false);
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Kuhinja', '2', '1', false);
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Kupatilo', '2', '1', false);
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Dnevna soba', '2', '2', true);
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Spavaca soba', '2', '2', false);
-INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`realestate_id`,`is_profile`) VALUES ('Kuhinja', '2', '2', false);
-
-
-INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-28 12:45:00', '2016-11-29 14:05:12', '2016-12-25', 3, '060/123-456', 'description', false, false, true, '1');
-INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 5, '060/123-456', 'description', false, false, true, '2');
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Spoljasnji izgled', '2', '1', true);
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Dnevna soba', '2', '1', false);
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Kuhinja', '2', '1', false);
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Kupatilo', '2', '1', false);
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Dnevna soba', '2', '2', true);
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Spavaca soba', '2', '2', false);
+INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Kuhinja', '2', '2', false);
 
 INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'ovo je moj komentar na oglas', '1', '2');
 INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'open moj komm', '1', '2');

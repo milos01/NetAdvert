@@ -107,7 +107,7 @@ public class CommentControllerTest {
 		rls.setId(5);
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		rls.setCost(123);
+		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 

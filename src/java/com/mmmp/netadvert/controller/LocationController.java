@@ -31,10 +31,12 @@ public class LocationController {
 	 * @return location object, http response 200 ok
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Location> newLocation(@RequestParam("city") String city,
-			@RequestParam("region") String region, @RequestParam("street") String street,
-			@RequestParam("postalCode") int postal, @RequestParam("streetNumber") int streetNumber) {
-	
+	public ResponseEntity<Location> newLocation(@RequestBody LocationDTO location) {
+		String street = location.getStreet();
+		String city = location.getCity();
+		String region = location.getRegion();
+		int postal = location.getPostalCode();
+		int streetNumber = location.getStreetNumber();
 		if (street == null || street.equals("") || city == null
 				|| city.equals("") || streetNumber+"" == null || (streetNumber+"").equals("")) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,10 +57,13 @@ public class LocationController {
 	 * @return location object, http response 200 ok
 	 */
 	@RequestMapping(method=RequestMethod.PUT)
-	public ResponseEntity<Location> updateLocation(@RequestParam("id") int idL,@RequestParam("city") String city,
-			@RequestParam("region") String region, @RequestParam("street") String street,
-			@RequestParam("postalCode") int postal, @RequestParam("streetNumber") int streetNumber){
-		
+	public ResponseEntity<Location> updateLocation(@RequestBody LocationDTO location){
+		String street = location.getStreet();
+		String city = location.getCity();
+		String region = location.getRegion();
+		int postal = location.getPostalCode();
+		int streetNumber = location.getStreetNumber();
+		int idL = location.getLocationId();
 		if (street == null || street.equals("") || city == null
 				|| city.equals("") || streetNumber+"" == null || (streetNumber+"").equals("")) {
 			return new ResponseEntity<Location>(HttpStatus.INTERNAL_SERVER_ERROR);

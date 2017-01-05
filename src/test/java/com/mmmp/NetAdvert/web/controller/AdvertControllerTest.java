@@ -142,7 +142,7 @@ public class AdvertControllerTest {
 		rls.setId(5);
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		rls.setCost(123);
+		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 
@@ -231,7 +231,7 @@ public class AdvertControllerTest {
 		rls.setRealestateName("ZUTA KUCA");
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		rls.setCost(123);
+		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 
@@ -255,7 +255,7 @@ public class AdvertControllerTest {
 						.param("rent_sale",false+"")
 						.param("real_name", rls.getRealestateName())
 						.param("real_type_id", rt.getId() + "")
-						.param("real_cost", rls.getCost() + "")
+						//.param("real_cost", rls.getCost() + "")
 						.param("real_area", rls.getArea() + "")
 						.param("real_category_id", rc.getId() + "")
 						.param("real_heating", rls.isHeating() + "")
@@ -282,7 +282,7 @@ public class AdvertControllerTest {
 						.param("rent_sale",false+"")
 						.param("real_name", rls.getRealestateName())
 						.param("real_type_id", rt.getId() + "")
-						.param("real_cost", rls.getCost() + "")
+						//.param("real_cost", rls.getCost() + "")
 						.param("real_area", rls.getArea() + "")
 						.param("real_category_id", 9000+"")
 						.param("real_heating", rls.isHeating() + "")
@@ -306,7 +306,7 @@ public class AdvertControllerTest {
 				.param("rent_sale",false+"")
 				.param("real_name", rls.getRealestateName())
 				.param("real_type_id", rt.getId() + "")
-				.param("real_cost", rls.getCost() + "")
+				//.param("real_cost", rls.getCost() + "")
 				.param("real_area", rls.getArea() + "")
 				.param("real_category_id", 9000+"")
 				.param("real_heating", rls.isHeating() + "")
@@ -322,7 +322,7 @@ public class AdvertControllerTest {
 		
 		
 		rls.setArea(0);
-		rls.setCost(0);
+		//rls.setCost(0);
 		rc = new RealestateCategory();
 		rc.setId(1);
 		rc.setCategoryName("Lot");
@@ -334,7 +334,7 @@ public class AdvertControllerTest {
 						.param("rent_sale",false+"")
 						.param("real_name", rls.getRealestateName())
 						.param("real_type_id", rt.getId() + "")
-						.param("real_cost", rls.getCost() + "")
+						//.param("real_cost", rls.getCost() + "")
 						.param("real_area", rls.getArea() + "")
 						.param("real_category_id", rc.getId()+"")
 						.param("real_heating", rls.isHeating() + "")
@@ -354,7 +354,7 @@ public class AdvertControllerTest {
 		rc.setId(3);
 		rc.setCategoryName("Lot");
 		rls.setArea(55);
-		rls.setCost(123);
+		//rls.setCost(123);
 		String object4 = TestUtil.json(a);
 		
 		this.mockMvc
@@ -364,7 +364,7 @@ public class AdvertControllerTest {
 				.param("rent_sale",false+"")
 				.param("real_name", rls.getRealestateName())
 				.param("real_type_id", rt.getId() + "")
-				.param("real_cost", rls.getCost() + "")
+				//.param("real_cost", rls.getCost() + "")
 				.param("real_area", rls.getArea() + "")
 				.param("real_category_id", rc.getId()+"")
 				.param("real_heating", rls.isHeating() + "")
@@ -418,7 +418,7 @@ public class AdvertControllerTest {
 		rls.setRealestateName("ZUTA KUCA");
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		rls.setCost(123);
+		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 
@@ -444,7 +444,7 @@ public class AdvertControllerTest {
 						.param("rent_sale",false+"")
 						.param("real_name", rls.getRealestateName())
 						.param("real_type_id", rt.getId() + "")
-						.param("real_cost", rls.getCost() + "")
+						//.param("real_cost", rls.getCost() + "")
 						.param("real_area", rls.getArea() + "")
 						.param("real_category_id", rc.getId() + "")
 						.param("real_heating", rls.isHeating() + "")
@@ -473,7 +473,7 @@ public class AdvertControllerTest {
 						.param("rent_sale",false+"")
 						.param("real_name", rls.getRealestateName())
 						.param("real_type_id", rt.getId() + "")
-						.param("real_cost", rls.getCost() + "")
+						//.param("real_cost", rls.getCost() + "")
 						.param("real_area", rls.getArea() + "")
 						.param("real_category_id", rc.getId() + "")
 						.param("real_heating", rls.isHeating() + "")
@@ -499,7 +499,7 @@ public class AdvertControllerTest {
 				.param("rent_sale",false+"")
 				.param("real_name", rls.getRealestateName())
 				.param("real_type_id", rt.getId() + "")
-				.param("real_cost", rls.getCost() + "")
+				//.param("real_cost", rls.getCost() + "")
 				.param("real_area", rls.getArea() + "")
 				.param("real_category_id", rc.getId() + "")
 				.param("real_heating", rls.isHeating() + "")
@@ -525,7 +525,7 @@ public class AdvertControllerTest {
 				.param("rent_sale",false+"")
 				.param("real_name", rls.getRealestateName())
 				.param("real_type_id", rt.getId() + "")
-				.param("real_cost", rls.getCost() + "")
+				//.param("real_cost", rls.getCost() + "")
 				.param("real_area", rls.getArea() + "")
 				.param("real_category_id", 9999 + "")
 				.param("real_heating", rls.isHeating() + "")
@@ -552,7 +552,7 @@ public class AdvertControllerTest {
 				.param("rent_sale",false+"")
 				.param("real_name", rls.getRealestateName())
 				.param("real_type_id", rt.getId() + "")
-				.param("real_cost", rls.getCost() + "")
+				//.param("real_cost", rls.getCost() + "")
 				.param("real_area", rls.getArea() + "")
 				.param("real_category_id", rc.getId()+"")
 				.param("real_heating", rls.isHeating() + "")
@@ -575,7 +575,7 @@ public class AdvertControllerTest {
 				.param("rent_sale",false+"")
 				.param("real_name", rls.getRealestateName())
 				.param("real_type_id", rt.getId() + "")
-				.param("real_cost", rls.getCost() + "")
+				//.param("real_cost", rls.getCost() + "")
 				.param("real_area", rls.getArea() + "")
 				.param("real_category_id", rc.getId()+"")
 				.param("real_heating", rls.isHeating() + "")

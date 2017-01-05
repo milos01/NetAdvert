@@ -24,8 +24,8 @@ public class Picture {
 
     @JsonManagedReference
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="realestate_id", nullable=false)
-    private Realestate realestate;
+    @JoinColumn(name="advert_id", nullable=false)
+    private Advert advert;
 
     @Column(name="is_profile")
     private boolean isProfile;
@@ -54,14 +54,6 @@ public class Picture {
         this.user = user;
     }
 
-    public Realestate getRealestate() {
-        return realestate;
-    }
-
-    public void setRealestate(Realestate realestate) {
-        this.realestate = realestate;
-    }
-
     public boolean isProfile() {
         return isProfile;
     }
@@ -70,5 +62,13 @@ public class Picture {
         this.isProfile = isProfile;
     }
 
+	public Advert getAdvert() {
+		return advert;
+	}
 
+	public void setAdvert(Advert advert) {
+		this.advert = advert;
+	}
+
+    
 }

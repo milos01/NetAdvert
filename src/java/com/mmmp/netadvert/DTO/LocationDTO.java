@@ -2,7 +2,7 @@ package com.mmmp.netadvert.DTO;
 
 public class LocationDTO {
 
-	    private int id;
+	    private int locationId;
 
 	    private String street;
 
@@ -13,13 +13,17 @@ public class LocationDTO {
 	    private String city;
 
 	    private int postalCode;
-
-		public int getId() {
-			return id;
+	    
+	    public LocationDTO(){
+	    	
+	    }
+	    
+		public int getLocationId() {
+			return locationId;
 		}
 
-		public void setId(int id) {
-			this.id = id;
+		public void setLocationId(int locationId) {
+			this.locationId = locationId;
 		}
 
 		public String getStreet() {

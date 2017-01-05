@@ -116,7 +116,7 @@ public class ReportControllerTest {
 		rls.setId(5);
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		rls.setCost(123);
+		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 
@@ -193,7 +193,7 @@ public class ReportControllerTest {
 		rls.setId(5);
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		rls.setCost(123);
+		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 

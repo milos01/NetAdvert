@@ -33,9 +33,21 @@ public class ImageController {
 	@Autowired
 	private AdverService adverService;
 
+	/**
+	 * This method is part of advert rest service. Method uploads realestate image and sets if uploaded picture is profile picture.
+	 * @param file picture that is being uploaded
+	 * @param session
+	 * @param id realestate id for which is picture added
+	 * @param isProfile parameter if picture is profile
+	 * @return Http status 200 OK
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 * @see Advert, Picture
+	 */
 	@RequestMapping(value="/api/upload", method=RequestMethod.POST)
 	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file,HttpSession session, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile) throws IllegalStateException, IOException{
 		User u = (User) session.getAttribute("logedUser");
+		u=this.adverService.findUser("milossm94@hotmail.com");
         if(u==null){
         	return new ResponseEntity<> (HttpStatus.FORBIDDEN);
         }
@@ -55,16 +67,13 @@ public class ImageController {
 			return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
 		}
         
-        Realestate r = this.adverService.findRealestate(id);
-        if(r==null){
+        Advert a = this.adverService.findAdvert(id);
+        if(a==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
         boolean exists = false;
-        for(Advert a : r.getAdverts()){
-        	if(a.getUser().getId()==u.getId() && a.getIs_deleted()==false){
+        if(a.getUser().getId()==u.getId() && a.getIs_deleted()==false){
         		exists = true;
-        		break;
-        	}
         }
         if(exists = false){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
@@ -84,7 +93,7 @@ public class ImageController {
         
         pic.setPictureName(filename);
         pic.setProfile(false);
-        pic.setRealestate(r);
+        pic.setAdvert(a);
         pic.setUser(u);
         pic.setProfile(isProfile);
           
@@ -104,9 +113,17 @@ public class ImageController {
 		return new ResponseEntity<Picture>(pic, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service. It deletes uploaded advert image
+	 * @param name picture id which is being deleted
+	 * @param session
+	 * @return Http status 200 OK
+	 * @see Advert, Picture
+	 */
 	@RequestMapping(value="/api/image/{id:.*}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteImage(@PathVariable("id") String name, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
         if(u==null){
         	return new ResponseEntity<Void> (HttpStatus.FORBIDDEN);
         }

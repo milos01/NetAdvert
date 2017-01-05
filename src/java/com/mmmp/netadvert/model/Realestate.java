@@ -29,8 +29,6 @@ public class Realestate implements Serializable {
     @JoinColumn(name="type_id", nullable=false)
     private RealestateType type;
 
-    private double cost;
-
     private double area;
 
     @JsonManagedReference
@@ -50,9 +48,7 @@ public class Realestate implements Serializable {
     @JoinTable(name="realestate_technical_equipment", joinColumns=@JoinColumn(name="realestate_id"), inverseJoinColumns=@JoinColumn(name="technical_equipment_id"))
     private Set<TechnicalEquipment> technicalEquipments;
 
-    @JsonBackReference
-    @OneToMany(mappedBy="realestate", fetch=FetchType.LAZY)
-    private Set<Picture> pictures;
+    
 
     @JsonBackReference
     @OneToMany(mappedBy="realestate", fetch=FetchType.EAGER)
@@ -72,16 +68,6 @@ public class Realestate implements Serializable {
 
     public void setRealestateName(String realestateName) {
         this.realestateName = realestateName;
-    }
-
-
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
     }
 
     public double getArea() {
@@ -132,14 +118,6 @@ public class Realestate implements Serializable {
 
     public void setTechnicalEquipments(Set<TechnicalEquipment> technicalEquipments) {
         this.technicalEquipments = technicalEquipments;
-    }
-
-    public Set<Picture> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(Set<Picture> pictures) {
-        this.pictures = pictures;
     }
 
     public Set<Advert> getAdverts() {

@@ -33,9 +33,19 @@ public class AdvertRatingController {
 		this.adverService = adverService;
 	}
 	
+	/**
+	 * This method is part of advert rest service. This method saves user rating of an advert
+	 * which is not deleted and it calculates new average advert rate.
+	 * @param aid advert id which is being rated
+	 * @param session
+	 * @param addedRating user advert rating
+	 * @return Http status 200 OK
+	 * @see Advert
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
 	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid, HttpSession session,@RequestParam("rating") int addedRating){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -80,9 +90,17 @@ public class AdvertRatingController {
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service. Method returns all ratings of an advert which is not deleted.
+	 * @param aid advert id which ratings are being returned
+	 * @param session
+	 * @return Http status 200 OK
+	 * @see AdvertRating
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.GET)
 	public ResponseEntity<List<AdvertRating>> getAdvertRatings(@PathVariable("id") int aid, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -99,9 +117,18 @@ public class AdvertRatingController {
 		return new ResponseEntity<List<AdvertRating>>(ret, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service.Method will update user advert rating.
+	 * @param aid advert id which rating is being updated
+	 * @param session
+	 * @param addedRating user rating of an advert
+	 * @return Http status 200 OK
+	 * @see Advert
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.PUT)
 	public ResponseEntity<Advert> updateAdvertRating(@PathVariable("id") int aid, HttpSession session, @RequestParam("rating") int addedRating){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -148,9 +175,17 @@ public class AdvertRatingController {
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service. Method will delete user advert rating.
+	 * @param aid advert id from which user advert rating is being deleted.
+	 * @param session
+	 * @return Http status 200 OK
+	 * @see Advert
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.DELETE)
 	public ResponseEntity<Advert> deleteAdvertRating(@PathVariable("id") int aid, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }

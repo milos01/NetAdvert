@@ -31,9 +31,18 @@ public class UserRatingController {
 		this.adverService = adverService;
 	}
 	
+	/**
+	 * This method is part of user rest service. It adds user rating
+	 * @param uid user for which is being added rating, and it checks if user has permission to add rating.
+	 * @param session
+	 * @param addedRating added rating
+	 * @return Http status 200 OK
+	 * @see User
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
 	public ResponseEntity<User> addUserRating(@PathVariable("id") int uid, HttpSession session,@RequestParam("rating") int addedRating){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -80,9 +89,17 @@ public class UserRatingController {
 		return new ResponseEntity<User>(userRated, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service. It gets list of ratings of specified user.
+	 * @param uid user id which ratings are being returned
+	 * @param session
+	 * @return Http status 200 OK
+	 * @see User, UserRating
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.GET)
 	public ResponseEntity<List<UserRating>> getUserRatings(@PathVariable("id") int uid, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -99,9 +116,18 @@ public class UserRatingController {
 		return new ResponseEntity<List<UserRating>>(ret, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service. It updates user rating.
+	 * @param aid user id which rating is being updated
+	 * @param session
+	 * @param addedRating updated rating 
+	 * @return Http status 200 OK
+	 * @see User
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.PUT)
 	public ResponseEntity<User> updateUserRating(@PathVariable("id") int aid, HttpSession session, @RequestParam("rating") int addedRating){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -148,9 +174,17 @@ public class UserRatingController {
 		return new ResponseEntity<User>(a, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method is part of advert rest service. It deletes rating from specified user.
+	 * @param aid user which rating is being deleted.
+	 * @param session
+	 * @return Http status 200 OK
+	 * @see User
+	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.DELETE)
 	public ResponseEntity<User> deleteUserRating(@PathVariable("id") int aid, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }

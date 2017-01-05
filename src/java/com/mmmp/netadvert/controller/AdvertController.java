@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmmp.netadvert.DTO.AdvertDTO;
+import com.mmmp.netadvert.DTO.LocationDTO;
+import com.mmmp.netadvert.DTO.RealestateDTO;
 import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.service.AdverService;
 
@@ -47,47 +50,28 @@ public class AdvertController {
 	 * like area and cost are negative numbers,
 	 * or if equipment list size of send category doesnt match size of sent equipment list,
 	 * and it checkes if location already exists so it wont be made again in database 
-	 * @param contact  advert contant sent in form
-	 * @param description advert description sent in form
-	 * @param rent_sale true if advert is for sale, false if advert is for rent
-	 * @param real_name new realestate name sent in form
-	 * @param real_type_id type of new realestate sent in form 
-	 * @param real_cost cost of realestate that is being advertised in form
-	 * @param real_area realestate area sent in form
-	 * @param real_category_id realestate category sent in form
-	 * @param real_heating true if realestate has heating otherwise false
-	 * @param loc_street realestate street location sent in form
-	 * @param loc_street_number realestate street number sent in form
-	 * @param loc_region realestate region location sent in form
-	 * @param loc_city realestate city location sent in form
-	 * @param loc_postal_code realestate postal code sent in form
-	 * @param equipments realestate equipments sent in form
+	 * @param advertDTO object holding all information about sent advert
 	 * @param session HttpSession object for setting user on session
 	 * @return Http response 200 OK
 	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Advert> createAdvert(@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
-			@RequestParam("real_type_id") int real_type_id, @RequestParam("real_cost") double real_cost,
-			@RequestParam("real_area") double real_area, @RequestParam("real_category_id") int real_category_id,
-			@RequestParam("real_heating") boolean real_heating, @RequestParam("loc_street") String loc_street,
-			@RequestParam("loc_street_number") int loc_street_number, @RequestParam("loc_region") String loc_region,
-			@RequestParam("loc_city") String loc_city, @RequestParam("loc_postal_code") int loc_postal_code,
-			@RequestParam("equipments") List<Boolean> equipments, HttpSession session) {
+	public ResponseEntity<Advert> createAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session) {
 
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
 		
-		RealestateCategory rc = this.adverService.findRealestateCategory(real_category_id);
+		RealestateCategory rc = this.adverService.findRealestateCategory(advertDTO.getRealestate().getCategory().getRealestateCategoryId());
 		if (rc == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		boolean check = false;
 		RealestateType type = null;
 		for (RealestateType t : rc.getTypes()) {
-			if (t.getId() == real_type_id) {
+			if (t.getId() == advertDTO.getRealestate().getType().getRealestateTypeId()) {
 				check = true;
 				type = t;
 				break;
@@ -96,21 +80,33 @@ public class AdvertController {
 		if (!check) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		List<Boolean> equipments = advertDTO.getRealestate().getEquipments();
+		if(equipments==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		if(rc.getEquipments().size()!=equipments.size()){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(real_cost<=0 || real_area<=0){
+		if(advertDTO.getCost()<=0 || advertDTO.getRealestate().getArea()<=0){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		Location location = this.adverService.checkForExistingLocation(loc_street, loc_street_number, loc_region,
-				loc_city, loc_postal_code);
+		if(advertDTO.getRealestate().getLocation().getCity()==null || advertDTO.getRealestate().getLocation().getRegion()==null || advertDTO.getRealestate().getLocation().getStreet()==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		String locCity = advertDTO.getRealestate().getLocation().getCity().trim();
+		String locRegion = advertDTO.getRealestate().getLocation().getRegion().trim();
+		String locStreet = advertDTO.getRealestate().getLocation().getStreet().trim();
+		int locPostalCode = advertDTO.getRealestate().getLocation().getPostalCode();
+		int locStreetNumber = advertDTO.getRealestate().getLocation().getStreetNumber();
+		Location location = this.adverService.checkForExistingLocation(locStreet, locStreetNumber, locRegion,
+				locCity, locPostalCode);
 		if (location == null) {
 			location = new Location();
-			location.setCity(loc_city.trim());
-			location.setRegion(loc_region.trim());
-			location.setStreet(loc_street.trim());
-			location.setPostalCode(loc_postal_code);
-			location.setStreetNumber(loc_street_number);
+			location.setCity(locCity);
+			location.setRegion(locRegion);
+			location.setStreet(locStreet);
+			location.setPostalCode(locPostalCode);
+			location.setStreetNumber(locStreetNumber);
 			this.adverService.createLocation(location);
 		}
 		List<TechnicalEquipment> equipmentList = new ArrayList<TechnicalEquipment>();
@@ -124,16 +120,27 @@ public class AdvertController {
 				}
 			}
 		});
-		Realestate r = new Realestate();
-		r.setRealestateName(real_name);
+		Realestate r = this.adverService.findRealestate(advertDTO.getRealestate().getRealestateId());
+		boolean exists = false;
+		if(r!=null){
+			exists = true;
+		}
+		else{
+			r = new Realestate();
+		}
+		r.setRealestateName(advertDTO.getRealestate().getRealestateName());
 		r.setType(type);
-		r.setCost(real_cost);
-		r.setArea(real_area);
-		r.setHeating(real_heating);
+		r.setArea(advertDTO.getRealestate().getArea());
+		r.setHeating(advertDTO.getRealestate().isHeating());
 		r.setLocation(location);
 		r.setCategory(rc);
 		r.setTechnicalEquipments(new HashSet<TechnicalEquipment>());
-		this.adverService.addRealestate(r);
+		if(exists == true){
+			this.adverService.updateRealestate(r);
+		}
+		else{
+			this.adverService.addRealestate(r);
+		}
 		Realestate rs = this.adverService.findRealestate(r.getId());
 		
 		for (int i = 0; i < equipmentList.size(); i++) {
@@ -153,9 +160,10 @@ public class AdvertController {
 		advert.setIs_sold(false);
 		advert.setIs_deleted(false);
 		advert.setAdvert_rate(0);
-		advert.setContact(contact);
-		advert.setRent_sale(rent_sale);
-		advert.setDescription(description);
+		advert.setContact(advertDTO.getContact());
+		advert.setRent_sale(advertDTO.getRent_sale());
+		advert.setDescription(advertDTO.getDescription());
+		advert.setCost(advertDTO.getCost());
 		this.adverService.addAdvert(advert);
 		if(u.getAdverts()==null){
 			u.setAdverts(new HashSet<Advert>());
@@ -173,37 +181,16 @@ public class AdvertController {
 	 * or if equipment list size of send category doesnt match size of sent equipment list,
 	 * and it checkes if location already exists so it wont be made again in database 
 	 * and if advert doesnt exist or is deleted before
-	 * @param advert_id advert id information send in form that already exists
-	 * @param contact advert contant sent in form
-	 * @param description advert description
-	 * @param rent_sale true if advert is for sale, false if advert is for rent
-	 * @param real_name new realestate name sent in form
-	 * @param real_type_id type of new realestate sent in form 
-	 * @param real_cost cost of realestate that is being advertised in form
-	 * @param real_area realestate area sent in form
-	 * @param real_category_id realestate category sent in form
-	 * @param real_heating true if realestate has heating otherwise false
-	 * @param loc_street realestate street location sent in form
-	 * @param loc_street_number realestate street number sent in form
-	 * @param loc_region realestate region location sent in form
-	 * @param loc_city realestate city location sent in form
-	 * @param loc_postal_code realestate postal code sent in form
-	 * @param equipments realestate equipments sent in form
+	 * @param advertDTO object containing all information about updated advert
 	 * @param session HttpSession object for setting user on session
 	 * @return Http response 200 OK
 	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Advert> updateAdvert(@RequestParam("advert_id") int advert_id,@RequestParam("contact") String contact,@RequestParam("description") String description,@RequestParam("rent_sale") boolean rent_sale, @RequestParam("real_name") String real_name,
-			@RequestParam("real_type_id") int real_type_id, @RequestParam("real_cost") double real_cost,
-			@RequestParam("real_area") double real_area, @RequestParam("real_category_id") int real_category_id,
-			@RequestParam("real_heating") boolean real_heating, @RequestParam("loc_street") String loc_street,
-			@RequestParam("loc_street_number") int loc_street_number, @RequestParam("loc_region") String loc_region,
-			@RequestParam("loc_city") String loc_city, @RequestParam("loc_postal_code") int loc_postal_code,
-			@RequestParam("equipments") List<Boolean> equipments, HttpSession session) {
+	public ResponseEntity<Advert> updateAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session) {
 		User u = (User) session.getAttribute("logedUser");
-		u=this.adverService.findUser(u.getEmail());
-		Advert advert = this.adverService.findAdvert(advert_id);
+		u = this.adverService.findUser("milossm94@hotmail.com");
+		Advert advert = this.adverService.findAdvert(advertDTO.getAdvertId());
 		
 		if(u!=null){
 			Set<Advert> userAdverts = u.getAdverts();
@@ -226,28 +213,32 @@ public class AdvertController {
 		else{
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Advert a = this.adverService.findAdvert(advert.getId());
-		if(a.getIs_deleted()==true){
+		if(advert.getIs_deleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		a.setContact(advert.getContact().trim());
-		a.setDescription(advert.getDescription());
-		a.setRent_sale(advert.getRent_sale());
-		Realestate r = a.getRealestate();
-		r.setRealestateName(real_name.trim());
-		r.setCost(real_cost);
-		r.setArea(real_area);
-		r.setHeating(real_heating);
+		advert.setContact(advertDTO.getContact().trim());
+		advert.setDescription(advertDTO.getDescription());
+		advert.setRent_sale(advertDTO.getRent_sale());
+		advert.setCost(advertDTO.getCost());
+		Realestate r = this.adverService.findRealestate(advert.getRealestate().getId());
+		if(r==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(r.getId()!=advertDTO.getRealestate().getRealestateId()){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		r.setRealestateName(advertDTO.getRealestate().getRealestateName().trim());
+		r.setArea(advertDTO.getRealestate().getArea());
+		r.setHeating(advertDTO.getRealestate().isHeating());
 		
-		RealestateCategory rc = this.adverService.findRealestateCategory(real_category_id);
+		RealestateCategory rc = this.adverService.findRealestateCategory(advertDTO.getRealestate().getCategory().getRealestateCategoryId());
 		if(rc==null){
-			System.out.println(2);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Set<RealestateType> types = rc.getTypes();
 		boolean exists = false;
 		for(RealestateType t: types){
-			if(t.getId()==real_type_id){
+			if(t.getId()==advertDTO.getRealestate().getType().getRealestateTypeId()){
 				exists = true;
 				r.setCategory(rc);
 				r.setType(t);
@@ -255,23 +246,25 @@ public class AdvertController {
 			}
 		}
 		if(exists==false){
-			System.out.println(3);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		if(rc.getEquipments().size()!=equipments.size()){
-			System.out.println(4);
+		if(rc.getEquipments().size()!=advertDTO.getRealestate().getEquipments().size()){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
-		Location l = this.adverService.checkForExistingLocation(loc_street, loc_street_number, loc_region, loc_city, loc_postal_code);
+		String locStreet = advertDTO.getRealestate().getLocation().getStreet().trim();
+		int locStreetNumber = advertDTO.getRealestate().getLocation().getStreetNumber();
+		String locRegion = advertDTO.getRealestate().getLocation().getRegion().trim();
+		String locCity = advertDTO.getRealestate().getLocation().getCity().trim();
+		int locPostalCode = advertDTO.getRealestate().getLocation().getPostalCode();
+		Location l = this.adverService.checkForExistingLocation(locStreet, locStreetNumber, locRegion, locCity, locPostalCode);
 		if(l==null){
 			l = new Location();
-			l.setCity(loc_city.trim());
-			l.setPostalCode(loc_postal_code);
-			l.setRegion(loc_region.trim());
-			l.setStreet(loc_street.trim());
-			l.setStreetNumber(loc_street_number);
+			l.setCity(locCity);
+			l.setPostalCode(locPostalCode);
+			l.setRegion(locRegion);
+			l.setStreet(locStreet);
+			l.setStreetNumber(locStreetNumber);
 			this.adverService.createLocation(l);
 		}
 		r.setLocation(l);
@@ -290,29 +283,31 @@ public class AdvertController {
 		});
 		r.getTechnicalEquipments().clear();
 		for (int i = 0; i < equipmentList.size(); i++) {
-			if (equipments.get(i) == true) {
+			if (advertDTO.getRealestate().getEquipments().get(i) == true) {
 				r.getTechnicalEquipments().add(equipmentList.get(i));
 			}
 		}
-		
 		this.adverService.updateRealestate(r);
 		Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
-		a.setUpdated_at(d);
+		advert.setUpdated_at(d);
 		
-		this.adverService.updateAdvert(a);
+		this.adverService.updateAdvert(advert);
 		
-		return new ResponseEntity<Advert> (a, HttpStatus.OK);
+		return new ResponseEntity<Advert> (advert, HttpStatus.OK);
 	}
 	
 	/**
-	 * 
-	 * @param id
+	 * This method is part of advert rest service. Advert which id is send in the request will be deleted
+	 *  if advert is not previously deleted and if user who sends request id advert owner.
+	 * @param id advert id which is being deleted
 	 * @param session
-	 * @return
+	 * @return Http response 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteAdvert(@PathVariable("id") int id, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		u = this.adverService.findUser(u.getEmail());
 		if(u!=null){
 			Set<Advert> userAdverts = u.getAdverts();
@@ -337,13 +332,14 @@ public class AdvertController {
 	}
 	
 	/**
-	 * 
-	 * @param id
-	 * @param session
-	 * @return
+	 * This method is part of advert rest service. Advert id which is being returned is send in request
+	 * and user will get requested advert if it's not deleted.
+	 * @param id advert id which is being returned
+	 * @return Http response 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id, HttpSession session){
+	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id){
 		Advert a = this.adverService.findAdvert(id);
 		if(a==null || a.getIs_deleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -352,8 +348,10 @@ public class AdvertController {
 	}
 	
 	/**
-	 * 
-	 * @return
+
+	 * This method is part of advert rest service. User will get in response all adverts which are not deleted. 
+	 * @return Http status 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Advert>> getAllAdverts(Pageable page){
@@ -362,24 +360,33 @@ public class AdvertController {
 	}
 
 	/**
-	 *
-	 * @return
+	 * This method is part of advert rest service. Method will return profile picture of advert
+	 * which id is being send in request if advert in not deleted.
+	 * @return Http status 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/mainPicture", method=RequestMethod.GET)
 	public ResponseEntity<Picture> getAdvertMainPicture(@PathVariable("id") int id){
+		Advert a = this.adverService.findAdvert(id);
+		if(a==null || a.getIs_deleted()==true){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		Picture pic = this.adverService.getAdvertMainPicture(id);
 		return new ResponseEntity<Picture>(pic, HttpStatus.OK);
 	}
 	
 	/**
-	 * 
-	 * @param aid
+	 * This method is part of advert rest service. It allows user to buy realestate
+	 * which is being advertised, if advert is not deleted or previously sold.
+	 * @param aid advert id which is being bought
 	 * @param session
-	 * @return
+	 * @return Http status 200 OK
+	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/buy", method = RequestMethod.PUT)
 	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, HttpSession session){
 		User u = (User) session.getAttribute("logedUser");
+		u = this.adverService.findUser("milossm94@hotmail.com");
 		if(u!=null){
 			Advert a = this.adverService.findAdvert(aid);
 			if (a==null){
@@ -403,7 +410,7 @@ public class AdvertController {
 	}
 	
 	/**
-	 * 
+	 * This method is part of advert rest service.
 	 * @param session
 	 * @param search
 	 * @return

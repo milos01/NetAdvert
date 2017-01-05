@@ -1,11 +1,13 @@
 package com.mmmp.netadvert;
 
 import com.mmmp.netadvert.config.CsrfHeaderFilter;
+import com.mmmp.netadvert.config.InterceptorConfig;
 import com.mmmp.netadvert.service.SecurityUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -24,7 +26,7 @@ import java.security.Principal;
 
 @SpringBootApplication
 //@ImportResource("classpath:/spring/spring-config.xml")
-public class NetAdvertApplication {
+public class NetAdvertApplication{
 
 
 
@@ -49,6 +51,7 @@ public class NetAdvertApplication {
 					.authorizeRequests()
 					.antMatchers("/api/advert", "/api/advert/{\\d+}/mainPicture", "/font-awesome/**","/core/index.html", "/core/views/login.html", "/core/views/home.html", "/core/views/**" , "/", "/core/scripts/**", "/bower_components/**", "/node-modules/**", "/", "/css/**", "/js/**").permitAll()
 					.anyRequest().authenticated()
+					//.and().csrf().disable();
 					.and()
 					.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
 					.csrf().csrfTokenRepository(csrfTokenRepository());
@@ -66,6 +69,6 @@ public class NetAdvertApplication {
 		return new HibernateJpaSessionFactoryBean();
 	}
 	public static void main(String[] args) {
-		SpringApplication.run(NetAdvertApplication.class, args);
+		SpringApplication.run(new Object[]{NetAdvertApplication.class, InterceptorConfig.class}, args);
 	}
 }

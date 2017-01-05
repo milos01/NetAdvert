@@ -55,6 +55,8 @@ public class Advert implements Serializable {
 	
 	private Boolean rent_sale;
 	
+	private double cost;
+	
 	@JsonManagedReference
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="realestate_id", nullable=false)
@@ -67,6 +69,10 @@ public class Advert implements Serializable {
 	@JsonBackReference
 	@OneToMany(mappedBy="advert", fetch=FetchType.EAGER)
 	private Set<AdvertRating> advertRatings;
+	
+	@JsonBackReference
+    @OneToMany(mappedBy="advert", fetch=FetchType.LAZY)
+    private Set<Picture> pictures;
 
 	public int getId() {
 		return id;
@@ -179,6 +185,22 @@ public class Advert implements Serializable {
 
 	public void setAdvertRatings(Set<AdvertRating> advertRatings) {
 		this.advertRatings = advertRatings;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public Set<Picture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<Picture> pictures) {
+		this.pictures = pictures;
 	}
 
 	

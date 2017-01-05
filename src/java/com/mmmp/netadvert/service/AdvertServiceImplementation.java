@@ -395,5 +395,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.userDAO.getlikeUser(email);
 	}
 
+	@Override
+	@Transactional
+	public List<Company> findAllCompanys() {
+		return this.companyDAO.getAllCompanys();
+	}
+
 
 }

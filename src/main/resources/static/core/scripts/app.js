@@ -73,7 +73,7 @@
 
 
 
-	app.controller('navigation', function($rootScope, $scope, $http, $location){
+	app.controller('navigation', function($rootScope, $scope, $http, $location, CompanyResource){
 		var authenticate = function(credentials, callback) {
 
             var headers = credentials ? {authorization : "Basic "
@@ -86,13 +86,16 @@
                 console.log(role);
                 if (response) {
                     $http.get('http://localhost:8080/api/getuser', {params: {email : response.data.name}}).then(function(response){
-                        $rootScope.user = {
-                            uid: response.data.id,
-                            fname :response.data.first_name,
-                            lname :response.data.last_name,
-                            email :response.data.email,
-                            role: role
-                        }
+                        CompanyResource.checkIfUserMainOnCompany(response.data.id).then(function (res) {
+                            $rootScope.user = {
+                                uid: response.data.id,
+                                fname :response.data.first_name,
+                                lname :response.data.last_name,
+                                email :response.data.email,
+                                role: role,
+                                isMain:res
+                            }
+                        });
                     });
 
                     $rootScope.authenticated = true;

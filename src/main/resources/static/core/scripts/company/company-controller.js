@@ -3,6 +3,12 @@
  */
 (function(angular){
     app.controller('company', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource) {
+
+        CompanyResource.getAllCompanys().then(function (items) {
+            console.log(items);
+            $scope.allCompanies = items;
+        });
+
         $scope.searchUser = function () {
             var keywords = $scope.masterEmail;
             if(keywords) {
@@ -22,7 +28,7 @@
             var companyName = $scope.companyName;
             var user = $scope.masterEmail;
             CompanyResource.addCompany(user, companyName).then(function (item) {
-                console.log(item);
+                $scope.allCompanies.push(item);
             });
         }
     })

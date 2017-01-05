@@ -54,7 +54,7 @@
                         <!--</span>-->
                         <!--</div>-->
                         <div class="m-t-md">
-                            <strong>Found {{userAdverts.length}} adverts.</strong>
+                            <strong>Found {{allCompanies.length}} adverts.</strong>
                         </div>
 
                     </div>
@@ -62,10 +62,10 @@
                     <div class="table-responsive">
                         <table class="table table-hover issue-tracker">
                             <tbody>
-                            <tr ng-repeat="advert in userAdverts">
+                            <tr ng-repeat="company in allCompanies">
                                 <td class="issue-info">
                                     <a href="#">
-                                        {{advert.realestate.realestateName}}
+                                        {{company.company_name}}
                                     </a>
 
                                     <small>
@@ -83,7 +83,7 @@
                                     <!--2d-->
                                 </td>
                                 <td class="text-right">
-                                    {{advert.created_at}}
+                                   <i>head: </i> {{company.user.first_name}} {{company.user.last_name}} ({{company.user.email}})
                                 </td>
                             </tr>
                             </tbody>

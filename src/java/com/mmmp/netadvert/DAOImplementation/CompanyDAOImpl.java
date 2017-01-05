@@ -77,4 +77,12 @@ public class CompanyDAOImpl implements CompanyDAO {
 		return companyStaffsList;
 	}
 
+	@Override
+	public List<Company> getAllCompanys() {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Company");
+		List<Company> comp = query.list();
+		return comp;
+	}
+
 }

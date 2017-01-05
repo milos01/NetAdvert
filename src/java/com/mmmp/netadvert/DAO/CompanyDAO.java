@@ -18,4 +18,6 @@ public interface CompanyDAO {
 	public void addCompanyStaff(CompanyStaffs cs);
 
 	public List<CompanyStaffs> allCompanyStaff();
+
+	public List<Company> getAllCompanys();
 }

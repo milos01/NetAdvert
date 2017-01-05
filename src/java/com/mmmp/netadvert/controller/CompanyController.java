@@ -79,6 +79,14 @@ public class CompanyController {
         }
     }
 
+    @RequestMapping(value="/all", method = RequestMethod.GET)
+    public ResponseEntity<List<Company>> getAllCompanys(){
+        List<Company> cmp = this.adverService.findAllCompanys();
+        System.err.print(cmp.size());
+        return new ResponseEntity<List<Company>>(cmp, HttpStatus.OK);
+
+    }
+
     /**
      * This method is part of company rest service. Method will add new company from params sent in form.
      * If same company_name is passed as one in database, method will response with 500 response. After user
@@ -115,6 +123,7 @@ public class CompanyController {
      * @return Boolean
      * @see CompanyStaffs
      */
+    @RequestMapping(method = RequestMethod.GET)
     private Boolean checkIfUserOnCompany(int uid, int cid){
 
         Boolean exist = false;
@@ -124,6 +133,19 @@ public class CompanyController {
                 exist = true;
             }
         }
+        return exist;
+    }
+    @RequestMapping(value="/isMainuser", method = RequestMethod.GET)
+    private int checkIfUserMainOnCompany(@RequestParam int uid){
+
+        int exist = 0;
+        List<Company> staff = this.adverService.findAllCompanys();
+        for (Company c : staff) {
+            if (c.getUser().getId() == uid){
+                exist = 1;
+            }
+        }
+        System.err.print(exist);
         return exist;
     }
 

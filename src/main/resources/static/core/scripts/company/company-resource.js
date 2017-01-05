@@ -13,6 +13,18 @@
 
         };
 
+        retVal.getAllCompanys = function () {
+            return Restangular.one('company').all('all').get().then(function (items) {
+                return items;
+            });
+        }
+        
+        retVal.checkIfUserMainOnCompany = function (id) {
+            return Restangular.one('company').one('isMainuser').get({uid: id}).then(function (item) {
+                return item;
+            });
+        }
+
         return retVal;
     })
 })(angular);

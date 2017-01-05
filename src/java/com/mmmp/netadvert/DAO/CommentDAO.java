@@ -3,6 +3,7 @@ package com.mmmp.netadvert.DAO;
 import java.util.List;
 
 import com.mmmp.netadvert.model.Comment;
+import com.mmmp.netadvert.model.Company;
 
 
 public interface CommentDAO {
@@ -15,4 +16,5 @@ public interface CommentDAO {
 	public Comment findComment(int id);
 	
 	public List<Comment> allCommentsOfAdvert(int advert_id);
+
 }

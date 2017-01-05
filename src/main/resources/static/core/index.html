@@ -56,6 +56,9 @@
                 <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Admin'">
                     <li><a ng-href="/#!/company" ng-cloak>Add company</a></li>
                 </ul>
+                <ul class="nav navbar-nav" ng-show="authenticated && user.isMain === 1">
+                    <li><a ng-href="/#!/company" ng-cloak>My company</a></li>
+                </ul>
                 <ul class="nav navbar-nav" ng-show="authenticated">
                     <li><a ng-href="/#!/profile" ng-cloak>{{user.fname}} {{user.lname}}</a></li>
                 </ul>

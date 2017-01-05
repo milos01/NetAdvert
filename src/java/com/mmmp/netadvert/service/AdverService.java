@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mmmp.netadvert.DTO.SearchDTO;
@@ -120,4 +121,6 @@ public interface AdverService {
     public Picture getAdvertMainPicture(int id);
 
     public User findlikeUser(String email);
+
+    public  List<Company> findAllCompanys();
 }

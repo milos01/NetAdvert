@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mmmp.netadvert.model.Advert;
+import com.mmmp.netadvert.model.Company;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.DTO.UserDTO;
@@ -197,6 +198,17 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 	}
+
+    @RequestMapping(value="/api/user/{uid}/mycompany", method=RequestMethod.GET)
+    public ResponseEntity<Company> getUserCompany(@PathVariable("uid") int uid){
+
+        Company cmp = this.adverService.findUserCompany(uid);
+        if (cmp != null){
+            return new ResponseEntity<Company>(cmp, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     /**
      *  This method is part of user rest service. This method will update expire date of some advert. User and Advert can't be null

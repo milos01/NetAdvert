@@ -191,18 +191,9 @@ public class CompanyController {
      * @see CompanyStaffs
      */
     @RequestMapping(value="/{cid}/allusers", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUsersOnCompany(@PathVariable("cid") int cid){
-        Company cmp = (Company)this.adverService.findCompany(cid);
-        if (cmp != null) {
-            List<User> users = new ArrayList<User>();
-
-            for (CompanyStaffs item : cmp.getCs()) {
-                users.add(item.getUser());
-            }
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<List<CompanyStaffs>> getUsersOnCompany(@PathVariable("cid") int cid){
+        List<CompanyStaffs> cs = this.adverService.staffForCompany(cid);
+        return new ResponseEntity<List<CompanyStaffs>>(cs, HttpStatus.OK);
     }
 
 	

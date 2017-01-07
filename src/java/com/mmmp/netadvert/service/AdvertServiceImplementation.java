@@ -401,5 +401,17 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.companyDAO.getAllCompanys();
 	}
 
+	@Override
+	@Transactional
+	public Company findUserCompany(int uid) {
+		return this.userDAO.findUs1erCompany(uid);
+	}
+
+	@Override
+	@Transactional
+	public List<CompanyStaffs> staffForCompany(int cid) {
+		return this.companyDAO.staffForCompany(cid);
+	}
+
 
 }

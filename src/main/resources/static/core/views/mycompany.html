@@ -1,0 +1,53 @@
+<div class="wrapper wrapper-content  animated fadeInRight article">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="pull-right">
+                        <button class="btn btn-white btn-xs" type="button">Add staff member</button>
+                    </div>
+                    <div class="pull-right">
+                    </div>
+                    <div class="text-center article-title">
+                        <h1>
+                            {{company.company_name}}
+                        </h1>
+                    </div>
+                    <p>
+                        Many desktop publishing packages and web page editors now use <strong>Lorem Ipsum as their default model text</strong>, and a search for 'lorem ipsum' will uncover many web
+                    </p>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <h2>Employees:</h2>
+                            <div class="social-feed-box" ng-repeat="user in users">
+                                <div class="social-avatar">
+                                    <a href="" class="pull-left">
+                                        <img alt="image" src="">
+                                    </a>
+                                    <div class="media-body">
+                                        <a href="#">
+                                            {{user.user.first_name}} {{user.user.last_name}}
+                                        </a>
+                                        <small class="text-muted"><i>Status: </i>
+                                            <span ng-show="user.accepted" ng-cloak>accepeted</span>
+                                            <span ng-show="!user.accepted" ng-cloak>not accepeted</span>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="social-body">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

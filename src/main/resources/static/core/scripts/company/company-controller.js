@@ -32,4 +32,15 @@
             });
         }
     })
+    
+    app.controller('mycompany', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource) {
+        UsersResource.findUserCompany($scope.user.uid).then(function (item) {
+            $scope.company = item;
+            CompanyResource.getUsersForCompany(item.id).then(function (items) {
+                console.log(items);
+                $scope.users = items;
+            });
+        });
+
+    })
 })(angular);

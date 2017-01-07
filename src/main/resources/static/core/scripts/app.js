@@ -37,6 +37,15 @@
                     }
                 }
             })
+            .state('mycompany', {
+                url: "/mycompany",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/mycompany.html",
+                        controller: 'mycompany'
+                    }
+                }
+            })
             .state('creds', {
                 parent: 'profile',
                 views: {

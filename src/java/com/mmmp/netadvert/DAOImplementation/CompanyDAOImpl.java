@@ -85,4 +85,13 @@ public class CompanyDAOImpl implements CompanyDAO {
 		return comp;
 	}
 
+	@Override
+	public List<CompanyStaffs> staffForCompany(int cid) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from CompanyStaffs cs where cs.company.id = :id");
+		query.setParameter("id", cid);
+		List<CompanyStaffs> comp = query.list();
+		return comp;
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.DAO;
 
+import com.mmmp.netadvert.model.Company;
 import com.mmmp.netadvert.model.User;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface UserDAO {
 	public User findUserById(int id);
 
     public User getlikeUser(String email);
+
+    public Company findUs1erCompany(int uid);
 }

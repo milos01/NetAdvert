@@ -25,6 +25,12 @@
             });
         }
 
+        retVal.getUsersForCompany = function (cid) {
+            return Restangular.one('company', cid).getList('allusers').then(function (items) {
+                return items;
+            });
+        }
+
         return retVal;
     })
 })(angular);

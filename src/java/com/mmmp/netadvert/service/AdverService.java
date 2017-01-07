@@ -123,4 +123,8 @@ public interface AdverService {
     public User findlikeUser(String email);
 
     public  List<Company> findAllCompanys();
+
+    public Company findUserCompany(int uid);
+
+    public List<CompanyStaffs> staffForCompany(int cid);
 }

@@ -33,6 +33,12 @@
                 return entries;
             });
         }
+
+        retVal.findUserCompany = function (uid) {
+            return Restangular.one("user", uid).one('mycompany').get().then(function (item) {
+                return item;
+            });
+        }
         return retVal;
     })
 })(angular);

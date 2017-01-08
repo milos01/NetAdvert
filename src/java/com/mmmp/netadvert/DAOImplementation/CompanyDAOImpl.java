@@ -65,9 +65,10 @@ public class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	@Override
-	public void addCompanyStaff(CompanyStaffs cs) {
+	public CompanyStaffs addCompanyStaff(CompanyStaffs cs) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.persist(cs);
+		return cs;
 	}
 
 	@Override

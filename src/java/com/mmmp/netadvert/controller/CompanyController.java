@@ -123,9 +123,8 @@ public class CompanyController {
      * @return Boolean
      * @see CompanyStaffs
      */
-    @RequestMapping(method = RequestMethod.GET)
-    private Boolean checkIfUserOnCompany(int uid, int cid){
 
+    private Boolean checkIfUserOnCompany(int uid, int cid){
         Boolean exist = false;
         List<CompanyStaffs> staff = this.adverService.allCompanyStaff();
         for (CompanyStaffs cs : staff) {
@@ -135,6 +134,19 @@ public class CompanyController {
         }
         return exist;
     }
+
+    @RequestMapping(value="/isInCompany", method = RequestMethod.GET)
+    private int checkUserOnCompany(int uid, int cid){
+        int exist = 0;
+        List<CompanyStaffs> staff = this.adverService.allCompanyStaff();
+        for (CompanyStaffs cs : staff) {
+            if (cs.getUser().getId() == uid && cs.getCompany().getId() == cid){
+                exist = 1;
+            }
+        }
+        return exist;
+    }
+
     @RequestMapping(value="/isMainuser", method = RequestMethod.GET)
     private int checkIfUserMainOnCompany(@RequestParam int uid){
 
@@ -159,7 +171,7 @@ public class CompanyController {
      * @see CompanyStaffs
      */
 	@RequestMapping(value="/{cid}/user/{uid}", method = RequestMethod.POST)
-	public ResponseEntity<Void> addUserOnCompany(@PathVariable("cid") int cid,@PathVariable("uid") int uid){
+	public ResponseEntity<CompanyStaffs> addUserOnCompany(@PathVariable("cid") int cid,@PathVariable("uid") int uid){
 		User usr = (User)this.adverService.findUserById(uid);
 		Company cmp = (Company)this.adverService.findCompany(cid);
 		if (cmp  != null && usr != null){
@@ -169,8 +181,8 @@ public class CompanyController {
                 cs.setAccepted(0);
                 cs.setCompany(cmp);
                 try{
-                    this.adverService.addCompanyStaff(cs);
-                    return new ResponseEntity<>(HttpStatus.OK);
+                    CompanyStaffs csf = (CompanyStaffs)this.adverService.addCompanyStaff(cs);
+                    return new ResponseEntity<CompanyStaffs>(csf, HttpStatus.OK);
                 }catch (ConstraintViolationException e){
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                 }

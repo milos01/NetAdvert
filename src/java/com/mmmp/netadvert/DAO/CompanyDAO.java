@@ -15,7 +15,7 @@ public interface CompanyDAO {
 
 	public Company findCompany(int cid);
 
-	public void addCompanyStaff(CompanyStaffs cs);
+	public CompanyStaffs addCompanyStaff(CompanyStaffs cs);
 
 	public List<CompanyStaffs> allCompanyStaff();
 

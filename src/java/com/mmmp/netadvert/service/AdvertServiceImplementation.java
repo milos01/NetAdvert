@@ -301,8 +301,8 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
-	public void addCompanyStaff(CompanyStaffs cs) {
-		this.companyDAO.addCompanyStaff(cs);
+	public CompanyStaffs addCompanyStaff(CompanyStaffs cs) {
+		return this.companyDAO.addCompanyStaff(cs);
 	}
 
 	@Override

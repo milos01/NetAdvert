@@ -2,7 +2,7 @@
  * Created by milosandric on 05/01/2017.
  */
 (function(angular){
-    app.factory('CompanyResource', function (Restangular, _) {
+    app.factory('CompanyResource', function (Restangular, $log, _) {
         var retVal = {};
 
         retVal.addCompany = function(user, companyName) {
@@ -31,6 +31,17 @@
             });
         }
 
+        retVal.isUserInCompany = function(uid, cid){
+            return Restangular.one('company').one('isInCompany').get({uid: uid, cid: cid}).then(function (item) {
+                return item;
+            });
+        }
+
+        retVal.addStaff = function (cid, uid) {
+            return Restangular.one('company', cid).one('user', uid).post().then(function (item) {
+                return item;
+            });
+        }
         return retVal;
     })
 })(angular);

@@ -75,6 +75,10 @@ public class User implements Serializable {
     @JsonBackReference
     @OneToMany(mappedBy="user_rated", fetch=FetchType.EAGER)
     private Set<UserRating> userRatedRatings;
+    
+    @JsonBackReference
+    @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+    private Set<SoldAdvert> userBoughtAdverts;
 
     public Set<CompanyStaffs> getCs() {
         return cs;
@@ -193,6 +197,16 @@ public class User implements Serializable {
 
 	public void setUserRatedRatings(Set<UserRating> userRatedRatings) {
 		this.userRatedRatings = userRatedRatings;
+	}
+	
+	
+
+	public Set<SoldAdvert> getUserBoughtAdverts() {
+		return userBoughtAdverts;
+	}
+
+	public void setUserBoughtAdverts(Set<SoldAdvert> userBoughtAdverts) {
+		this.userBoughtAdverts = userBoughtAdverts;
 	}
 
 	@Override

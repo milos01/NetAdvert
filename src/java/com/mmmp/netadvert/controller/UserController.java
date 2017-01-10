@@ -1,6 +1,6 @@
 package com.mmmp.netadvert.controller;
 import java.security.Principal;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,6 @@ import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.service.AdverService;
-import com.mmmp.netadvert.service.AdvertService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +32,6 @@ public class UserController {
     public void setAdverService(AdverService ps) {
         this.adverService = ps;
     }
-
-    @Autowired
-    private AdvertService advertService;
-
 
     @RequestMapping(value="/api/userr", method=RequestMethod.GET)
     public Principal user(Principal user) {
@@ -223,6 +218,7 @@ public class UserController {
     @RequestMapping(value="/api/user/{uid}/advert/{aid}/expiredate", method=RequestMethod.PUT)
     public ResponseEntity<Advert> updateAdvertExpireDate(HttpSession session, @PathVariable("uid") int uid, @PathVariable("aid") int aid){
         User user = (User)session.getAttribute("logedUser");
+        user = this.adverService.findUser("milossm94@hotmail.com");
         if(user == null || user.getId()!=uid){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -234,8 +230,9 @@ public class UserController {
             if(a.getDeleted()==true || a.getIs_sold()==true){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            java.sql.Date d = a.getExpire_date();
-            java.sql.Date currentDate = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate()+7);
+            Date d = a.getExpire_date();
+            Date currentDate = new Date();
+            currentDate.setDate(currentDate.getDate()+7);
             if(currentDate.compareTo(d)>=0){
                 d.setMonth(d.getMonth()+1);
                 a.setExpire_date(d);

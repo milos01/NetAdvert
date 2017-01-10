@@ -1,7 +1,7 @@
 package com.mmmp.netadvert.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,16 +13,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mmmp.netadvert.serializer.JsonDateSerializer;
 
 @Entity
 @Table(name="Advert")
-
 public class Advert implements Serializable {
 
 	private static final long serialVersionUID = 8771866581641465356L;
@@ -37,10 +41,19 @@ public class Advert implements Serializable {
 	@JoinColumn(nullable=false, name = "user_id")
 	private User user;
 	
+	@Column(name="advert_name")
+	private String advertName;
+	
+	@JsonSerialize(using=JsonDateSerializer.class)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_at;
 	
+	@JsonSerialize(using=JsonDateSerializer.class)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated_at;
 	
+	@JsonSerialize(using=JsonDateSerializer.class)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date expire_date;
 	
 	private double advert_rate;
@@ -73,7 +86,11 @@ public class Advert implements Serializable {
 	@JsonBackReference
     @OneToMany(mappedBy="advert", fetch=FetchType.LAZY)
     private Set<Picture> pictures;
-
+	
+	@JsonBackReference
+    @OneToOne(mappedBy="advert", fetch=FetchType.EAGER)
+	private SoldAdvert soldAdvert;
+	
 	public int getId() {
 		return id;
 	}
@@ -201,6 +218,22 @@ public class Advert implements Serializable {
 
 	public void setPictures(Set<Picture> pictures) {
 		this.pictures = pictures;
+	}
+
+	public String getAdvertName() {
+		return advertName;
+	}
+
+	public void setAdvertName(String advertName) {
+		this.advertName = advertName;
+	}
+
+	public SoldAdvert getSoldAdvert() {
+		return soldAdvert;
+	}
+
+	public void setSoldAdvert(SoldAdvert soldAdvert) {
+		this.soldAdvert = soldAdvert;
 	}
 
 	

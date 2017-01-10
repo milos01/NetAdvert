@@ -9,40 +9,35 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mmmp.netadvert.serializer.JsonDateSerializer;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="Comment")
-public class Comment {
-
+@Table(name="sold_advert")
+public class SoldAdvert {
+	
 	@Id
 	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToOne(targetEntity = User.class,fetch=FetchType.EAGER)
-	@JoinColumn(nullable=false, name = "user_id")
+	@JsonManagedReference
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 	
-	@JsonIgnoreProperties({"realestate"})
-	@OneToOne(targetEntity = Advert.class,fetch=FetchType.EAGER)
-	@JoinColumn(nullable=false, name = "advert_id")
+	@JsonManagedReference
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="advert_id", nullable=false)
 	private Advert advert;
 	
-	@JsonSerialize(using=JsonDateSerializer.class)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
-	
-	private String text;
+	private Date boughtAt;
 
 	public int getId() {
 		return id;
@@ -68,22 +63,14 @@ public class Comment {
 		this.advert = advert;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getBoughtAt() {
+		return boughtAt;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setBoughtAt(Date boughtAt) {
+		this.boughtAt = boughtAt;
 	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	
 	
+
 }

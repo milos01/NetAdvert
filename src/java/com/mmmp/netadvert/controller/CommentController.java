@@ -1,6 +1,6 @@
 package com.mmmp.netadvert.controller;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.util.List;
 
@@ -51,13 +51,8 @@ public class CommentController {
 		Comment comment = new Comment();
 		comment.setAdvert(advert);
 		comment.setUser(u);
-		java.util.Date currentDate = new java.util.Date();
-		
-		try {
-			comment.setDate(getFormatedDate(currentDate));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		Date currentDate = new Date();
+		comment.setDate(currentDate);
 		
 		if (text==null || text.equals("")){
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

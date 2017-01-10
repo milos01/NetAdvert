@@ -1,6 +1,6 @@
 package com.mmmp.netadvert.DTO;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class AdvertDTO {
 	
@@ -15,6 +15,8 @@ public class AdvertDTO {
 	private Date expire_date;
 	
 	private double advert_rate;
+	
+	private String advertName;
 	
 	private String contact;
 	
@@ -136,6 +138,14 @@ public class AdvertDTO {
 
 	public void setCost(double cost) {
 		this.cost = cost;
+	}
+
+	public String getAdvertName() {
+		return advertName;
+	}
+
+	public void setAdvertName(String advertName) {
+		this.advertName = advertName;
 	}
 	
 	

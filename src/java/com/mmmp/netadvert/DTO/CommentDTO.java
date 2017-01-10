@@ -1,6 +1,6 @@
 package com.mmmp.netadvert.DTO;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class CommentDTO {
 

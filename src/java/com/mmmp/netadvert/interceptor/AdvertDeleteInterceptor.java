@@ -1,6 +1,6 @@
 package com.mmmp.netadvert.interceptor;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class AdvertDeleteInterceptor extends HandlerInterceptorAdapter {
 	            Object handler) throws Exception {
 		 
 		 List<Advert> adverts = this.adverService.allAdverts();
-		 Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
+		 Date d = new Date();
 		 for(Advert a : adverts){
 			 if(a.getExpire_date().compareTo(d)<0 && a.getDeleted()==false){
 				 a.setDeleted(true);

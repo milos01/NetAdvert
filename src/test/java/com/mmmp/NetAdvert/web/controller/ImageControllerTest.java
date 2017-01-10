@@ -1,6 +1,6 @@
-package com.mmmp.netadvert.web.controller;
+package com.mmmp.NetAdvert.web.controller;
 
-import static com.mmmp.netadvert.constants.AdvertConstants.advert_id;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_id;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;

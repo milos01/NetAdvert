@@ -1,11 +1,14 @@
 package com.mmmp.netadvert.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
 import com.mmmp.netadvert.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mmmp.netadvert.DAO.AdvertDAO;
@@ -331,6 +334,12 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
+	public Page<Advert> allAdvertsPage(Map<String, String> map, Pageable pageable) {
+		return this.advertDAO.allAdvertsPage(map, pageable);
+	}
+	
+	@Override
+	@Transactional
 	public List<Advert> allAdverts() {
 		return this.advertDAO.allAdverts();
 	}
@@ -379,8 +388,8 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
-	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech) {
-		return this.advertDAO.searchAdverts(search, tech);
+	public Page<Advert> searchAdverts(Map<String, Object> map, List<TechnicalEquipment> tech, Pageable pageable) {
+		return this.advertDAO.searchAdverts(map, tech, pageable);
 	}
 
 	@Override
@@ -411,6 +420,12 @@ public class AdvertServiceImplementation implements AdverService {
 	@Transactional
 	public List<CompanyStaffs> staffForCompany(int cid) {
 		return this.companyDAO.staffForCompany(cid);
+	}
+	
+	@Override
+	@Transactional
+	public SoldAdvert addSoldAdvert(SoldAdvert s) {
+		return this.advertDAO.addSoldAdvert(s);
 	}
 
 

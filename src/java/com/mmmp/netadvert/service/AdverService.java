@@ -2,6 +2,10 @@ package com.mmmp.netadvert.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.model.*;
@@ -100,6 +104,8 @@ public interface AdverService {
 	
 	public List<Advert> findAdvertByName(String name);
 	
+	public Page<Advert> allAdvertsPage(Map<String, String> map, Pageable pageable);
+	
 	public List<Advert> allAdverts();
 	
 	public AdvertRating addAdvertRating(AdvertRating a);
@@ -116,7 +122,7 @@ public interface AdverService {
 	
 	public void deleteUserRating(UserRating ur);
 	
-	public List<Advert> searchAdverts(SearchDTO search, List<TechnicalEquipment> tech);
+	public Page<Advert> searchAdverts(Map<String, Object> map, List<TechnicalEquipment> tech, Pageable pageable);
 
     public Picture getAdvertMainPicture(int id);
 
@@ -127,4 +133,6 @@ public interface AdverService {
     public Company findUserCompany(int uid);
 
     public List<CompanyStaffs> staffForCompany(int cid);
+    
+    public SoldAdvert addSoldAdvert(SoldAdvert s);
 }

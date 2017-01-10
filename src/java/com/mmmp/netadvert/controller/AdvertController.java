@@ -1,17 +1,17 @@
 package com.mmmp.netadvert.controller;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import com.mmmp.netadvert.model.*;
-import com.mmmp.netadvert.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,9 +36,6 @@ public class AdvertController {
 
 	@Autowired
 	private AdverService adverService;
-
-	@Autowired
-	private AdvertService advertService;
 
 	@Autowired(required = true)
 	public void setAdverService(AdverService adverService) {
@@ -152,10 +149,11 @@ public class AdvertController {
 		Advert advert = new Advert();
 		advert.setUser(u);
 		advert.setRealestate(rs);
-		Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
+		Date d = new Date();
 		advert.setCreated_at(d);
 		advert.setUpdated_at(d);
-		Date expire = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth() + 1, new java.util.Date().getDate());
+		Date expire = new Date(d.getTime());
+		expire.setMonth(expire.getMonth()+1);
 		advert.setExpire_date(expire);
 		advert.setIs_sold(false);
 		advert.setDeleted(false);
@@ -288,7 +286,7 @@ public class AdvertController {
 			}
 		}
 		this.adverService.updateRealestate(r);
-		Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
+		Date d = new Date();
 		advert.setUpdated_at(d);
 		
 		this.adverService.updateAdvert(advert);
@@ -341,9 +339,7 @@ public class AdvertController {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id){
 		Advert a = this.adverService.findAdvert(id);
-		System.err.print(a.getDeleted());
 		if(a == null || a.getDeleted()==true){
-			System.err.print("uso");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
@@ -356,8 +352,8 @@ public class AdvertController {
 	 * @see Advert
 	 */
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Advert>> getAllAdverts(Pageable page){
-		Page<Advert> advertList = this.advertService.findAll(page);
+	public ResponseEntity<Page<Advert>> getAllAdverts(@RequestParam Map<String, String> params, Pageable page){
+		Page<Advert> advertList = this.adverService.allAdvertsPage(params, page);
 		return new ResponseEntity<Page<Advert>>(advertList, HttpStatus.OK);
 	}
 
@@ -406,51 +402,14 @@ public class AdvertController {
 			}
 			a.setIs_sold(true);
 			this.adverService.updateAdvert(a);
+			SoldAdvert sa = new SoldAdvert();
+			sa.setUser(u);
+			sa.setAdvert(a);
+			sa.setBoughtAt(new Date());
+			this.adverService.addSoldAdvert(sa);
 			return new ResponseEntity<Advert>(a, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-	}
-	
-	/**
-	 * This method is part of advert rest service.
-	 * @param session
-	 * @param search
-	 * @return
-	 */
-	@RequestMapping(value="/search", method = RequestMethod.POST)
-	public ResponseEntity<List<Advert>> searchAdvert(HttpSession session, @RequestBody SearchDTO search){
-		if(search.getRent_sale()==null || search.getHeating()==null){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		if(search.getPrice_from()>search.getPrice_to()){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		if(search.getArea_from()>search.getArea_to()){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		if(search.getPrice_from()<0 || search.getPrice_to()<0 || search.getArea_from()<0 || search.getArea_to()<0){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		List<TechnicalEquipment> te = this.adverService.allEquipment();
-		Collections.sort(te, new Comparator<TechnicalEquipment>() {
-			public int compare(TechnicalEquipment m1, TechnicalEquipment m2) {
-				if (m1.getId() > m2.getId()) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-		});
-		List<TechnicalEquipment> tech = new ArrayList<TechnicalEquipment>();
-		for(TechnicalEquipment tt : te){
-			for(String s : search.getEquipments()){
-				if(tt.getEquipmentName().equals(s.trim())){
-					tech.add(tt);
-					break;
-				}
-			}
-		}
-		return null;
 	}
 
 }

@@ -14,7 +14,7 @@
         };
 
         retVal.getAllCompanys = function () {
-            return Restangular.one('company').all('all').get().then(function (items) {
+            return Restangular.one('company').all('all').getList().then(function (items) {
                 return items;
             });
         }

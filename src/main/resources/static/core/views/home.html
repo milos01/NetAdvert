@@ -20,15 +20,16 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-md-3" ng-repeat="advert in adverts">
+            <a ui-sref="advert({advertId: advert.id})">
             <div class="ibox">
                 <div class="ibox-content product-box">
 
-                    <div class="product-imitation">
+                    <div class="product-imitation" ng-cloak>
                         {{advert.main_pic}}
                     </div>
                     <div class="product-desc">
                                 <span class="product-price">
-                                    $10
+                                    ${{advert.cost}}
                                 </span>
                         <small class="text-muted">{{advert.realestate.type.typeName}}</small>
                         <a href="#" class="product-name">{{advert.realestate.realestateName}}</a>
@@ -45,9 +46,8 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
-
-
     </div>
 </div>
 <ul class="pagination">

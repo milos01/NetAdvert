@@ -46,6 +46,15 @@
                     }
                 }
             })
+            .state('advert', {
+                url: "/advert/:advertId",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/advert.html",
+                        controller: 'advert'
+                    }
+                }
+            })
             .state('creds', {
                 parent: 'profile',
                 views: {

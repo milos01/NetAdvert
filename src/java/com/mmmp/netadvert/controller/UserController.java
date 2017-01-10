@@ -231,7 +231,7 @@ public class UserController {
             if(a.getUser().getId()!=user.getId()){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-            if(a.getIs_deleted()==true || a.getIs_sold()==true){
+            if(a.getDeleted()==true || a.getIs_sold()==true){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             java.sql.Date d = a.getExpire_date();

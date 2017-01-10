@@ -83,6 +83,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Company");
 		List<Company> comp = query.list();
+		System.err.print(comp.size() + "aa");
 		return comp;
 	}
 

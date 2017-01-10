@@ -72,7 +72,7 @@ public class ImageController {
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
         boolean exists = false;
-        if(a.getUser().getId()==u.getId() && a.getIs_deleted()==false){
+        if(a.getUser().getId()==u.getId() && a.getDeleted()==false){
         		exists = true;
         }
         if(exists = false){

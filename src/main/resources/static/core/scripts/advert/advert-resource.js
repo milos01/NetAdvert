@@ -10,6 +10,13 @@
                 return entries;
             });
         };
+
+        retVal.getAdvert = function (id) {
+            return Restangular.one('advert', id).get().then(function (item) {
+                return item;
+            });
+
+        }
         return retVal;
     })
 })(angular);

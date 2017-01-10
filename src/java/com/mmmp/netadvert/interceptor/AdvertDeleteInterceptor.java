@@ -28,8 +28,8 @@ public class AdvertDeleteInterceptor extends HandlerInterceptorAdapter {
 		 List<Advert> adverts = this.adverService.allAdverts();
 		 Date d = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth(), new java.util.Date().getDate());
 		 for(Advert a : adverts){
-			 if(a.getExpire_date().compareTo(d)<0 && a.getIs_deleted()==false){
-				 a.setIs_deleted(true);
+			 if(a.getExpire_date().compareTo(d)<0 && a.getDeleted()==false){
+				 a.setDeleted(true);
 				 this.adverService.updateAdvert(a);
 			 }
 		 }

@@ -62,7 +62,7 @@ public class PictureDAOImpl implements PictureDAO {
 	@Override
 	public Picture getAdvertMainPicture(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Picture p where p.realestate.id=:id and p.isProfile=:ip");
+		Query query = session.createQuery("from Picture p where p.advert.id=:id and p.isProfile=:ip");
 		query.setParameter("id",id);
 		query.setParameter("ip",true);
 		List<Picture> list=query.list();

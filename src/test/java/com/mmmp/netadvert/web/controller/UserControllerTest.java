@@ -1,7 +1,7 @@
-package com.mmmp.NetAdvert.web.controller;
+package com.mmmp.netadvert.web.controller;
 
 
-import static com.mmmp.NetAdvert.constants.UserConstants.*;
+import static com.mmmp.netadvert.constants.UserConstants.*;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,8 +15,8 @@ import javax.annotation.PostConstruct;
 
 import com.mmmp.netadvert.NetAdvertApplication;
 
-import com.mmmp.NetAdvert.TestUtil;
-import com.mmmp.NetAdvert.constants.UserConstants;
+import com.mmmp.netadvert.TestUtil;
+import com.mmmp.netadvert.constants.UserConstants;
 import com.mmmp.netadvert.model.Role;
 import com.mmmp.netadvert.model.User;
 

@@ -1,21 +1,21 @@
-package com.mmmp.NetAdvert.web.controller;
+package com.mmmp.netadvert.web.controller;
 
-import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_id;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_rate;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.created_at;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.db_advert_count;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.expire_date;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.is_deleted;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.is_sold;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.rent_sale;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.updated_at;
-import static com.mmmp.NetAdvert.constants.LocationConstants.city;
-import static com.mmmp.NetAdvert.constants.LocationConstants.postal_code;
-import static com.mmmp.NetAdvert.constants.LocationConstants.region;
-import static com.mmmp.NetAdvert.constants.LocationConstants.street;
-import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
+import static com.mmmp.netadvert.constants.AdvertConstants.advert_id;
+import static com.mmmp.netadvert.constants.AdvertConstants.advert_rate;
+import static com.mmmp.netadvert.constants.AdvertConstants.contact;
+import static com.mmmp.netadvert.constants.AdvertConstants.created_at;
+import static com.mmmp.netadvert.constants.AdvertConstants.db_advert_count;
+import static com.mmmp.netadvert.constants.AdvertConstants.description;
+import static com.mmmp.netadvert.constants.AdvertConstants.expire_date;
+import static com.mmmp.netadvert.constants.AdvertConstants.is_deleted;
+import static com.mmmp.netadvert.constants.AdvertConstants.is_sold;
+import static com.mmmp.netadvert.constants.AdvertConstants.rent_sale;
+import static com.mmmp.netadvert.constants.AdvertConstants.updated_at;
+import static com.mmmp.netadvert.constants.LocationConstants.city;
+import static com.mmmp.netadvert.constants.LocationConstants.postal_code;
+import static com.mmmp.netadvert.constants.LocationConstants.region;
+import static com.mmmp.netadvert.constants.LocationConstants.street;
+import static com.mmmp.netadvert.constants.LocationConstants.street_number;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.mmmp.NetAdvert.TestUtil;
+import com.mmmp.netadvert.TestUtil;
 import com.mmmp.netadvert.NetAdvertApplication;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Location;
@@ -154,7 +154,7 @@ public class AdvertControllerTest {
 		a.setDescription(description);
 		a.setCreated_at(created_at);
 		a.setExpire_date(expire_date);
-		a.setIs_deleted(is_deleted);
+		a.setDeleted(is_deleted);
 		a.setIs_sold(is_sold);
 		a.setRealestate(rls);
 		a.setRent_sale(rent_sale);
@@ -179,7 +179,7 @@ public class AdvertControllerTest {
 		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object2))
 				.andExpect(status().isBadRequest());
 		
-		a.setIs_deleted(true);
+		a.setDeleted(true);
 		a.setIs_sold(false);
 		String object3 = TestUtil.json(a);
 		this.mockMvc
@@ -187,7 +187,7 @@ public class AdvertControllerTest {
 				.andExpect(status().isBadRequest());
 		
 		logUser.setId(2);
-		a.setIs_deleted(false);
+		a.setDeleted(false);
 		a.setIs_sold(false);
 		String object4 = TestUtil.json(a);
 		this.mockMvc
@@ -240,7 +240,7 @@ public class AdvertControllerTest {
 		a.setAdvert_rate(advert_rate);
 		a.setContact(contact);
 		a.setDescription(description);
-		a.setIs_deleted(is_deleted);
+		a.setDeleted(is_deleted);
 		a.setIs_sold(is_sold);
 		a.setRent_sale(rent_sale);
 		
@@ -428,7 +428,7 @@ public class AdvertControllerTest {
 		a.setAdvert_rate(advert_rate);
 		a.setContact(contact);
 		a.setDescription(description);
-		a.setIs_deleted(is_deleted);
+		a.setDeleted(is_deleted);
 		a.setIs_sold(is_sold);
 		a.setRent_sale(rent_sale);
 		
@@ -489,7 +489,7 @@ public class AdvertControllerTest {
 						.param("equipments", equpments.get(4) + "")).andDo(CustomMockMvcResultHandlers.print())
 				.andExpect(status().isBadRequest());
 		
-		a.setIs_deleted(true);
+		a.setDeleted(true);
 		String object3 = TestUtil.json(a);
 		this.mockMvc
 		.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object3)
@@ -515,7 +515,7 @@ public class AdvertControllerTest {
 				.param("equipments", equpments.get(4) + "")).andDo(CustomMockMvcResultHandlers.print())
 		.andExpect(status().isBadRequest());
 		
-		a.setIs_deleted(false);
+		a.setDeleted(false);
 		String object4 = TestUtil.json(a);
 		this.mockMvc
 		.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object4)

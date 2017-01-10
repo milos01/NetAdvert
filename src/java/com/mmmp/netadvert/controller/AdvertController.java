@@ -158,7 +158,7 @@ public class AdvertController {
 		Date expire = new Date(new java.util.Date().getYear(), new java.util.Date().getMonth() + 1, new java.util.Date().getDate());
 		advert.setExpire_date(expire);
 		advert.setIs_sold(false);
-		advert.setIs_deleted(false);
+		advert.setDeleted(false);
 		advert.setAdvert_rate(0);
 		advert.setContact(advertDTO.getContact());
 		advert.setRent_sale(advertDTO.getRent_sale());
@@ -213,7 +213,7 @@ public class AdvertController {
 		else{
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		if(advert.getIs_deleted()==true){
+		if(advert.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		advert.setContact(advertDTO.getContact().trim());
@@ -341,7 +341,9 @@ public class AdvertController {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Advert> getAdvertById(@PathVariable("id") int id){
 		Advert a = this.adverService.findAdvert(id);
-		if(a==null || a.getIs_deleted()==true){
+		System.err.print(a.getDeleted());
+		if(a == null || a.getDeleted()==true){
+			System.err.print("uso");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
@@ -368,7 +370,7 @@ public class AdvertController {
 	@RequestMapping(value="/{id}/mainPicture", method=RequestMethod.GET)
 	public ResponseEntity<Picture> getAdvertMainPicture(@PathVariable("id") int id){
 		Advert a = this.adverService.findAdvert(id);
-		if(a==null || a.getIs_deleted()==true){
+		if(a==null || a.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Picture pic = this.adverService.getAdvertMainPicture(id);
@@ -393,7 +395,7 @@ public class AdvertController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			
-			if(a.getIs_deleted()==true){
+			if(a.getDeleted()==true){
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			if(a.getUser().getId()==u.getId()){

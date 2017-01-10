@@ -51,7 +51,7 @@ public class Advert implements Serializable {
 	
 	private Boolean is_sold;
 	
-	private Boolean is_deleted;
+	private Boolean isDeleted;
 	
 	private Boolean rent_sale;
 	
@@ -146,12 +146,12 @@ public class Advert implements Serializable {
 		this.is_sold = is_sold;
 	}
 
-	public Boolean getIs_deleted() {
-		return is_deleted;
+	public Boolean getDeleted() {
+		return isDeleted;
 	}
 
-	public void setIs_deleted(Boolean is_deleted) {
-		this.is_deleted = is_deleted;
+	public void setDeleted(Boolean deleted) {
+		isDeleted = deleted;
 	}
 
 	public Boolean getRent_sale() {

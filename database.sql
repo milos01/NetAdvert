@@ -57,8 +57,8 @@ INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`rol
 INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Mladen', 'Doslic','pass', 'doslicmm@live.com', '3', 0);
 INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Milan', 'Milanovic','pass', 'milan@gmail.com', '2', 0);
 
-INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-28 12:45:00', '2016-11-29 14:05:12', '2016-12-25', 25000, 3, '060/123-456', 'description', false, false, true, '1');
-INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 40000, 5, '060/123-456', 'description', false, false, true, '2');
+INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-28 12:45:00', '2016-11-29 14:05:12', '2017-12-25', 25000, 3, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('2', '2016-11-14 18:19:00', '2016-11-14 18:19:00', '2017-12-11', 40000, 5, '060/123-456', 'description', false, false, true, '2');
 
 INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Spoljasnji izgled', '2', '1', true);
 INSERT INTO `netadvert`.`picture` (`picture_name`,`user_id`,`advert_id`,`is_profile`) VALUES ('Dnevna soba', '2', '1', false);

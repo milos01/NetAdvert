@@ -62,21 +62,21 @@
         }
     })
 
-    app.controller('newStaffController', function($scope, $log, UsersResource, $uibModalInstance, CompanyResource) {
+    app.controller('newStaffController', function($scope, $log, UsersResource, $uibModalInstance, company,CompanyResource) {
             var userId;
             $scope.addNewStaff = function(){
                 var keywords = $scope.email;
                 if(keywords) {
                     UsersResource.findKeywordsUser(keywords).then(function (item) {
                         if (item && $scope.user.uid != item.id) {
-                            CompanyResource.isUserInCompany(item.id, 15).then(function (item2) {
-                                if(item2){
-                                    $scope.newStaffForm.email.$setValidity("forbiddenUser", false);
-                                }else{
-                                    userId = item.id;
-                                    $scope.newStaffForm.email.$setValidity("forbiddenUser", true);
-                                }
-                            });
+                                CompanyResource.isUserInCompany(item.id, company.id).then(function (item2) {
+                                    if(item2){
+                                        $scope.newStaffForm.email.$setValidity("forbiddenUser", false);
+                                    }else{
+                                        userId = item.id;
+                                        $scope.newStaffForm.email.$setValidity("forbiddenUser", true);
+                                    }
+                                });
                             $scope.newStaffForm.email.$setValidity("forbiddenUser", false);
                         } else {
                             $scope.newStaffForm.email.$setValidity("forbiddenUser", false);

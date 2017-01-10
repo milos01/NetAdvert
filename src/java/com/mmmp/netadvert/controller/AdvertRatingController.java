@@ -53,7 +53,7 @@ public class AdvertRatingController {
 		if(a==null){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(a.getIs_deleted()==true){
+		if(a.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if(addedRating<=0){
@@ -108,7 +108,7 @@ public class AdvertRatingController {
 		if(a==null){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(a.getIs_deleted()==true){
+		if(a.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Set<AdvertRating> allAdvertRatings = a.getAdvertRatings();
@@ -136,7 +136,7 @@ public class AdvertRatingController {
 		if(a==null){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(a.getIs_deleted()==true){
+		if(a.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if(addedRating<=0){
@@ -193,7 +193,7 @@ public class AdvertRatingController {
 		if(a==null){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(a.getIs_deleted()==true){
+		if(a.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Set<AdvertRating> ratings = u.getAdvertRatings();

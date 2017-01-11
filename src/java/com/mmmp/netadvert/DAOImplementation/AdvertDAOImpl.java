@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.DAOImplementation;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -99,61 +100,68 @@ public class AdvertDAOImpl implements AdvertDAO {
 		cr.setProjection(idCountProjection);
 		cr.add(Restrictions.eq("advert.isDeleted", Boolean.FALSE));
 		int totalResultCount = ((Long)cr.uniqueResult()).intValue();
-		cr.setProjection(Projections.distinct(Projections.property("advert.id")));
-		if(map.get("size")==null){
-			cr.setMaxResults(12);
-			cr.setFirstResult(pageable.getOffset());
-			pageable = new PageRequest(pageable.getPageNumber(), 12, pageable.getSort());
+		if(totalResultCount==0){
+			pageable = new PageRequest(0, 1, null);
+			Page<Advert> page = new PageImpl<Advert>(new ArrayList<Advert>(), pageable, totalResultCount);
+			return page;
 		}
 		else{
-			cr.setMaxResults(pageable.getPageSize());
-			cr.setFirstResult(pageable.getOffset());
-		}
-		if(pageable.getSort()==null){
-			cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
-		}
-		else{
-			Iterator<Order> i = pageable.getSort().iterator();
-			while(i.hasNext()){
-				Order o = i.next();
-				if(o.getProperty().equals("advertName")){
-					if(o.isAscending()){
-						cr.addOrder(org.hibernate.criterion.Order.asc("advert.advertName"));
+			cr.setProjection(Projections.distinct(Projections.property("advert.id")));
+			if(map.get("size")==null){
+				cr.setMaxResults(12);
+				cr.setFirstResult(pageable.getOffset());
+				pageable = new PageRequest(pageable.getPageNumber(), 12, pageable.getSort());
+			}
+			else{
+				cr.setMaxResults(pageable.getPageSize());
+				cr.setFirstResult(pageable.getOffset());
+			}
+			if(pageable.getSort()==null){
+				cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
+			}
+			else{
+				Iterator<Order> i = pageable.getSort().iterator();
+				while(i.hasNext()){
+					Order o = i.next();
+					if(o.getProperty().equals("advertName")){
+						if(o.isAscending()){
+							cr.addOrder(org.hibernate.criterion.Order.asc("advert.advertName"));
+						}
+						else{
+							cr.addOrder(org.hibernate.criterion.Order.desc("advert.advertName"));
+						}
 					}
-					else{
-						cr.addOrder(org.hibernate.criterion.Order.desc("advert.advertName"));
+					else if(o.getProperty().equals("cost")){
+						if(o.isAscending()){
+							cr.addOrder(org.hibernate.criterion.Order.asc("advert.cost"));
+						}
+						else{
+							cr.addOrder(org.hibernate.criterion.Order.desc("advert.cost"));
+						}
 					}
-				}
-				else if(o.getProperty().equals("cost")){
-					if(o.isAscending()){
-						cr.addOrder(org.hibernate.criterion.Order.asc("advert.cost"));
-					}
-					else{
-						cr.addOrder(org.hibernate.criterion.Order.desc("advert.cost"));
-					}
-				}
-				else if(o.getProperty().equals("date")){
-					if(o.isAscending()){
-						cr.addOrder(org.hibernate.criterion.Order.asc("advert.created_at"));
-					}
-					else{
-						cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
+					else if(o.getProperty().equals("date")){
+						if(o.isAscending()){
+							cr.addOrder(org.hibernate.criterion.Order.asc("advert.created_at"));
+						}
+						else{
+							cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
+						}
 					}
 				}
 			}
+		
+			List uniqueSubList = cr.list();
+		
+			cr.setProjection(null);
+			cr.setFirstResult(0); cr.setMaxResults(Integer.MAX_VALUE);
+			cr.add(Restrictions.in("advert.id", uniqueSubList));
+			cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List<Advert> searchResults = cr.list();
+		
+			Page<Advert> page = new PageImpl<Advert>(searchResults, pageable, totalResultCount);
+		
+			return page;
 		}
-		List uniqueSubList = cr.list();
-		
-		cr.setProjection(null);
-		cr.setFirstResult(0); cr.setMaxResults(Integer.MAX_VALUE);
-		cr.add(Restrictions.in("advert.id", uniqueSubList));
-		cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		List<Advert> searchResults = cr.list();
-		
-		Page<Advert> page = new PageImpl<Advert>(searchResults, pageable, totalResultCount);
-		
-		
-		return page;
 	}
 	
 	@Override
@@ -260,61 +268,67 @@ public class AdvertDAOImpl implements AdvertDAO {
 		}
 		
 		int totalResultCount = ((Long)cr.uniqueResult()).intValue();
-		
-		cr.setProjection(Projections.distinct(Projections.property("advert.id")));
-		
-		if(map.get("size")==null){
-			cr.setMaxResults(12);
-			cr.setFirstResult(pageable.getOffset());
-			pageable = new PageRequest(pageable.getPageNumber(), 12, pageable.getSort());
+		if(totalResultCount==0){
+			pageable = new PageRequest(0, 1, null);
+			Page<Advert> page = new PageImpl<Advert>(new ArrayList<Advert>(), pageable, totalResultCount);
+			return page;
 		}
 		else{
-			cr.setMaxResults(pageable.getPageSize());
-			cr.setFirstResult(pageable.getOffset());
-		}
-		if(pageable.getSort()==null){
-			cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
-		}
-		else{
-			Iterator<Order> i = pageable.getSort().iterator();
-			while(i.hasNext()){
-				Order o = i.next();
-				if(o.getProperty().equals("advertName")){
-					if(o.isAscending()){
-						cr.addOrder(org.hibernate.criterion.Order.asc("advert.advertName"));
+			cr.setProjection(Projections.distinct(Projections.property("advert.id")));
+		
+			if(map.get("size")==null){
+				cr.setMaxResults(12);
+				cr.setFirstResult(pageable.getOffset());
+				pageable = new PageRequest(pageable.getPageNumber(), 12, pageable.getSort());
+			}
+			else{
+				cr.setMaxResults(pageable.getPageSize());
+				cr.setFirstResult(pageable.getOffset());
+			}
+			if(pageable.getSort()==null){
+				cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
+			}
+			else{
+				Iterator<Order> i = pageable.getSort().iterator();
+				while(i.hasNext()){
+					Order o = i.next();
+					if(o.getProperty().equals("advertName")){
+						if(o.isAscending()){
+							cr.addOrder(org.hibernate.criterion.Order.asc("advert.advertName"));
+						}
+						else{
+							cr.addOrder(org.hibernate.criterion.Order.desc("advert.advertName"));
+						}
 					}
-					else{
-						cr.addOrder(org.hibernate.criterion.Order.desc("advert.advertName"));
+					else if(o.getProperty().equals("cost")){
+						if(o.isAscending()){
+							cr.addOrder(org.hibernate.criterion.Order.asc("advert.cost"));
+						}
+						else{
+							cr.addOrder(org.hibernate.criterion.Order.desc("advert.cost"));
+						}
 					}
-				}
-				else if(o.getProperty().equals("cost")){
-					if(o.isAscending()){
-						cr.addOrder(org.hibernate.criterion.Order.asc("advert.cost"));
-					}
-					else{
-						cr.addOrder(org.hibernate.criterion.Order.desc("advert.cost"));
-					}
-				}
-				else if(o.getProperty().equals("date")){
-					if(o.isAscending()){
-						cr.addOrder(org.hibernate.criterion.Order.asc("advert.created_at"));
-					}
-					else{
-						cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
+					else if(o.getProperty().equals("date")){
+						if(o.isAscending()){
+							cr.addOrder(org.hibernate.criterion.Order.asc("advert.created_at"));
+						}
+						else{
+							cr.addOrder(org.hibernate.criterion.Order.desc("advert.created_at"));
+						}
 					}
 				}
 			}
+			List uniqueSubList = cr.list();
+		
+			cr.setProjection(null);
+			cr.setFirstResult(0); cr.setMaxResults(Integer.MAX_VALUE);
+			cr.add(Restrictions.in("advert.id", uniqueSubList));
+			cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List<Advert> searchResults = cr.list();
+		
+			Page<Advert> page = new PageImpl<Advert>(searchResults, pageable, totalResultCount);
+			return page;
 		}
-		List uniqueSubList = cr.list();
-		
-		cr.setProjection(null);
-		cr.setFirstResult(0); cr.setMaxResults(Integer.MAX_VALUE);
-		cr.add(Restrictions.in("advert.id", uniqueSubList));
-		cr.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		List<Advert> searchResults = cr.list();
-		
-		Page<Advert> page = new PageImpl<Advert>(searchResults, pageable, totalResultCount);
-		return page;
 	}
 
 	@Override

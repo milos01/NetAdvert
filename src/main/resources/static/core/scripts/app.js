@@ -74,6 +74,16 @@
                 }
 
             })
+            .state('report', {
+            	url: "/report",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/reports.html",
+                        controller: "reportV"
+                    }
+                }
+
+            })
 
     })
     .run(function(Restangular, $log, $rootScope, $state) {

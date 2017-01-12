@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.DAOImplementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -31,8 +32,12 @@ public class ReportDAOImpl implements ReportDAO {
 	@Override
 	public List<Report> reportList() {
 		Session session = this.sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Report");
+		Query query = session.createQuery("from Report r where r.visited=:vis");
+		query.setParameter("vis",0);
 		List<Report> ReportList = query.list();
+		if(ReportList == null){
+			ReportList = new ArrayList<Report>();
+		}
 		return ReportList;
 	}
 

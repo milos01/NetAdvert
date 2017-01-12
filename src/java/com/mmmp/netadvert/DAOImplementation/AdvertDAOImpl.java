@@ -6,25 +6,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.mmmp.netadvert.model.Picture;
-import com.mmmp.netadvert.model.SoldAdvert;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
-import org.hibernate.transform.DistinctRootEntityResultTransformer;
-import org.hibernate.transform.Transformers;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.internal.CriteriaImpl;
+import org.hibernate.loader.criteria.CriteriaJoinWalker;
+import org.hibernate.loader.criteria.CriteriaQueryTranslator;
+import org.hibernate.persister.entity.OuterJoinLoadable;
 import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,8 +31,8 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Repository;
 
 import com.mmmp.netadvert.DAO.AdvertDAO;
-import com.mmmp.netadvert.DTO.SearchDTO;
 import com.mmmp.netadvert.model.Advert;
+import com.mmmp.netadvert.model.SoldAdvert;
 import com.mmmp.netadvert.model.TechnicalEquipment;
 @Repository
 public class AdvertDAOImpl implements AdvertDAO {
@@ -159,7 +155,6 @@ public class AdvertDAOImpl implements AdvertDAO {
 			List<Advert> searchResults = cr.list();
 		
 			Page<Advert> page = new PageImpl<Advert>(searchResults, pageable, totalResultCount);
-		
 			return page;
 		}
 	}

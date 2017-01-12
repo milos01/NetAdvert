@@ -77,9 +77,10 @@ public class ReportController {
 	 * @param verify - the eligibility status
 	 * @return updated Report object, Http response 200 ok
 	 */
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Report> updateReport(@RequestParam("report_id") int id,@RequestParam("verify") int verify,HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
+		//User u = (User) session.getAttribute("logedUser");
+		User u = this.adverService.findUser("doslicmm@live.com");
 		if (u.getRole().getName().equals("Verifier")){
 			Report r = this.adverService.findReport(id);
 			if (r==null){
@@ -89,6 +90,11 @@ public class ReportController {
 				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			r.setVerified(verify);
+			r.setVisited(1);
+			if (verify==1){
+				r.getAdvert().setDeleted(true);
+				this.adverService.updateAdvert(r.getAdvert());
+			}
 			this.adverService.updateReport(r);
 			return new ResponseEntity<>(r,HttpStatus.OK);
 		}

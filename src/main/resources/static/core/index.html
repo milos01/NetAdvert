@@ -57,12 +57,18 @@
                 <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Admin'">
                     <li><a ng-href="/#!/company" ng-cloak>Add company</a></li>
                 </ul>
+                
+                <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Verifier'">
+                    <li><a ng-href="/#!/report" ng-cloak>Reports</a></li>
+                </ul>
+                
                 <ul class="nav navbar-nav" ng-show="authenticated && user.isMain === 1">
                     <li><a ng-href="/#!/mycompany" ng-cloak>My company</a></li>
                 </ul>
                 <ul class="nav navbar-nav" ng-show="authenticated">
                     <li><a ng-href="/#!/profile" ng-cloak>{{user.fname}} {{user.lname}}</a></li>
                 </ul>
+              
                 <div class="ng-cloak">
                 <div class="btn-group" uib-dropdown dropdown-append-to-body ng-show="!authenticated" ng-cloak>
                     <button id="btn-append-to-body" type="button" class="btn btn-default"  uib-dropdown-toggle style="margin-top: 6px;" ng-cloak>
@@ -173,9 +179,12 @@
 <script src="core/scripts/profile/profile-controller.js"></script>
 <script src="core/scripts/company/company-controller.js"></script>
 <script src="core/scripts/advert/advert-controller.js"></script>
+<script src="core/scripts/report/report-controller.js"></script>
 <script src="core/scripts/users/users-resource.js"></script>
 <script src="core/scripts/advert/advert-resource.js"></script>
 <script src="core/scripts/picture/picture-resource.js"></script>
 <script src="core/scripts/company/company-resource.js"></script>
+<script src="core/scripts/report/report-resource.js"></script>
+
 </body>
 </html>

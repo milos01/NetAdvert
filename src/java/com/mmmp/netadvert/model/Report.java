@@ -40,6 +40,8 @@ public class Report {
 	private Advert advert;
 	
 	private int verified;
+	
+	private int visited;
 
 	public int getId() {
 		return id;
@@ -57,6 +59,14 @@ public class Report {
 		this.reportDescription = reportDescription;
 	}
 
+
+	public int getVisited() {
+		return visited;
+	}
+
+	public void setVisited(int visited) {
+		this.visited = visited;
+	}
 
 	public User getUser() {
 		return user;

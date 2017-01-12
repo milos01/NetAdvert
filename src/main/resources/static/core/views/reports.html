@@ -1,0 +1,55 @@
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Report list</h5>
+          <!--   <div class="ibox-tools">
+                <a href="" class="btn btn-primary btn-xs">Add new issue</a>
+            </div> -->
+        </div>
+        <div class="ibox-content">
+
+            <div class="m-b-lg">
+
+                <div class="m-t-md" ng-if="reportList.length==0">
+                    <strong>Found {{reportList.length}} reports.</strong>
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover issue-tracker">
+                    <tbody>
+                    <tr ng-repeat="report in reportList">
+                        <td class="issue-info">
+                            <a ui-sref="advert({advertId: report.advert.id})">
+                                {{report.advert.advertName}}
+                            </a>
+
+                            <small>
+                                 Reason: {{report.reportDescription}}
+                            </small>
+                             <small>
+                               	Reported by: {{report.user.first_name }} {{report.user.last_name }}
+                            </small>
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                       
+                        <td class="text-right">
+                             <button type="button" class="btn btn-default" ng-click="verifyAdvert(0,report.advert.id)">
+		                        Ok
+		                    </button>
+		                    <button type="button" class="btn btn-default" ng-click="verifyAdvert(1,report.advert.id)">
+		                        Delete
+		                    </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>

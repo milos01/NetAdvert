@@ -135,4 +135,6 @@ public interface AdverService {
     public List<CompanyStaffs> staffForCompany(int cid);
     
     public SoldAdvert addSoldAdvert(SoldAdvert s);
+    
+    public List<Report> findReportsByAdvert(int advert_id);
 }

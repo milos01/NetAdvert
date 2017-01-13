@@ -49,6 +49,8 @@
                                     <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact with
                                         author
                                     </button>
+                                    <button class="btn btn-white btn-sm" ng-show="authenticated && user.role !== 'Verifier'" ng-click="openReportModal(advert)"><i class="fa fa-flag" ></i> Report
+                                    </button>
                                 </div>
                             </div>
                         </div>

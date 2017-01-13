@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h3 class="modal-title">Report advert</h3>
+</div>
+<div class="modal-body">
+  <form name="newReport" novalidate>
+    <fieldset class="form-group">
+      <div class="form-group" ng-class="{ 'has-error' : newReport.description.$invalid && !newReport.description.$pristine }">
+	      <label for="name">Description</label>
+	      <input type="text" class="form-control" name="description" ng-model="description" required>
+      </div>
+    </fieldset>
+  </form>
+    <span class="right">
+      <p>Reported by {{user.fname}} {{user.lname}}</p>
+    </span>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary btn-sm" type="button" ng-disabled="newReport.$invalid" ng-click="ok()">Send</button>
+  <button class="btn btn-default btn-sm" type="button" ng-click="cancel()">Cancel</button>
+</div>

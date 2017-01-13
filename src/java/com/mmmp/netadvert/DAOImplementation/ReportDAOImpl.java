@@ -61,4 +61,16 @@ public class ReportDAOImpl implements ReportDAO {
 		return rep;
 	}
 
+	@Override
+	public List<Report> findReportsByAdvert(int advert_id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Report r where r.advert.id=:id");
+		query.setParameter("id",advert_id);
+		List<Report> ReportList = query.list();
+		if(ReportList == null){
+			ReportList = new ArrayList<Report>();
+		}
+		return ReportList;
+	}
+
 }

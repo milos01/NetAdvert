@@ -1,7 +1,6 @@
 (function(angular){
 	
 	app.factory('ReportResource', function(Restangular,_){
-		//Logika za rad sa backendom
 		var report = {};
 		var reportList = [];
 		report.getAllReports = function(){
@@ -13,25 +12,40 @@
 		
 
 		report.verifyAdvertt = function(verify, report_id) {
-
-			return Restangular.one('report').put({verify:verify,report_id:report_id}).then(function(response){
-				console.log(verify+" "+report_id);
+		
+			var verReport = {
+					verify: verify,
+					report_id: report_id
+			}
+			console.log(report_id);
+			return Restangular.all('report').customPUT(verReport).then(function(response){
+				
 				_.remove(reportList, {
 					id : response.id
 				});
-				console.log("bbbbbbbbbbb");
+				for(i=0; i < reportList.length; i++){
+					console.log(reportList[i].advert.id + " id ad res " + response.advert.id);
+					if (reportList[i].advert.id == response.advert.id){
+						console.log("brisem preostale");
+						_.remove(reportList, {
+							id : reportList[i].id
+						});
+					}
+				}
+				
 			});
-//			console.log(verify+" "+report_id);
-//			var r = Restangular.one('report/update');
-//			r.verify = verify;
-//			r.report_id = report_id;
-//			r.put().then(function(response) {
-//				console.log("aaaaaaaa");
-//				_.remove(reportList, {
-//					id : response.data.id
-//				});
-//				console.log("bbbbbbbbbbb");
-//			});
+		}
+		
+		report.newReport = function(desc,idA){
+			var repo = {
+					reportDescription:desc,
+					advert_id:idA
+			}
+			console.log(repo.advert_id)
+			return Restangular.all('report').post(repo).then(function(response){
+				reportList.push(response);
+				return response;
+			});
 		}
 		
 		return report;

@@ -428,5 +428,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.advertDAO.addSoldAdvert(s);
 	}
 
+	@Override
+	@Transactional
+	public List<Report> findReportsByAdvert(int advert_id) {
+		return this.reportDAO.findReportsByAdvert(advert_id);
+	}
+
 
 }

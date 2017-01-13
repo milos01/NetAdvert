@@ -13,4 +13,6 @@ public interface ReportDAO {
 	public Report updateReport(Report report);
 	
 	public Report findReport(int id);
+	
+	public List<Report> findReportsByAdvert(int advert_id);
 }

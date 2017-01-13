@@ -7,11 +7,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmmp.netadvert.DTO.VerifyReportDTO;
+import com.mmmp.netadvert.DTO.newReportDTO;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Report;
 import com.mmmp.netadvert.model.User;
@@ -37,24 +39,25 @@ public class ReportController {
 	 * @return Report object, Http response 200 ok
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Report> newReport(@RequestParam("reportDescription") String text,@RequestParam("advert_id") int advert_id,HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-//		User u = this.adverService.findUser("doslicmm@live.com");
-		Advert advert = this.adverService.findAdvert(advert_id);
+	public ResponseEntity<Report> newReport(@RequestBody newReportDTO repo,HttpSession session){
+//		User u = (User) session.getAttribute("logedUser");
+		User u = this.adverService.findUser("milan@gmail.com");
+		
+		Advert advert = this.adverService.findAdvert(repo.getAdvert_id());
 		
 		if (advert==null){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
-		if (text.equals("")||text==null){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		if (repo.getReportDescription().equals("")||repo.getReportDescription()==null){
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
 		Report rep = new Report();
 		rep.setAdvert(advert);
 		rep.setUser(u);
-		rep.setReportDescription(text);
+		rep.setReportDescription(repo.getReportDescription());
 		rep.setVerified(0);
+		rep.setVisited(0);
 		this.adverService.addNewReport(rep);
 		
 		return new ResponseEntity<Report>(rep,HttpStatus.OK);
@@ -78,24 +81,36 @@ public class ReportController {
 	 * @return updated Report object, Http response 200 ok
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Report> updateReport(@RequestParam("report_id") int id,@RequestParam("verify") int verify,HttpSession session){
+	public ResponseEntity<Report> updateReport(@RequestBody VerifyReportDTO verReport,HttpSession session){
 		//User u = (User) session.getAttribute("logedUser");
 		User u = this.adverService.findUser("doslicmm@live.com");
 		if (u.getRole().getName().equals("Verifier")){
-			Report r = this.adverService.findReport(id);
+			System.out.println("id: "+verReport.getReport_id() + " ver "+verReport.getVerify() );
+			Report r = this.adverService.findReport(verReport.getReport_id());
 			if (r==null){
-				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				System.out.println("r null");
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-			if (r.getVerified()==1){
-				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			if (r.getVisited()==1){
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-			r.setVerified(verify);
+			r.setVerified(verReport.getVerify());
 			r.setVisited(1);
-			if (verify==1){
+			if (verReport.getVerify()==1){
 				r.getAdvert().setDeleted(true);
 				this.adverService.updateAdvert(r.getAdvert());
 			}
 			this.adverService.updateReport(r);
+			List<Report> repList = this.adverService.findReportsByAdvert(r.getAdvert().getId());
+			
+			for(Report rep : repList){
+				if(verReport.getReport_id()!=rep.getId()){
+					rep.setVisited(1);
+					rep.setVerified(verReport.getVerify());
+					this.adverService.updateReport(rep);
+				}
+			}
+			
 			return new ResponseEntity<>(r,HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);

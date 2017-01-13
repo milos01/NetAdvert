@@ -19,7 +19,7 @@ public interface AdverService {
 	
 	public User findUser(String email);
 	
-	public void deleteComment(Comment commentId);
+	public void deleteComment(int commentId);
 	
 	public Comment findComment(int id);
 	

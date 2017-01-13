@@ -11,7 +11,7 @@ public interface CommentDAO {
 	
 	public void createComment(Comment comment);
 	
-	public void deleteComment(Comment commentId);
+	public void deleteComment(Comment c);
 	
 	public Comment findComment(int id);
 	

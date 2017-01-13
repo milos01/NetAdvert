@@ -227,3 +227,34 @@
         </div>
     </div>
 </div>
+
+<div class="ibox float-e-margins">
+		<div ng-show="authenticated">
+			<form name="newComment" ng-submit="createComment(advert.id)" novalidate>
+			    <fieldset class="form-group">
+			      <div class="form-group" ng-class="{ 'has-error' : newComment.textC.$invalid && !newComment.textC.$pristine }">
+				      <label for="name">Write comment</label>
+				      <input type="text" class="form-control" name="textC" ng-model="textC" required>
+			      </div>
+			      <button  class="btn btn-primary btn-sm" type="submit" ng-disabled="newComment.$invalid">post</button>
+			    </fieldset>
+			    
+			</form>
+			  
+		</div>
+		<div ng-repeat="comment in commentList | orderBy: -comment.date">
+	        <div class="ibox-title">
+	            <h5>{{comment.user.first_name}} {{comment.user.last_name}} </h5>
+	            <div class="ibox-tools" ng-show="user.uid === comment.user.id">
+	                <a class="close-link" ng-click="deleteComment(comment.id)" >
+	                    <i title="delete"   class="fa fa-times"></i>
+	                </a>
+	            </div>
+	        </div>
+	        <div class="ibox-content">
+	        	<small>Date: {{comment.date | date}}</small> </br> </br>
+				<h4>{{comment.text}}</h4>
+	        </div>
+	        </br>
+	   </div>
+</div>

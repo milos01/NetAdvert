@@ -1,7 +1,7 @@
 package com.mmmp.netadvert.controller;
 
-import java.util.Date;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmmp.netadvert.DTO.NewCommentDTO;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Comment;
 import com.mmmp.netadvert.model.User;
@@ -39,10 +40,10 @@ public class CommentController {
 	 * @return Comment object, http response 200 ok
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Comment> createComment(@RequestParam("advert_id") int advert_id,@RequestParam("comment") String text,HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-//		User u = this.adverService.findUser("doslicmm@live.com");
-		Advert advert = this.adverService.findAdvert(advert_id);
+	public ResponseEntity<Comment> createComment(@RequestBody NewCommentDTO commentt,HttpSession session){
+//		User u = (User) session.getAttribute("logedUser");
+		User u = this.adverService.findUser("milan@gmail.com");
+		Advert advert = this.adverService.findAdvert(commentt.getAdvert_id());
 		
 		if (advert==null){
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,11 +55,11 @@ public class CommentController {
 		Date currentDate = new Date();
 		comment.setDate(currentDate);
 		
-		if (text==null || text.equals("")){
+		if (commentt.getText()==null || commentt.getText().equals("")){
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		comment.setText(text);
+		comment.setText(commentt.getText());
 		
 		this.adverService.createComment(comment);
 		
@@ -72,13 +73,12 @@ public class CommentController {
 	 * @return Http response 200 ok
 	 */
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-	public  ResponseEntity<Void> deleteComment(@PathVariable("id") int id){
-		Comment c = this.adverService.findComment(id);
-		if (c==null){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	public  ResponseEntity<Void> deleteComment(@PathVariable("id") Integer id){
+		if (id==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		this.adverService.deleteComment(c);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+			this.adverService.deleteComment(id);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	/**

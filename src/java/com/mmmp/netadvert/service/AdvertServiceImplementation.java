@@ -81,8 +81,9 @@ public class AdvertServiceImplementation implements AdverService {
 
 	@Override
 	@Transactional
-	public void deleteComment(Comment commentId) {
-		this.commnetDAO.deleteComment(commentId);
+	public void deleteComment(int commentId) {
+		Comment c =this.commnetDAO.findComment(commentId);
+		this.commnetDAO.deleteComment(c);
 	}
 
 	@Override

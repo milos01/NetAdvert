@@ -2,15 +2,29 @@
  * Created by milosandric on 08/01/2017.
  */
 (function(angular){
-    app.controller('advert', function ($rootScope, $location, $scope, _, $log, $stateParams, UsersResource, AdvertResource, PictureResource,$uibModal) {
+    app.controller('advert', function ($rootScope, $location, $scope, _, $log, $stateParams, UsersResource, AdvertResource, PictureResource,$uibModal,CommentResource) {
         var aid = $stateParams.advertId;
         AdvertResource.getAdvert(aid).then(function (item) {
                 PictureResource.getAdvertMainPicture(item.realestate.id).then(function (item2) {
                     $scope.mainPicture = item2.pictureName;
                     $scope.advert = item;
                 })
+                CommentResource.getAllCommentsOfAd(aid).then(function(response){
+        			$scope.commentList = response;
+        		})
+        		
+        		$rootScope.deleteComment = function(id){
+        			console.log("aaaaa");
+        			CommentResource.deleteComment(id);
+        		}
         });
 
+        $scope.createComment = function(idA){
+        	var text = $scope.textC;
+        	CommentResource.createCommentt(idA,text).then(function(response){
+        		$scope.commentList = response;
+        	});
+        }
         
         
 		$scope.openReportModal = function(advert) {

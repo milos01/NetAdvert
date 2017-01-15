@@ -46,6 +46,12 @@
         	    $log.info('Modal dismissed at: ' + new Date() + ' with value: ' + value);
         	    });
         	};
+        	
+        $scope.rating = 5;
+        $scope.isReadonly = true;
+        $scope.rateFunction = function(rating) {
+        	console.log('Rating selected: ' + rating);
+        	    };
     })
     
     app.controller('ReportModalCtrl',['$scope','$uibModalInstance','$log','_','ReportResource',function($scope,$uibModalInstance, $log, _,ReportResource) {
@@ -62,5 +68,54 @@
 			$uibModalInstance.dismiss('cancel');
 		};
 	}]);
-    
+    app.directive("starRating", function(AdvertResource,$stateParams) {
+    	  return {
+    	    restrict : "EA",
+    	    template : "<ul class='starRating' ng-class='{readonly: readonly}'>" +
+    	               "  <li  class='starr' ng-repeat='star in stars' class='{filled: star.filled}'  ng-class='star' ng-click='toggle($index)'>" +
+    	               "    <i class='fa fa-star'></i>" + //&#9733
+    	               "  </li>" +
+    	               "</ul>",
+    	    scope : {
+    	      ratingValue : "=ngModel",
+    	      max : "=?", //optional: default is 5
+    	      onRatingSelected : "&?",
+    	      readonly: "=?",
+    	      vr: "=?"
+    	    },
+    	    link : function(scope, elem, attrs) {
+    	      if (scope.max == undefined) { scope.max = 5; }
+    	      function updateStars() {
+    	    	var aid = $stateParams.advertId;
+    	    	
+    	    	console.log(aid +" *****");
+    	    	AdvertResource.getAdvert(aid).then(function (item){
+    	    		var ad = item;
+        	    	console.log(ad.advert_rate)
+        	    	scope.vr = ad.advert_rate
+        	        scope.stars = [];
+        	        for (var i = 0; i < scope.max; i++) {
+        	          scope.stars.push({
+        	            filled : i < ad.advert_rate
+        	          });
+        	        }
+    	    	});
+
+    	      };
+    	 
+    	      scope.toggle = function(index) {
+    	        if (scope.readonly == undefined || scope.readonly == false){
+    	          scope.ratingValue = index + 1;
+    	          scope.onRatingSelected({
+    	            rating: index + 1
+    	          });
+    	        }
+    	      };
+    	      scope.$watch("ratingValue", function(oldVal, newVal) {
+    	        if (newVal) { updateStars();}
+    	      });
+    	    }
+    	  };
+    	});
+
 })(angular);

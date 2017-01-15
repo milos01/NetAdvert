@@ -29,6 +29,30 @@
     [ng\:cloak], [ng-cloak], .ng-cloak {
         display: none !important;
     }
+    
+.starRating {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  }
+  .starr {
+    padding: 1px;
+    color: #ddd;
+    font-size: 20px;
+    text-shadow: .05em .05em #aaa;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.starRating li.filled {
+      color: #fd0;
+    }
+    
+.starRating.readonly .li.filled {
+    color: #666;
+  }
+}
 </style>
 </head>
 

@@ -38,6 +38,19 @@
                                 <dd>Donec id elit non mi porta gravida at eget metus.</dd>
                                 <dt>Malesuada porta</dt>
                                 <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+                                </br>
+                                <dt>Advert raiting: <b>{{advert.advert_rate}}</b></dt>
+                                <dd>
+		                            <div>
+			                            <div star-rating ng-model="rating" max="5"  readonly="isReadonly"></div>
+										<!--   <div star-rating ng-model="rating2" readonly="isReadonly"></div>
+										  <label>
+										    <input type="checkbox" ng-model="isReadonly"/>
+										    Is Readonly
+										  </label> -->
+										 <!--  <div><strong>Rating 2:</strong> {{rating2}}</div> -->
+		                            </div>
+	                            </dd>
                             </dl>
                             <hr>
                             <div>
@@ -52,6 +65,7 @@
                                     <button class="btn btn-white btn-sm" ng-show="authenticated && user.role !== 'Verifier'" ng-click="openReportModal(advert)"><i class="fa fa-flag" ></i> Report
                                     </button>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

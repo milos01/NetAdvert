@@ -35,6 +35,9 @@
                                             <span ng-show="user.accepted" ng-cloak>accepeted</span>
                                             <span ng-show="!user.accepted" ng-cloak>not accepeted</span>
                                         </small>
+                                        <div class="pull-right" ng-show="!user.accepted" ng-cloak>
+                                            <button class="btn btn-primary btn-xs" style="margin-top:-30px" ng-click="acceptUser(user.user.id, company.id, user)">Accept</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="social-body">

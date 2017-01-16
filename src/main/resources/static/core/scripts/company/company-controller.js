@@ -3,7 +3,6 @@
  */
 (function(angular){
     app.controller('company', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource) {
-
         CompanyResource.getAllCompanys().then(function (items) {
             console.log(items);
             $scope.allCompanies = items;
@@ -59,6 +58,12 @@
             }, function(value) {
                 $log.info('Modal dismissed at: ' + new Date() + ' with value: ' + value);
             });
+        }
+        
+        $scope.acceptUser = function (uid, cid, user) {
+            CompanyResource.activateUser(uid, cid).then(function (item) {
+               user.accepted = 1;
+            })
         }
     })
 

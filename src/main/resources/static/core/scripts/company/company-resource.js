@@ -48,6 +48,12 @@
                 return item;
             });
         }
+        
+        retVal.activateUser = function (uid, cid) {
+            return Restangular.one('company', cid).one('activate', uid).get().then(function (item) {
+               return item;
+            });
+        }
         return retVal;
     })
 })(angular);

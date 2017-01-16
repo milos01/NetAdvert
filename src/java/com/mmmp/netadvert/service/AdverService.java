@@ -137,4 +137,6 @@ public interface AdverService {
     public SoldAdvert addSoldAdvert(SoldAdvert s);
     
     public List<Report> findReportsByAdvert(int advert_id);
+
+    public CompanyStaffs findUserrCompany(int uid);
 }

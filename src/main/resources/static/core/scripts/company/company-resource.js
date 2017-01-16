@@ -19,6 +19,12 @@
             });
         }
         
+        retVal.isUserAvailable = function (id) {
+            return Restangular.one('user', id).one('isAvailable').get().then(function (item) {
+                return item;
+            });
+        }
+        
         retVal.checkIfUserMainOnCompany = function (id) {
             return Restangular.one('company').one('isMainuser').get({uid: id}).then(function (item) {
                 return item;

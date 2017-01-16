@@ -4,10 +4,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mmmp.netadvert.model.Advert;
-import com.mmmp.netadvert.model.Company;
-import com.mmmp.netadvert.model.Role;
-import com.mmmp.netadvert.model.User;
+import com.mmmp.netadvert.model.*;
 import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.service.AdverService;
 import org.hibernate.HibernateException;
@@ -203,6 +200,12 @@ public class UserController {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @RequestMapping(value="/api/user/{id}/isAvailable", method = RequestMethod.GET)
+    private ResponseEntity<CompanyStaffs> isAvailable(@PathVariable("id") int id){
+        CompanyStaffs cmp = (CompanyStaffs) this.adverService.findUserrCompany(id);
+        return new ResponseEntity<CompanyStaffs>(cmp, HttpStatus.OK);
     }
 
     /**

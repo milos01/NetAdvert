@@ -435,5 +435,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.reportDAO.findReportsByAdvert(advert_id);
 	}
 
+	@Override
+	@Transactional
+	public CompanyStaffs findUserrCompany(int uid) {
+		return this.userDAO.findUserrCompany(uid);
+	}
+
 
 }

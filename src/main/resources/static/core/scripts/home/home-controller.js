@@ -7,11 +7,6 @@
             $location.path("/");
         }
 
-        UsersResource.getStudents().then(function (items) {
-
-            $scope.students = items;
-        })
-
         $scope.loadNewPage = function (page) {
             AdvertResource.getAdverts(page).then(function (items) {
                 angular.forEach(items.content, function(value, key) {

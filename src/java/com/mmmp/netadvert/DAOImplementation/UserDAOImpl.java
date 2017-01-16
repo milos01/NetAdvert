@@ -3,6 +3,7 @@ package com.mmmp.netadvert.DAOImplementation;
 import java.util.List;
 
 import com.mmmp.netadvert.model.Company;
+import com.mmmp.netadvert.model.CompanyStaffs;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -108,6 +109,19 @@ public class UserDAOImpl implements UserDAO {
 		List<Company> cList = query.list();
 		Company cmp = null;
 		for(Company a:cList){
+			cmp = a;
+		}
+		return cmp;
+	}
+
+	@Override
+	public CompanyStaffs findUserrCompany(int uid) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from CompanyStaffs c where c.user.id = :id");
+		query.setParameter("id", uid);
+		List<CompanyStaffs> cList = query.list();
+		CompanyStaffs cmp = null;
+		for(CompanyStaffs a:cList){
 			cmp = a;
 		}
 		return cmp;

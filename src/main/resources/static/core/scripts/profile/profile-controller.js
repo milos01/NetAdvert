@@ -3,7 +3,7 @@
  */
 (function(angular){
     app.controller('usercred', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource) {
-        $scope.assignText = "Assign to company";
+
         $scope.updateLname = $scope.user.lname;
         $scope.updateFname = $scope.user.fname;
         $scope.updateUserInfo = function(){
@@ -17,6 +17,7 @@
                 $scope.showSelect = false;
                 $scope.assignText = "Assigned to " + item.company.company_name;
             }else{
+                $scope.assignText = "Assign to company";
                 $scope.showSelect = true;
             }
         });

@@ -21,6 +21,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="core/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
 
     <!-- Main Inspinia CSS files -->
     <link href="css/animate.css" rel="stylesheet">
@@ -60,7 +61,8 @@
 <!-- ControllerAs syntax -->
 <!-- Main controller with serveral data used in Inspinia theme on diferent view -->
 
-
+<body ng-app="NetAdvertApp">
+<div style="border: 1px solid #337ab7; width: 100%; top:0; padding: 10px; text-align: center; background-color: #337ab7; color: whitesmoke" ng-show="!authenticated" ng-cloak>You are not logged. Please login for more features.</div>
 <div class="header">
     <div class="navbar navbar-default" role="navigation">
         <div class="container">
@@ -151,12 +153,6 @@
     </div>
 </div>
 
-
-
-
-
-<body ng-app="NetAdvertApp">
-
 <div class="container" style="width: 80%;" ui-view="mainView"></div>
 
 <!-- jQuery and Bootstrap -->
@@ -200,6 +196,7 @@
 <script src="bower_components/restangular/dist/restangular.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-lodash-module/angular-lodash-module.js"></script>
+<script src="bower_components/toastr/toastr.js"></script>
 
 
 <!-- NetAdvert js -->

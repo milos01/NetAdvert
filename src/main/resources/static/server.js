@@ -13,5 +13,14 @@ io.on('connection', function (socket) {
         users[data.email] = socket.id;
         console.log(users);
     });
+
+    socket.on('notifyUserNewStaff', function (data) {
+        console.log(data);
+        // if(data.email in users){
+            socket.broadcast.to(users["milossm94@hotmail.com"]).emit('newStaff', data);
+        // }
+    })
 });
+
+
 

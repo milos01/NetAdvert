@@ -2,7 +2,7 @@
  * Created by milosandric on 28/12/2016.
  */
 (function(angular){
-    app.controller('usercred', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource) {
+    app.controller('usercred', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource, socket) {
 
         $scope.updateLname = $scope.user.lname;
         $scope.updateFname = $scope.user.fname;
@@ -37,6 +37,7 @@
             CompanyResource.addStaff(cid, userId).then(function (item) {
                 $scope.assignText = "Assigned to " + item.company.company_name;
                 $scope.showSelect = false;
+                socket.emit('notifyUserNewStaff', $scope.user);
             });
         }
     })

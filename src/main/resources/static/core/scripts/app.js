@@ -99,9 +99,31 @@
         });
     });
 
+    app.factory('socket', function ($rootScope) {
+        var socket = io('http://localhost:3000');
+        return {
+            on: function (eventName, callback) {
+                socket.on(eventName, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function (eventName, data, callback) {
+                socket.emit(eventName, data, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        if (callback) {
+                            callback.apply(socket, args);
+                        }
+                    });
+                })
+            }
+        };
+    });
 
-
-	app.controller('navigation', function($rootScope, $scope, $http, $location, CompanyResource){
+	app.controller('navigation', function($rootScope, $scope, $http, $location, CompanyResource, socket){
 		var authenticate = function(credentials, callback) {
 
             var headers = credentials ? {authorization : "Basic "
@@ -123,7 +145,6 @@
                                 role: role,
                                 isMain:res
                             }
-                            socket = io('http://localhost:3000');
                             socket.emit('userLoad', $rootScope.user);
                         });
                     });
@@ -166,6 +187,10 @@
             });
         }
 
+        socket.on('newStaff', function (data) {
+            toastr.info(data.fname+" "+data.lname+" sent request as new company staff.");
+        });
+
 	});
 
 	app.controller('testCtr', function ($scope) {
@@ -173,6 +198,8 @@
             alert('radi');
         }
     })
+
+
     app.directive('myCustomer', function($rootScope, $log) {
         return {
             link: function (rootScope, scope) {

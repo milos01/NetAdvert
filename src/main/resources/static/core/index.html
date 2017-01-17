@@ -77,7 +77,7 @@
                 <a class="navbar-brand" href="/#!/">NetAdvert</a>
             </div>
 
-            <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="navigation">
 
                 <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Admin'">
                     <li><a ng-href="/#!/company" ng-cloak>Add company</a></li>
@@ -93,13 +93,13 @@
                 <ul class="nav navbar-nav" ng-show="authenticated">
                     <li><a ng-href="/#!/profile" ng-cloak>{{user.fname}} {{user.lname}}</a></li>
                 </ul>
-              
+                <button class="btn btn-default btn-xs" ng-show="authenticated" ng-click="logout()" style="margin-top:13px" ng-cloak>logout</button>
                 <div class="ng-cloak">
                 <div class="btn-group" uib-dropdown dropdown-append-to-body ng-show="!authenticated" ng-cloak>
                     <button id="btn-append-to-body" type="button" class="btn btn-default"  uib-dropdown-toggle style="margin-top: 6px;" ng-cloak>
                         Login<span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu  ng-controller="navigation" style="width: 300px; text-align: center">
+                    <ul class="dropdown-menu" uib-dropdown-menu style="width: 300px; text-align: center">
                         <form role="form" ng-submit="login()" novalidate>
 
                             <div class="form-group"
@@ -184,6 +184,8 @@
 <!--<script src="js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>-->
 
 <script src="js/plugins/select2/select2.full.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
 <!---->
 
 
@@ -214,6 +216,7 @@
 <script src="core/scripts/company/company-resource.js"></script>
 <script src="core/scripts/report/report-resource.js"></script>
 <script src="core/scripts/comment/comment-resource.js"></script>
+
 
 
 </body>

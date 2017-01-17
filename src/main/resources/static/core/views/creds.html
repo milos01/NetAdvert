@@ -38,7 +38,7 @@
 
 </div>
 
-<div class="ibox float-e-margins">
+<div class="ibox float-e-margins" ng-show="user.isMain != 1 && user.role != 'Admin' && user.role != 'Verifier'">
     <div class="ibox-title">
         <h5 ng-cloak>{{assignText}}</h5>
         <div class="ibox-tools">

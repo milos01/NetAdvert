@@ -123,6 +123,8 @@
                                 role: role,
                                 isMain:res
                             }
+                            socket = io('http://localhost:3000');
+                            socket.emit('userLoad', $rootScope.user);
                         });
                     });
 
@@ -156,6 +158,13 @@
                 }
             });
 		};
+		
+		$scope.logout = function () {
+            $http.post('logout', {}).finally(function() {
+                $rootScope.authenticated = false;
+                $location.path("/");
+            });
+        }
 
 	});
 

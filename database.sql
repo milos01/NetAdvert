@@ -73,3 +73,34 @@ INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUE
 
 INSERT INTO `netadvert`.`advert_rating` (`rating`, `advert_id`, `user_id`) VALUES ('4', '1', '2');
 INSERT INTO `netadvert`.`advert_rating` (`rating`, `advert_id`, `user_id`) VALUES ('5', '2', '2');
+
+INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Miki', 'Mikic','pass', 'mikim@gmail.com', '2', 0);
+INSERT INTO `netadvert`.`user` (`first_name`,`last_name`,`password`,`email`,`role_id`,`user_rate`) VALUES ('Jova', 'Jovic','pass', 'jovaj@gmail.com', '2', 5);
+
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Na kraj sela zuta kuca','5', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 45000, 0, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Dvosoban stan centar grada','5', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 45000, 0, '060/123-456', 'description', false, false, true, '2');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Duplex liman','6', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 55000, 0, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Duplex novo naselje','6', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 30000, 0, '060/123-456', 'description', false, false, true, '2');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Garsonjera','4', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 1000, 0, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Duplex detelinara','2', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 55000, 0, '060/123-456', 'description', false, false, true, '2');
+
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Strazilovska dvosoban namesten stan','6', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 2000, 0, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Dvosoban stan na prodaju!','5', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 45000, 0, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Garsonjera detelinara','5', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 9000, 0, '060/123-456', 'description', false, false, true, '1');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Duplex detelinara','4', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 70000, 0, '060/123-456', 'description', false, false, true, '2');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Garsonjera klisa','4', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 300, 0, '060/123-456', 'description', false, false, true, '2');
+INSERT INTO `netadvert`.`advert` (`advert_name`,`user_id`,`created_at`,`updated_at`,`expire_date`,`cost`,`advert_rate`,`contact`,`description`,`is_sold`,`is_deleted`,`rent_sale`,`realestate_id`) VALUES ('Duplex klisa','2', '2017-11-14 18:19:00', '2016-11-14 18:19:00', '2016-12-11', 2200, 0, '060/123-456', 'description', false, false, true, '2');
+
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'Nije lose', '4', '2');
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'Bezveze', '5', '2');
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'ovo je moj komentar na oglas', '3', '5');
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'open moj komm', '3', '6');
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'Nije lose', '3', '2');
+INSERT INTO `netadvert`.`comment` (`date`, `text`, `advert_id`, `user_id`) VALUES ('2016-11-28 12:45:00', 'Bezveze', '4', '5');
+
+INSERT INTO `netadvert`.`report` (`report_description`, `verified`, `advert_id`, `user_id`, `visited`) VALUES ('Los oglas! Komsijina kuca!', '0', '1', '4', '0');
+INSERT INTO `netadvert`.`report` (`report_description`, `verified`, `advert_id`, `user_id`, `visited`) VALUES ('Ne valja nista!', '0', '1', '5', '0');
+
+INSERT INTO `netadvert`.`report` (`report_description`, `verified`, `advert_id`, `user_id`, `visited`) VALUES ('Los oglas! Stan se ne nalazi na toj lokaciji!', '0', '3', '5', '0');
+INSERT INTO `netadvert`.`report` (`report_description`, `verified`, `advert_id`, `user_id`, `visited`) VALUES ('Ne valja nista!', '0', '4', '2', '0');
+INSERT INTO `netadvert`.`user_rating` (`rating`, `user_id`, `user_rated_id`) VALUES ('5', '4', '5');

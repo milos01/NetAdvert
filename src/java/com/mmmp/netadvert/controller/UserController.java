@@ -249,4 +249,12 @@ public class UserController {
         this.adverService.updateAdvert(a);
     	return new ResponseEntity<Advert>(a, HttpStatus.OK);
     }
+    @RequestMapping(value="/api/user/{uid}", method=RequestMethod.GET)
+    public ResponseEntity<User> getUserById(@PathVariable("uid") int id){
+    	User user = (User)this.adverService.findUserById(id);
+    	if (user==null){
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<User>(user,HttpStatus.OK);
+    }
 }

@@ -39,6 +39,17 @@
                 return item;
             });
         }
+        retVal.getAdvertsOfUser = function(idU){
+        	return Restangular.one('advert').one('user',idU).getList().then(function(response){
+        		return response;
+        	})
+        }
+        retVal.getUserById = function(idU){
+        	return Restangular.one('user',idU).get().then(function(res){
+        		return res;
+        	})
+        }
+        
         return retVal;
     })
 })(angular);

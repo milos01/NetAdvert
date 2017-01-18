@@ -411,5 +411,10 @@ public class AdvertController {
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
-
+	
+	@RequestMapping(value="/user/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Advert>> getAllAdvertsOfUser(@PathVariable("id") int user_id){
+		List<Advert> list = this.adverService.getAllAdvertsOfUser(user_id);
+		return new ResponseEntity<List<Advert>> (list,HttpStatus.OK);
+	}
 }

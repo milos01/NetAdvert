@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmmp.netadvert.DTO.AdvertNewRate;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.AdvertRating;
 import com.mmmp.netadvert.model.User;
@@ -43,9 +45,10 @@ public class AdvertRatingController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
-	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid, HttpSession session,@RequestParam("rating") int addedRating){
+	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid, HttpSession session,@RequestBody AdvertNewRate addedRating){
 		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+		u = this.adverService.findUser("milan@gmail.com");
+		System.out.println("Aaaaaaaaaaaaa");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -56,7 +59,7 @@ public class AdvertRatingController {
 		if(a.getDeleted()==true){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(addedRating<=0){
+		if(addedRating.getRate()<=0){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Set<AdvertRating> ratings = u.getAdvertRatings();
@@ -72,14 +75,14 @@ public class AdvertRatingController {
 		for(AdvertRating r : allAdvertRatings){
 			sum+=r.getRating();
 		}
-		sum+=addedRating;
+		sum+=addedRating.getRate();
 		double updatedRating = sum/count;
 		a.setAdvert_rate(updatedRating);
 		
 		AdvertRating advertRating = new AdvertRating();
 		advertRating.setAdvert(a);
 		advertRating.setUser(u);
-		advertRating.setRating(addedRating);
+		advertRating.setRating(addedRating.getRate());
 		this.adverService.addAdvertRating(advertRating);
 		
 		a.getAdvertRatings().add(advertRating);
@@ -228,6 +231,17 @@ public class AdvertRatingController {
 		this.adverService.updateAdvert(a);
 		
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/findUserAdvertRait", method = RequestMethod.GET)
+	public ResponseEntity<AdvertRating> getUserAndAdRait(@RequestParam("user_id") int idU,@RequestParam("advert_id") int idA){
+		
+		AdvertRating ar = this.adverService.getUserOfAdvertRaiting(idU, idA);
+		if (ar==null){
+			return new ResponseEntity<AdvertRating>(HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<AdvertRating>(ar,HttpStatus.OK);
 	}
 	
 }

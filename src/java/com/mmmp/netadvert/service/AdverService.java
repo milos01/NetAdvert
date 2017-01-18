@@ -139,4 +139,10 @@ public interface AdverService {
     public List<Report> findReportsByAdvert(int advert_id);
 
     public CompanyStaffs findUserrCompany(int uid);
+    
+    public AdvertRating getUserOfAdvertRaiting(int user_id, int advert_id);
+
+    public UserRating getUserOfUserRaiting(int user_id, int user_idP);
+    
+    public List<Advert> getAllAdvertsOfUser(int user_id);
 }

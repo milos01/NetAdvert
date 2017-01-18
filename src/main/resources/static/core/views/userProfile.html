@@ -1,0 +1,103 @@
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>User infomations</h5>
+   <!--          <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-wrench"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="#">Config option 1</a>
+                    </li>
+                    <li><a href="#">Config option 2</a>
+                    </li>
+                </ul>
+                <a class="close-link">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div> -->
+        </div>
+    <div class="ibox-content">
+                <div class="form-group">
+                    <label  class="control-label">First name: {{firstName}}</label>
+                </div>
+                <div class="form-group">
+                    <label  class="control-label">Last name: {{lastName}}</label>
+                </div>
+                 <div class="form-group">
+                    <label  class="control-label">Contact: {{email}}</label>
+                </div>
+                
+                <div class="form-group">
+                   <!-- User rating -->
+                   <label  class="control-label">User rating: {{userRate}}</label>
+		            <div>
+						 <div ng-show="authenticated">
+							 <div ng-if="userAdverRate.user.id == user.uid && userAdverRate.user_rated.id == userProf || user.uid == userProf || user.role==='Verifier' ||user.role==='Admin'">
+								 <input-stars max="5"  ng-model="userRate" readonly="true"></input-stars>
+							 </div>
+							 <div ng-show="!(user.uid == userProf) && user.role!=='Verifier' && user.role!=='Admin'">
+								 <div ng-if="userAdverRate.user.id !== user.uid || userAdverRate.user_rated.id !== userProf">
+									 <input-stars max="5"  on-star-click="rateUser(userRate)" ng-model="userRate"  readonly="false"></input-stars>
+								 </div>
+							 </div>
+						 </div>
+						 <div ng-show="!authenticated">
+							  <input-stars max="5"  ng-model="userRate"  readonly="true"></input-stars>
+						 </div>
+		            </div>
+                </div>
+
+        </div>
+        </br>
+        </br>
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Your advert list</h5>
+            <div class="ibox-tools">
+                <!--<a href="" class="btn btn-primary btn-xs">Add new issue</a>-->
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <div class="m-b-lg">
+        
+                <div class="m-t-md">
+                    <strong>Found {{advertList.length}} adverts.</strong>
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover issue-tracker">
+                    <tbody>
+                    <tr ng-repeat="advert in advertList">
+                    	
+                        <td class="issue-info">
+                        	<a ui-sref="advert({advertId: advert.id})">
+                                {{advert.realestate.realestateName}}
+							</a>
+                            <small>
+                                {{advert.realestate.type.typeName}}
+                            </small>
+                        </td> 
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                        </td>
+                        <td class="text-right">
+                            {{advert.created_at}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>

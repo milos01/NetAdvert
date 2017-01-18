@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mmmp.netadvert.DTO.UserNewRate;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.model.UserRating;
 import com.mmmp.netadvert.service.AdverService;
@@ -40,9 +42,10 @@ public class UserRatingController {
 	 * @see User
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
-	public ResponseEntity<User> addUserRating(@PathVariable("id") int uid, HttpSession session,@RequestParam("rating") int addedRating){
+	public ResponseEntity<User> addUserRating(@PathVariable("id") int uid, HttpSession session,@RequestBody UserNewRate addedRating){
 		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+		System.out.println("Aaaaaaaaaaaaa");
+		u = this.adverService.findUser("proba@gmail.com");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -53,7 +56,7 @@ public class UserRatingController {
 		if(userRated==null){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(addedRating<=0){
+		if(addedRating.getRate()<=0){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if(userRated.getId()==u.getId()){
@@ -65,20 +68,19 @@ public class UserRatingController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		}
-		
 		Set<UserRating> allUserRatings = userRated.getUserRatings();
 		int count = allUserRatings.size()+1;
 		int sum = 0;
 		for(UserRating r : allUserRatings){
 			sum+=r.getRating();
 		}
-		sum+=addedRating;
+		sum+=addedRating.getRate();
 		double updatedRating = sum/count;
 		userRated.setUser_rate(updatedRating);
 		UserRating userRatingg = new UserRating();
 		userRatingg.setUser_rated(userRated);
 		userRatingg.setUser(u);
-		userRatingg.setRating(addedRating);
+		userRatingg.setRating(addedRating.getRate());
 		this.adverService.addUserRating(userRatingg);
 		
 		userRated.getUserRatedRatings().add(userRatingg);
@@ -228,6 +230,15 @@ public class UserRatingController {
 		this.adverService.updateUser(a);
 		
 		return new ResponseEntity<User>(a, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/findUserUserRait", method = RequestMethod.GET)
+	public ResponseEntity<UserRating> getUserUserRate(@RequestParam("user_id") int idU,@RequestParam("user_idP") int idUP){
+		UserRating ur = this.adverService.getUserOfUserRaiting(idU, idUP);
+		if (ur==null){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<UserRating>(ur,HttpStatus.OK);
 	}
 
 }

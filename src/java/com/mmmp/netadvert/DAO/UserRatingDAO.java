@@ -10,4 +10,5 @@ public interface UserRatingDAO {
 	
 	public void deleteUserRating(UserRating ur);
 
+	public UserRating getUserOfUserRaiting(int user_id,int user_idP);
 }

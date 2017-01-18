@@ -440,6 +440,24 @@ public class AdvertServiceImplementation implements AdverService {
 	public CompanyStaffs findUserrCompany(int uid) {
 		return this.userDAO.findUserrCompany(uid);
 	}
+	
+	@Override
+	@Transactional
+	public AdvertRating getUserOfAdvertRaiting(int user_id, int advert_id) {
+		return this.advertRatingDAO.getUserOfAdvertRaiting(user_id, advert_id);
+	}
+
+	@Override
+	@Transactional
+	public UserRating getUserOfUserRaiting(int user_id, int user_idP) {
+		return this.userRatingDAO.getUserOfUserRaiting(user_id, user_idP);
+	}
+
+	@Override
+	@Transactional
+	public List<Advert> getAllAdvertsOfUser(int user_id) {
+		return this.advertDAO.getAllAdvertsOfUser(user_id);
+	}
 
 
 }

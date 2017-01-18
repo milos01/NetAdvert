@@ -28,7 +28,7 @@
                                  Reason: {{report.reportDescription}}
                             </small>
                              <small>
-                               	Reported by: {{report.user.first_name }} {{report.user.last_name }}
+                               	Reported by: <a ui-sref="UserProfile({userId: report.user.id})">{{report.user.first_name }} {{report.user.last_name }}</a>
                             </small>
                         </td>
                    

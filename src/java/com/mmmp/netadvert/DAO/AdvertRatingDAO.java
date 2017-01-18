@@ -10,5 +10,7 @@ public interface AdvertRatingDAO {
 	public AdvertRating updateAdvertRating(AdvertRating a);
 	
 	public void deleteAdvertRating(AdvertRating a);
+	
+	public AdvertRating getUserOfAdvertRaiting(int user_id,int advert_id);
 
 }

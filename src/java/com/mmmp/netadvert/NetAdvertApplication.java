@@ -49,8 +49,7 @@ public class NetAdvertApplication{
 					.httpBasic()
 					.and()
 					.authorizeRequests()
-					.antMatchers("/api/advert", "/api/advert/{\\d+}", "/api/advert/{\\d+}/mainPicture", "/img/gallery/**","/font-awesome/**","/core/index.html", "/core/views/login.html", "/core/views/home.html", "/core/views/**" , "/", "/core/scripts/**", "/bower_components/**", "/node-modules/**", "/", "/css/**", "/core/plugins/**", "/js/**", "/node_modules/**").permitAll()
-
+					.antMatchers("/api/advert", "/api/advert/{\\d+}", "/api/advert/{\\d+}/mainPicture", "/img/gallery/**","/font-awesome/**","/core/index.html", "/core/views/login.html", "/core/views/home.html", "/core/views/**" , "/", "/core/scripts/**", "/bower_components/**", "/node-modules/**", "/", "/css/**", "/core/plugins/**", "/js/**","/node_modules/**","/api/comment/advert/{\\d+}").permitAll()
 					.anyRequest().authenticated()
 					.and()
 					.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)

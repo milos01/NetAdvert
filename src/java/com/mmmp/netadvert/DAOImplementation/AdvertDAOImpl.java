@@ -333,6 +333,15 @@ public class AdvertDAOImpl implements AdvertDAO {
 		return s;
 	}
 
+	@Override
+	public List<Advert> getAllAdvertsOfUser(int user_id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Advert u where u.user.id=:id");
+		query.setParameter("id",user_id);
+		List<Advert> advertList = query.list();
+		return advertList;
+	}
+
 	
 
 }

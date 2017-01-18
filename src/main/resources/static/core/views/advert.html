@@ -41,14 +41,21 @@
                                 </br>
                                 <dt>Advert raiting: <b>{{advert.advert_rate}}</b></dt>
                                 <dd>
+                                 <!-- Advert rating -->
 		                            <div>
-			                            <div star-rating ng-model="rating" max="5"  readonly="isReadonly"></div>
-										<!--   <div star-rating ng-model="rating2" readonly="isReadonly"></div>
-										  <label>
-										    <input type="checkbox" ng-model="isReadonly"/>
-										    Is Readonly
-										  </label> -->
-										 <!--  <div><strong>Rating 2:</strong> {{rating2}}</div> -->
+										 <div ng-show="authenticated">
+											 <div ng-if="userAdverRate.user.id == user.uid && userAdverRate.advert.id == advert.id || user.uid == advert.user.id">
+											 	 <input-stars max="5"  on-star-click="rateAdvert(rating)" ng-model="rating" readonly="true"></input-stars>
+											 </div>
+											 <div ng-show="!(user.uid == advert.user.id)">
+												 <div ng-if="userAdverRate.user.id !== user.uid || userAdverRate.advert.id !== advert.id">
+												 	 <input-stars max="5"  on-star-click="rateAdvert(rating)" ng-model="rating"  readonly="false"></input-stars>
+												 </div>
+											 </div>
+										 </div>
+										 <div ng-show="!authenticated">
+											<input-stars max="5"  ng-model="rating"  readonly="true"></input-stars>
+										</div>
 		                            </div>
 	                            </dd>
                             </dl>
@@ -258,7 +265,7 @@
 		</div>
 		<div ng-repeat="comment in commentList | orderBy: -comment.date">
 	        <div class="ibox-title">
-	            <h5>{{comment.user.first_name}} {{comment.user.last_name}} </h5>
+	           <a ui-sref="UserProfile({userId: comment.user.id})"> <h5>{{comment.user.first_name}} {{comment.user.last_name}} </h5></a>
 	            <div class="ibox-tools" ng-show="user.uid === comment.user.id">
 	                <a class="close-link" ng-click="deleteComment(comment.id)" >
 	                    <i title="delete"   class="fa fa-times"></i>

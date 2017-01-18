@@ -33,5 +33,7 @@ public interface AdvertDAO {
 	public Page<Advert> searchAdverts(Map<String, Object> map, List<TechnicalEquipment> tech, Pageable pageable);
 	
 	public SoldAdvert addSoldAdvert(SoldAdvert s);
+	
+	public List<Advert> getAllAdvertsOfUser(int user_id);
 
 }

@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -40,9 +41,8 @@ public class CommentController {
 	 * @return Comment object, http response 200 ok
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Comment> createComment(@RequestBody NewCommentDTO commentt,HttpSession session){
-//		User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("milan@gmail.com");
+	public ResponseEntity<Comment> createComment(@RequestBody NewCommentDTO commentt,Principal user){
+		User u = this.adverService.findUser(user.getName());
 		Advert advert = this.adverService.findAdvert(commentt.getAdvert_id());
 		
 		if (advert==null){

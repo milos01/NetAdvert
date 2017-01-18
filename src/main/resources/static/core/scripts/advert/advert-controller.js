@@ -68,6 +68,26 @@
         	    $log.info('Modal dismissed at: ' + new Date() + ' with value: ' + value);
         	    });
         	};
+        	
+    		$scope.openMapModal = function(advertt) {
+            	var modalInstance = $uibModal.open({
+            	   parent:'advert',
+            	   templateUrl: 'core/views/modals/mapModal.html',
+            	   controller: 'mapModalCtrl',
+            	   scope: $scope,   
+            	   resolve: {
+            	      advertt: function() {
+            	      return advertt;
+            	      }
+            	   }
+            	});
+            
+            	modalInstance.result.then(function(value) {
+            	    $log.info('Modal finished its job at: ' + new Date() + ' with value: ' + value);
+            		}, function(value) {
+            	    $log.info('Modal dismissed at: ' + new Date() + ' with value: ' + value);
+            	    });
+            	};
     })
     
     app.controller('ReportModalCtrl',['$scope','$uibModalInstance','$log','_','ReportResource',function($scope,$uibModalInstance, $log, _,ReportResource) {
@@ -83,6 +103,60 @@
 			console.log("cancel");
 			$uibModalInstance.dismiss('cancel');
 		};
+	}]);
+    
+    app.controller('mapModalCtrl',['$scope','$uibModalInstance','advertt',function($scope,$uibModalInstance,advertt) {
+		console.log(advertt);
+//		$scope.advertt1 = advertt;
+//		var ad = advertt;
+//		alert(ad.realestate.location.street);
+//		var map;
+//		var marker;
+//
+//		function initMap() {
+//			map = new google.maps.Map(document
+//					.getElementById('map'), {
+//				center : {
+//					lat : -34.397,
+//					lng : 150.644
+//				},
+//				zoom : 16
+//			});
+//			var geocoder = new google.maps.Geocoder();
+//			geocodeAddress(geocoder, map);
+//
+//		}
+//		function geocodeAddress(geocoder, resultsMap) {
+//			var address = ad.realestate.location.street + ","
+//					+ ad.realestate.location.city + ",Srbija";
+//			console.log(address);
+//			geocoder
+//					.geocode(
+//							{
+//								'address' : address
+//							},
+//							function(results, status) {
+//								if (status === google.maps.GeocoderStatus.OK) {
+//									resultsMap
+//											.setCenter(results[0].geometry.location);
+//									var marker = new google.maps.Marker(
+//											{
+//												map : resultsMap,
+//												position : results[0].geometry.location,
+//												title : ad.realestate.location.street
+//
+//											});
+//								} else {
+//									alert('Geocode was not successful for the following reason: '
+//											+ status);
+//								}
+//							});
+//		}
+//
+//		$scope.cancel = function() {
+//			console.log("cancel");
+//			$uibModalInstance.dismiss('cancel');
+//		};
 	}]);
 
 })(angular);

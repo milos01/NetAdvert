@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
@@ -24,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Picture;
-import com.mmmp.netadvert.model.Realestate;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.service.AdverService;
 
@@ -45,9 +45,8 @@ public class ImageController {
 	 * @see Advert, Picture
 	 */
 	@RequestMapping(value="/api/upload", method=RequestMethod.POST)
-	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file,HttpSession session, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile) throws IllegalStateException, IOException{
-		User u = (User) session.getAttribute("logedUser");
-		u=this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file,HttpSession session, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile,Principal user) throws IllegalStateException, IOException{
+		User u=this.adverService.findUser(user.getName());
         if(u==null){
         	return new ResponseEntity<> (HttpStatus.FORBIDDEN);
         }
@@ -121,9 +120,8 @@ public class ImageController {
 	 * @see Advert, Picture
 	 */
 	@RequestMapping(value="/api/image/{id:.*}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteImage(@PathVariable("id") String name, HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<Void> deleteImage(@PathVariable("id") String name,Principal user){
+		User u = this.adverService.findUser(user.getName());
         if(u==null){
         	return new ResponseEntity<Void> (HttpStatus.FORBIDDEN);
         }

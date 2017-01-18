@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -45,9 +46,8 @@ public class AdvertRatingController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
-	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid, HttpSession session,@RequestBody AdvertNewRate addedRating){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milan@gmail.com");
+	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid, HttpSession session,@RequestBody AdvertNewRate addedRating,Principal user){
+		User u = this.adverService.findUser(user.getName());
 		System.out.println("Aaaaaaaaaaaaa");
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
@@ -129,9 +129,8 @@ public class AdvertRatingController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.PUT)
-	public ResponseEntity<Advert> updateAdvertRating(@PathVariable("id") int aid, HttpSession session, @RequestParam("rating") int addedRating){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<Advert> updateAdvertRating(@PathVariable("id") int aid,Principal user, HttpSession session, @RequestParam("rating") int addedRating){
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -186,9 +185,8 @@ public class AdvertRatingController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.DELETE)
-	public ResponseEntity<Advert> deleteAdvertRating(@PathVariable("id") int aid, HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<Advert> deleteAdvertRating(@PathVariable("id") int aid,Principal user, HttpSession session){
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }

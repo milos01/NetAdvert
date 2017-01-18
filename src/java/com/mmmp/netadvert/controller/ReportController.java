@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -39,9 +40,8 @@ public class ReportController {
 	 * @return Report object, Http response 200 ok
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Report> newReport(@RequestBody newReportDTO repo,HttpSession session){
-//		User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("milan@gmail.com");
+	public ResponseEntity<Report> newReport(@RequestBody newReportDTO repo,Principal user){
+		User u = this.adverService.findUser(user.getName());
 		
 		Advert advert = this.adverService.findAdvert(repo.getAdvert_id());
 		
@@ -81,9 +81,8 @@ public class ReportController {
 	 * @return updated Report object, Http response 200 ok
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Report> updateReport(@RequestBody VerifyReportDTO verReport,HttpSession session){
-		//User u = (User) session.getAttribute("logedUser");
-		User u = this.adverService.findUser("doslicmm@live.com");
+	public ResponseEntity<Report> updateReport(@RequestBody VerifyReportDTO verReport,Principal user){
+		User u = this.adverService.findUser(user.getName());
 		if (u.getRole().getName().equals("Verifier")){
 			System.out.println("id: "+verReport.getReport_id() + " ver "+verReport.getVerify() );
 			Report r = this.adverService.findReport(verReport.getReport_id());

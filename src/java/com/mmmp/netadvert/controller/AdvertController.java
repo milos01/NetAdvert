@@ -1,9 +1,10 @@
 package com.mmmp.netadvert.controller;
 
-import java.util.Date;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import com.mmmp.netadvert.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +25,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mmmp.netadvert.DTO.AdvertDTO;
-import com.mmmp.netadvert.DTO.LocationDTO;
-import com.mmmp.netadvert.DTO.RealestateDTO;
-import com.mmmp.netadvert.DTO.SearchDTO;
+import com.mmmp.netadvert.model.Advert;
+import com.mmmp.netadvert.model.Location;
+import com.mmmp.netadvert.model.Picture;
+import com.mmmp.netadvert.model.Realestate;
+import com.mmmp.netadvert.model.RealestateCategory;
+import com.mmmp.netadvert.model.RealestateType;
+import com.mmmp.netadvert.model.SoldAdvert;
+import com.mmmp.netadvert.model.TechnicalEquipment;
+import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.service.AdverService;
 
 @RestController
@@ -53,10 +59,9 @@ public class AdvertController {
 	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Advert> createAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session) {
+	public ResponseEntity<Advert> createAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session,Principal user) {
 
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -185,9 +190,8 @@ public class AdvertController {
 	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Advert> updateAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session) {
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<Advert> updateAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session,Principal user) {
+		User u = this.adverService.findUser(user.getName());
 		Advert advert = this.adverService.findAdvert(advertDTO.getAdvertId());
 		
 		if(u!=null){
@@ -303,10 +307,8 @@ public class AdvertController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteAdvert(@PathVariable("id") int id, HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
-		u = this.adverService.findUser(u.getEmail());
+	public ResponseEntity<Void> deleteAdvert(@PathVariable("id") int id, HttpSession session,Principal user){
+		User u = this.adverService.findUser(user.getName());
 		if(u!=null){
 			Set<Advert> userAdverts = u.getAdverts();
 			if(userAdverts==null){
@@ -382,9 +384,8 @@ public class AdvertController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/buy", method = RequestMethod.PUT)
-	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, HttpSession session,Principal user){
+		User u = this.adverService.findUser(user.getName());
 		if(u!=null){
 			Advert a = this.adverService.findAdvert(aid);
 			if (a==null){

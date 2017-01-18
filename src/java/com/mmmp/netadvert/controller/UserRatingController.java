@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +43,8 @@ public class UserRatingController {
 	 * @see User
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
-	public ResponseEntity<User> addUserRating(@PathVariable("id") int uid, HttpSession session,@RequestBody UserNewRate addedRating){
-		User u = (User) session.getAttribute("logedUser");
-		System.out.println("Aaaaaaaaaaaaa");
-		u = this.adverService.findUser("proba@gmail.com");
+	public ResponseEntity<User> addUserRating(@PathVariable("id") int uid, Principal user,@RequestBody UserNewRate addedRating){
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -99,9 +98,8 @@ public class UserRatingController {
 	 * @see User, UserRating
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.GET)
-	public ResponseEntity<List<UserRating>> getUserRatings(@PathVariable("id") int uid, HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<List<UserRating>> getUserRatings(@PathVariable("id") int uid, Principal user){
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -127,9 +125,8 @@ public class UserRatingController {
 	 * @see User
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.PUT)
-	public ResponseEntity<User> updateUserRating(@PathVariable("id") int aid, HttpSession session, @RequestParam("rating") int addedRating){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<User> updateUserRating(@PathVariable("id") int aid, Principal user, @RequestParam("rating") int addedRating){
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -184,9 +181,8 @@ public class UserRatingController {
 	 * @see User
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.DELETE)
-	public ResponseEntity<User> deleteUserRating(@PathVariable("id") int aid, HttpSession session){
-		User u = (User) session.getAttribute("logedUser");
-		u = this.adverService.findUser("milossm94@hotmail.com");
+	public ResponseEntity<User> deleteUserRating(@PathVariable("id") int aid, Principal user){
+		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }

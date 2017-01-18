@@ -6,7 +6,7 @@
         var retVal = {};
 
         retVal.getAdverts = function(pageId) {
-            return Restangular.one("advert").get({page:pageId, size:1}).then(function(entries) {
+            return Restangular.one("advert").get({page:pageId, size:8, sort:"advertName,desc"}).then(function(entries) {
                 return entries;
             });
         };

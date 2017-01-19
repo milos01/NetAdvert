@@ -3,7 +3,6 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.mmmp.netadvert.model.*;
 import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.service.AdverService;
@@ -189,6 +188,28 @@ public class UserController {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+	}
+    
+    @RequestMapping(value="/api/user/realestates", method=RequestMethod.GET)
+	public ResponseEntity<List<Realestate>> getAllUserRealestates(HttpSession session){
+
+    	User user = (User)session.getAttribute("logedUser");
+        user = this.adverService.findUser("milossm94@hotmail.com");
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        List<Advert> adverts = new ArrayList<Advert>();
+        adverts.addAll(user.getAdverts());
+        List<Realestate> realestates = new ArrayList<Realestate>();
+        Realestate real;
+        for(Advert a : adverts){
+        	real = a.getRealestate();
+        	if(!realestates.contains(real)){
+        		realestates.add(real);
+        	}
+        }
+        return new ResponseEntity<List<Realestate>>(realestates, HttpStatus.OK);
 	}
 
     @RequestMapping(value="/api/user/{uid}/mycompany", method=RequestMethod.GET)

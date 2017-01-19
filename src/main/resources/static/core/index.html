@@ -23,6 +23,12 @@
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
 
+	<!-- Advert wizard CSS files -->
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
     <!-- Main Inspinia CSS files -->
     <link href="css/animate.css" rel="stylesheet">
     <link id="loadBefore" href="css/style.css" rel="stylesheet">
@@ -83,7 +89,11 @@
             </div>
 
             <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="navigation">
-
+				<!-- Regular user options -->
+				<ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Regular user'">
+                    <li><a ng-href="/#!/advert" ng-cloak>Add advert</a></li>
+                </ul>
+                <!-- Admin options -->
                 <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Admin'">
                     <li><a ng-href="/#!/company" ng-cloak>Add company</a></li>
                 </ul>
@@ -163,7 +173,7 @@
 <script src="js/plugins/jquery-ui/jquery-ui.js"></script>
 <script src="js/bootstrap/bootstrap.min.js"></script>
 
-<!-- MetsiMenu -->
+<!-- MetisMenu -->
 <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
 <!-- SlimScroll -->
@@ -182,11 +192,20 @@
 <!--<script src="js/ui-router/angular-ui-router.min.js"></script>-->
 <!--<script src="js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>-->
 
-<script src="js/plugins/select2/select2.full.min.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 
-<!---->
 
+<!-- Steps -->
+<script src="js/plugins/staps/jquery.steps.min.js"></script>
+
+<!-- Jquery Validate -->
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+<!-- Select2 -->
+<script src="js/plugins/select2/select2.full.min.js"></script>
+
+<!-- iCheck -->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 <!--<script src="js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>-->
 <!--<script src="js/ui-router/angular-ui-router.min.js"></script>-->
@@ -205,6 +224,7 @@
  -->
 <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleReady"></script>
  --><!-- NetAdvert js -->
+<script src="bower_components/ng-currency/dist/ng-currency.js"></script>
 
 <script src="core/scripts/app.js"></script>
 <script src="core/scripts/home/home-controller.js"></script>
@@ -223,6 +243,8 @@
 <script src="core/scripts/user_rating/userRating-resource.js"></script>
 <!-- 
 <script src="core/scripts/map/map.js"></script> -->
+
+<script src="core/scripts/realestate/realestate-resource.js"></script>
 
 </body>
 </html>

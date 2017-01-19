@@ -1,5 +1,8 @@
 package com.mmmp.netadvert.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +65,23 @@ public class RealestateController {
 	public ResponseEntity<TechnicalEquipment> findEquipment(@PathVariable("id") int id){
 		TechnicalEquipment t = this.adverService.findTechnicalEquipmentById(id);
 		return new ResponseEntity<TechnicalEquipment>(t,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/category/{id}/equipment", method=RequestMethod.GET)
+	public ResponseEntity<List<TechnicalEquipment>> findEquipmentByCategory(@PathVariable("id") int id){
+		RealestateCategory rc = this.adverService.findRealestateCategory(id);
+		List<TechnicalEquipment> equipmentList = new ArrayList<TechnicalEquipment>();
+		equipmentList.addAll(rc.getEquipments());
+		Collections.sort(equipmentList, new Comparator<TechnicalEquipment>() {
+			public int compare(TechnicalEquipment m1, TechnicalEquipment m2) {
+				if (m1.getId() > m2.getId()) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		});
+		return new ResponseEntity<List<TechnicalEquipment>>(equipmentList,HttpStatus.OK);
 	}
 	
 	/*

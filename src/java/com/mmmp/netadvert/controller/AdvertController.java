@@ -167,6 +167,7 @@ public class AdvertController {
 		advert.setRent_sale(advertDTO.getRent_sale());
 		advert.setDescription(advertDTO.getDescription());
 		advert.setCost(advertDTO.getCost());
+		advert.setAdvertName(advertDTO.getAdvertName());
 		this.adverService.addAdvert(advert);
 		if(u.getAdverts()==null){
 			u.setAdverts(new HashSet<Advert>());

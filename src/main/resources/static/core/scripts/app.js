@@ -5,7 +5,9 @@
         'ui.bootstrap',
         'lodash',
         'ngAnimate',
-        'angular-input-stars']);
+        'angular-input-stars',
+        'ng-currency']);
+
 	app.config(	function($stateProvider, $urlRouterProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $urlRouterProvider.otherwise('/');
@@ -91,6 +93,15 @@
                     'mainView@': {
                         templateUrl: "core/views/userProfile.html",
                         controller: 'userProfile'
+                    }
+                }
+            })
+            .state('addAdvert', {
+                url: "/advert",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/addAdvert.html",
+                        controller: 'addAdvert'
                     }
                 }
             })

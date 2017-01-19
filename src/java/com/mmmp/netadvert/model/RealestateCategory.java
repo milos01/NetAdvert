@@ -35,7 +35,7 @@ public class RealestateCategory {
 	@JoinTable(name="realestate_category_technical_equipment", joinColumns=@JoinColumn(name="realestate_category_id"), inverseJoinColumns=@JoinColumn(name="technical_equipment_id"))
 	private Set<TechnicalEquipment> equipments;
 	
-	@JsonBackReference
+	@JsonManagedReference
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="realestate_category_realestate_type", joinColumns=@JoinColumn(name="realestate_category_id"), inverseJoinColumns=@JoinColumn(name="realestate_type_id"))
 	private Set<RealestateType> types;

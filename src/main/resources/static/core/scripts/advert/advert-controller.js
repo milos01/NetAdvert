@@ -159,4 +159,219 @@
 //		};
 	}]);
 
+    app.controller('addAdvert', function ($rootScope, $location, $scope, _, $log, $stateParams, UsersResource, AdvertResource, PictureResource, RealestateResource) {
+        RealestateResource.getCategories().then(function (items) {
+            $scope.categories = items;
+        });
+        
+        RealestateResource.getTypes().then(function (items) {
+            $scope.types = items;
+        });
+        UsersResource.getUserRealestates().then(function (items) {
+            $scope.userRealestates = items;
+            console.log($scope.userRealestates);
+        });
+        $scope.selectedRealestate = {};
+        $scope.selectedRealestate.category = {};
+        $scope.selectedRealestate.type = {};
+        $scope.existingRealestate = false;
+        $scope.newAdvert = {};
+        $scope.newAdvert.realestate = {};
+        $scope.newAdvert.realestate.heating = false;
+        $scope.newAdvert.rent_sale = false;
+        $scope.chooseType = [];
+        $scope.newAdvert.realestate.equipments = [];
+        $scope.updateType = function(){
+        	if($scope.existingRealestate === false){
+        		console.log($scope.newAdvert);
+        		$scope.chooseType = $scope.newAdvert.realestate.category.types;
+        		RealestateResource.getCategoryEquipment($scope.newAdvert.realestate.category.id).then(function (items) {
+        			$scope.categoryEquipment = items;
+        			$scope.newAdvert.realestate.equipments = [];
+        			for(var i = 0; i<items.length; i++){
+        				$scope.newAdvert.realestate.equipments.push(false);
+        			}
+        		});
+        	}
+        	
+        };
+        $scope.submitAdvert = function(){
+        	console.log($scope.newAdvert);
+        	var cat = {};
+        	cat.realestateCategoryId = $scope.newAdvert.realestate.category.id;
+        	cat.categoryName = $scope.newAdvert.realestate.category.categoryName;
+        	$scope.newAdvert.realestate.category = cat;
+        	$scope.newAdvert.realestate.type.realestateTypeId = $scope.newAdvert.realestate.type.id;
+        	delete $scope.newAdvert.realestate.type.id;
+        	AdvertResource.addAdvert($scope.newAdvert).then(function (item){
+        		console.log(item);
+        	});
+        };
+        
+        $scope.disableInputs = function(){
+        	if($scope.existingRealestate === true){
+        		console.log($scope.selectedReaelstate);
+        		$scope.selectedRealestate = {};
+        		$scope.selectedRealestate.category = {};
+        		$scope.selectedRealestate.type = {};
+        	}
+        	else{
+        		$scope.newAdvert = {};
+                $scope.newAdvert.realestate = {};
+                $scope.newAdvert.realestate.heating = false;
+                $scope.newAdvert.rent_sale = false;
+                $scope.newAdvert.realestate.equipments = [];
+        	}
+        };
+        
+        $scope.updateForm = function(){
+        	if($scope.selectedRealestate != null){
+        		console.log("selectedReal");
+        		console.log($scope.selectedRealestate);
+        		$scope.newAdvert = {};
+        		$scope.newAdvert.realestate = {};
+        		$scope.newAdvert.realestate.category = {};
+        		$scope.newAdvert.realestate.type = {};
+        		$scope.newAdvert.realestate.location = {};
+        		$scope.newAdvert.realestate.equipments = [];
+        		$scope.newAdvert.realestate.realestateId = $scope.selectedRealestate.id;
+        		$scope.newAdvert.realestate.realestateName = $scope.selectedRealestate.realestateName;
+        		$scope.newAdvert.realestate.area = $scope.selectedRealestate.area;
+        		$scope.newAdvert.realestate.heating = $scope.selectedRealestate.heating;
+        		$scope.newAdvert.realestate.category = $scope.selectedRealestate.category;
+        		$scope.newAdvert.realestate.type = $scope.selectedRealestate.type;
+        		RealestateResource.getCategoryEquipment($scope.selectedRealestate.category.id).then(function (items) {
+        			$scope.categoryEquipment = items;
+        			$scope.newAdvert.realestate.equipments = [];
+        			var exists;
+        			for(var i = 0; i<items.length; i++){
+        				exists = false;
+        				for(var j = 0; j<$scope.selectedRealestate.technicalEquipments.length; j++){
+        					if(items[i].id === $scope.selectedRealestate.technicalEquipments[j].id){
+        						$scope.newAdvert.realestate.equipments.push(true);
+        						exists = true;
+        						break;
+        					}
+        				}
+        				if(!exists){
+        					$scope.newAdvert.realestate.equipments.push(false);
+        				}
+        			}
+        		});
+        		$scope.newAdvert.realestate.location = $scope.selectedRealestate.location;
+        		$scope.newAdvert.rent_sale = false;
+        	}        
+        };
+        
+    })
+    
+    app.directive('updateSelect2', function ($timeout) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attrs) {
+                scope.$watch(function(scope){return scope.chooseType}, function (newValue, oldValue) {
+                	$timeout(function(){
+                		  // Any code in here will automatically have an $scope.apply() run afterwards
+                		$(".select2_demo_1").select2('val', '');
+                		console.log(scope.newAdvert);
+                		console.log(scope.categoryEquipment);
+                		console.log(scope.newAdvert.realestate.equipments);
+                		  // And it just works!
+                		});
+                	//$(".select2_demo_1").select2('val', '');
+                });
+            }
+        };
+    });
+    
+    app.directive('updateRealestate', function ($timeout) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attrs) {
+                scope.$watch(function(scope){return scope.existingRealestate}, function (newValue, oldValue) {
+                	$timeout(function(){
+                		$(".selectRealestate").select2('val', '');
+                		});
+                });
+            }
+        };
+    });
+    
+    app.directive('updateCategory', function ($timeout) {
+        return {
+            restrict: 'A',
+            scope: false,
+            link: function (scope, element, attrs) {
+                scope.$watch(function(scope){return scope.selectedRealestate}, function (newValue, oldValue) {
+                	$timeout(function(){
+                		console.log("selectedRealDirektiva");
+                		console.log(scope.selectedRealestate);
+                		if(scope.selectedRealestate != null){
+                			for(var c in scope.categories){
+                				console.log(scope.categories[c]);
+                				console.log(c);
+                				if(scope.categories[c].categoryName.valueOf() == scope.selectedRealestate.category.categoryName.valueOf()){
+                					console.log("poklopilo se");
+                					console.log(scope.categories[c]);
+                					//$(".selectCategory").select2('val', JSON.stringify(scope.categories[c]);
+                					//$(".selectCategory").val(JSON.stringify(scope.categories[c])).trigger('change.select2');
+                					//$(".selectCategory").select2('data', scope.categories[c]);
+                					//$(".selectCategory").val(scope.categories[c]);
+                					//$(".selectCategory").val(scope.categories[c]).trigger('change.select2');
+                					//$(".selectCategory").select2("trigger", "select", scope.categories[c]);
+                					//$(".selectCategory").val(scope.categories[c]).trigger("change");
+                					break;
+                				}
+                			}
+                			//$(".selectCategory").select2('val', 'dasdasdas');
+                			//$(".selectCategory").val(scope.selectedRealestate.category.categoryName).trigger("change");
+                		}
+                		});
+                });
+            }
+        };
+    });
+    
+    
+    /**
+     * icheck - Directive for custom checkbox icheck
+     */
+    function icheck($timeout) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, $attrs, ngModel) {
+                return $timeout(function() {
+                    var value;
+                    value = $attrs['value'];
+
+                    $scope.$watch($attrs['ngModel'], function(newValue){
+                        $(element).iCheck('update');
+                    })
+
+                    return $(element).iCheck({
+                        checkboxClass: 'icheckbox_square-green',
+                        radioClass: 'iradio_square-green'
+
+                    }).on('ifChanged', function(event) {
+                            if ($(element).attr('type') === 'checkbox' && $attrs['ngModel']) {
+                                $scope.$apply(function() {
+                                    return ngModel.$setViewValue(event.target.checked);
+                                });
+                            }
+                            if ($(element).attr('type') === 'radio' && $attrs['ngModel']) {
+                                return $scope.$apply(function() {
+                                    return ngModel.$setViewValue(value);
+                                });
+                            }
+                        });
+                });
+            }
+        };
+    }
+    
+    app.directive('icheck', icheck);
+    
 })(angular);

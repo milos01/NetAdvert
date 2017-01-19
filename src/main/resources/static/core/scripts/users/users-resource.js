@@ -39,6 +39,7 @@
                 return item;
             });
         }
+
         retVal.getAdvertsOfUser = function(idU){
         	return Restangular.one('advert').one('user',idU).getList().then(function(response){
         		return response;
@@ -48,6 +49,12 @@
         	return Restangular.one('user',idU).get().then(function(res){
         		return res;
         	})
+        }
+        
+        retVal.getUserRealestates = function () {
+        	return Restangular.all("user/realestates").getList().then(function(entries) {
+                return entries;
+            });
         }
         
         return retVal;

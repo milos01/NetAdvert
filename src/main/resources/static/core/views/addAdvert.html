@@ -1,0 +1,318 @@
+<div id="wrapper">
+    <div class="row" style="margin-top: 30px;">
+        <!-- <div class="col-lg-12">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Add new advert</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content"> -->
+                
+                	<div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Add advert</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <!-- <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="#">Config option 1</a>
+                                    </li>
+                                    <li><a href="#">Config option 2</a>
+                                    </li>
+                                </ul> -->
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <h2>
+                                Please fill out the following form
+                            </h2>
+                            <form id="form" class="wizard-big" name="advertForm">
+                                <h1>Real Estate</h1>
+                                <fieldset>
+                                    <h2>Real Estate Information</h2>
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                        	<div class="form-group">
+                                                <label>Previously advertised realestate *</label>
+                                                <div class="radio radio-info radio-inline" style="margin: 7px 0px 0px 10px">
+                                            		<input ng-model="existingRealestate" ng-value="true" type="radio" id="existingRealestateTrue" name="existingRealestateRadio" ng-change="disableInputs()">
+                                            		<label for="existingRealestateTrue"> True </label>
+                                        		</div>
+                                        		<div class="radio radio-inline" style="margin: 7px 0px 0px 0px">
+                                            		<input ng-model="existingRealestate" ng-value="false" type="radio" id="existingRealestateFalse" name="existingRealestateRadio" ng-change="disableInputs()">
+                                            		<label for="existingRealestateFalse"> False </label>
+                                        		</div>
+                                            </div>
+                                            <div class="form-group" ng-show="existingRealestate">
+                                                <label>Please select realestate *</label><br/>
+                                                <select class="selectRealestate" ng-model="selectedRealestate" update-realestate ng-options="r as r.realestateName for r in userRealestates" ng-change="updateForm()">
+                                        			<option value="" ng-if="false"></option>
+                                    			</select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Real estate name *</label>
+                                                <input ng-model= "newAdvert.realestate.realestateName" id="realestateName" name="realestateName" type="text" class="form-control required" ng-disabled="existingRealestate">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Area (m<sup>2</sup>) *</label>
+                                                <input ng-model="newAdvert.realestate.area" id="area" name="area" type="number" min="0" class="form-control required" ng-disabled="existingRealestate">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Heating *</label>
+                                                <div class="radio radio-info radio-inline" style="margin: 7px 0px 0px 10px">
+                                            		<input ng-model="newAdvert.realestate.heating" ng-value="true" type="radio" id="heatingTrue" name="heatingRadio" ng-disabled="existingRealestate">
+                                            		<label for="heatingTrue"> True </label>
+                                        		</div>
+                                        		<div class="radio radio-inline" style="margin: 7px 0px 0px 0px">
+                                            		<input ng-model="newAdvert.realestate.heating" ng-value="false" type="radio" id="heatingFalse" name="heatingRadio" ng-disabled="existingRealestate">
+                                            		<label for="heatingFalse"> False </label>
+                                        		</div>
+                                            </div>
+                                            <div class="form-group">
+                                    			<label>
+                                       			 	Real estate category *
+                                    			</label><br/>
+                                    			<div ng-hide="existingRealestate" style="float: left; display: flex; flex-direction: row-reverse;">
+                                    				<select class="selectCategory required" style="float: left" ng-model="newAdvert.realestate.category" update-category ng-options="c as c.categoryName for c in categories" ng-change="updateType()" ng-disabled="existingRealestate">
+                                        				<option value="" ng-if="false"></option>
+                                    				</select>
+                                    			</div>
+                                    			<div ng-show="existingRealestate" ng-cloak>
+                                    				<input class="form-control" type="text" ng-model="selectedRealestate.category.categoryName" disabled="true">
+                                				</div>
+                                			</div>
+                                			<br/><br/>
+                                			<div class="form-group" ng-show="chooseType.length > 0 || (existingRealestate && selectedRealestate.type.typeName!==undefined)">
+                                    			<label>
+                                       			 	Real estate type *
+                                    			</label><br/>
+                                    			<div ng-hide="existingRealestate" style="float: left; display: flex; flex-direction: row-reverse;">
+                                    				<select class="select2_demo_1" name="typeForm" ng-model="newAdvert.realestate.type" update-select2 ng-options="t as t.typeName for t in chooseType" ng-disabled="existingRealestate" required>
+                                    					<option value="" ng-if="false"></option>
+                                    				</select>
+                                    			</div>
+                                    			<div ng-show="existingRealestate" ng-cloak>
+                                    				<input class="form-control" type="text" ng-model="selectedRealestate.type.typeName" disabled="true">
+                                				</div>
+                                			</div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="text-center">
+                                                <div style="margin-top: 20px">
+                                                    <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <h1>Technical equipment</h1>
+                                <fieldset>
+                                    <h2>Technical Equipment Information</h2>
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="form-group">
+                                                <div class="table-responsive" ng-if="newAdvert.realestate.equipments.length > 0">
+                                					<table class="table table-striped">
+                                    					<thead>
+                                    						<tr>
+                                        						<th>No. </th>
+                                        						<th>Equipment Name</th>
+                                        						<th>Contains (checked) </th>
+                                    						</tr>
+                                    					</thead>
+                                    					<tbody>
+                                   							<tr id="equipmentsList" ng-model="newAdvert.realestate.equipments" ng-repeat="eq in categoryEquipment">
+                                    							<td>{{$index + 1}}</td>
+                                    							<td>{{eq.equipmentName}}</td>
+                                    							<td><input type="checkbox" icheck ng-model="newAdvert.realestate.equipments[$index]" ng-true-value="true" ng-disabled="existingRealestate"></td>
+                                    						</tr>
+                                    					</tbody>
+                                					</table>
+                            					</div>
+                            					<div ng-if="newAdvert.realestate.equipments.length == 0">
+                            						<h3>Sorry, we're not familiar with any technical equipments which are common for selected real estate category.</h3>
+                            					</div>
+                                            </div>
+                                            <p>
+                                            	Please add information in advert description field, about technical equipment that real estate possess, which are not listed here.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <h1>Location</h1>
+                                <fieldset>
+                                	<h2>Real Estate Location Information</h2>
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="form-group">
+                                                <label>City *</label>
+                                                <input ng-model= "newAdvert.realestate.location.city" name="city" type="text" class="form-control required" ng-disabled="existingRealestate">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Postal Code *</label><span class="m-b-none">(optional)</span>
+                                                <input ng-model= "newAdvert.realestate.location.postalCode" name=""postalCode type="number" min="0" class="form-control" ng-disabled="existingRealestate">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Region *</label><span class="m-b-none">(optional)</span>
+                                                <input ng-model= "newAdvert.realestate.location.region" name="region" type="text" class="form-control" ng-disabled="existingRealestate">
+                                            </div>
+                                            <div class="form-group col-sm-12" style="padding-right: 0px; padding-left: 0px">
+                                            	<div class="col-md-8" style="padding-right: 0px; padding-left: 0px">
+                                                	<label>Street *</label>
+                                                	<input ng-model= "newAdvert.realestate.location.street" name="street" type="text" class="form-control required" ng-disabled="existingRealestate">
+                                            	</div>
+                                            	<div class="col-md-4" style="padding-right: 0px; padding-left: 0px">
+                                            		<label>Street Number *</label><span class="m-b-none">(optional)</span>
+                                                	<input ng-model= "newAdvert.realestate.location.streetNumber" name="streetNumber" type="number" min="0" class="form-control" ng-disabled="existingRealestate">
+                                            	</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <h1>Advert</h1>
+                                <fieldset>
+                                    <h2>Advert Information</h2>
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="form-group">
+                                            	<div class="form-group">
+                                               		<label>Advert name *</label>
+                                                	<input ng-model= "newAdvert.advertName" name="advertName" type="text" class="form-control required">
+                                            	</div>
+                                                <label>Real estate for sale/rent  *</label>
+                                                <div class="radio radio-info radio-inline" style="margin: 7px 0px 0px 10px">
+                                            		<input ng-model="newAdvert.rent_sale" ng-value="true" type="radio" id="saleTrue" name="saleRadio">
+                                            		<label for="saleTrue"> Sale </label>
+                                        		</div>
+                                        		<div class="radio radio-inline" style="margin: 7px 0px 0px 0px">
+                                            		<input ng-model="newAdvert.rent_sale" ng-value="false" type="radio" id="saleFalse" name="saleRadio">
+                                            		<label for="saleFalse"> Rent </label>
+                                        		</div>
+                                            </div>
+                                            <div class="form-group">
+                   								<label class="control-label">Price</label>
+                        						<input type="text" class="form-control required" name="cost" ng-model="newAdvert.cost" ng-currency>
+                        						<span class="help-block">$ 999,999,999.99</span>
+                							</div>
+                                            <div class="form-group">
+                    							<label class="control-label">Phone</label>
+                        						<input type="text" class="form-control required" name="contact" placeholder="" ng-model="newAdvert.contact">
+                							</div>
+                                            <div class="form-group">
+                                   				<label>Advert description</label>
+                                   				<textarea class="form-control" id="advertDescription" ng-model="newAdvert.description" rows="7"></textarea>
+                                        </div>
+                                    </div>
+                                    <input type="submit" class="submitForm" style="display: none" ng-click="submitAdvert()" />
+                                    <!-- <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label> -->
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                
+
+<script>
+        $(document).ready(function(){
+        	/* $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+            }); */
+            $("#wizard").steps();
+            $("#form").steps({
+                bodyTag: "fieldset",
+                onStepChanging: function (event, currentIndex, newIndex)
+                {
+                    // Always allow going backward even if the current step contains invalid fields!
+                    if (currentIndex > newIndex)
+                    {
+                        return true;
+                    }
+
+                    // Forbid suppressing "Warning" step if the user is to young
+                    if (newIndex === 3 && Number($("#age").val()) < 18)
+                    {
+                        return false;
+                    }
+
+                    var form = $(this);
+
+                    // Clean up if user went backward before
+                    if (currentIndex < newIndex)
+                    {
+                        // To remove error styles
+                        $(".body:eq(" + newIndex + ") label.error", form).remove();
+                        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                    }
+
+                    // Disable validation on fields that are disabled or hidden.
+                    form.validate().settings.ignore = ":disabled,:hidden";
+
+                    // Start validation; Prevent going forward if false
+                    return form.valid();
+                },
+                onStepChanged: function (event, currentIndex, priorIndex)
+                {
+                    if (currentIndex === 1)
+                    {
+                        //$(this).steps("next");
+                    }
+
+                },
+                onFinishing: function (event, currentIndex)
+                {
+                    var form = $(this);
+
+                    // Disable validation on fields that are disabled.
+                    // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+                    form.validate().settings.ignore = ":disabled";
+
+                    // Start validation; Prevent form submission if false
+                    return form.valid();
+                },
+                onFinished: function (event, currentIndex)
+                {
+                    var form = $(this);
+
+                    // Submit form input
+                    //form.submit();
+                    $(".submitForm").click();
+                }
+            }).validate({
+                        errorPlacement: function (error, element)
+                        {
+                            element.before(error);
+                        },
+                        rules: {
+                            confirm: {
+                                equalTo: "#password"
+                            }
+                        }
+                    });
+       });
+       $(".selectCategory").select2({width:"200px"});
+       $(".select2_demo_1").select2({width:"200px"});
+       $(".selectRealestate").select2({width:"200px"});
+</script>

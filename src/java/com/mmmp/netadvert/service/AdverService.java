@@ -145,4 +145,6 @@ public interface AdverService {
     public UserRating getUserOfUserRaiting(int user_id, int user_idP);
     
     public List<Advert> getAllAdvertsOfUser(int user_id);
+
+    public List<Picture> findAdvertPictures(int aid);
 }

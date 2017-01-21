@@ -37,7 +37,6 @@ public class UserRatingController {
 	/**
 	 * This method is part of user rest service. It adds user rating
 	 * @param uid user for which is being added rating, and it checks if user has permission to add rating.
-	 * @param session
 	 * @param addedRating added rating
 	 * @return Http status 200 OK
 	 * @see User
@@ -45,6 +44,7 @@ public class UserRatingController {
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
 	public ResponseEntity<User> addUserRating(@PathVariable("id") int uid, Principal user,@RequestBody UserNewRate addedRating){
 		User u = this.adverService.findUser(user.getName());
+
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
 	    }
@@ -93,7 +93,6 @@ public class UserRatingController {
 	/**
 	 * This method is part of advert rest service. It gets list of ratings of specified user.
 	 * @param uid user id which ratings are being returned
-	 * @param session
 	 * @return Http status 200 OK
 	 * @see User, UserRating
 	 */
@@ -119,8 +118,7 @@ public class UserRatingController {
 	/**
 	 * This method is part of advert rest service. It updates user rating.
 	 * @param aid user id which rating is being updated
-	 * @param session
-	 * @param addedRating updated rating 
+	 * @param addedRating updated rating
 	 * @return Http status 200 OK
 	 * @see User
 	 */
@@ -176,7 +174,6 @@ public class UserRatingController {
 	/**
 	 * This method is part of advert rest service. It deletes rating from specified user.
 	 * @param aid user which rating is being deleted.
-	 * @param session
 	 * @return Http status 200 OK
 	 * @see User
 	 */

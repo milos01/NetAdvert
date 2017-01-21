@@ -62,7 +62,7 @@
     </div>
     <div class="ibox-content" ng-show="showSelect" ng-cloak>
         <select class="js-example-basic-single" ng-model="myComp" ng-options="company.company_name for company in allCompanies" ng-change="getAllCompanies()">
-            <option style="display:none" value=""></option>
+            <option value="" ng-if="false"></option>
         </select>
     </div>
 </div>

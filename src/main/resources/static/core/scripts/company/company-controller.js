@@ -2,7 +2,7 @@
  * Created by milosandric on 04/01/2017.
  */
 (function(angular){
-    app.controller('company', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource) {
+    app.controller('company', function ($rootScope, $location, $scope, _, $log, $state, UsersResource, CompanyResource, socket) {
         CompanyResource.getAllCompanys().then(function (items) {
             console.log(items);
             $scope.allCompanies = items;
@@ -28,6 +28,12 @@
             var user = $scope.masterEmail;
             CompanyResource.addCompany(user, companyName).then(function (item) {
                 $scope.allCompanies.push(item);
+
+                var notInfo={
+                    email: user,
+                    compnayName: companyName
+                }
+                socket.emit('userAddedToCompany', notInfo);
             });
         }
     })

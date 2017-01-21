@@ -10,8 +10,9 @@
                         <div class="col-md-5">
                             <div class="product-images">
                                 <div>
-                                    <div class="image-imitation">
-                                        {{mainPicture}}
+                                    <div class="image-imitation" style="padding: 0px;overflow: hidden; height: 400px;">
+                                        <img src="img/gallery/{{mainPicture}}"/>
+
                                     </div>
                                 </div>
                             </div>
@@ -19,6 +20,7 @@
                         <div class="col-md-7">
                             <h2 class="font-bold m-b-xs">
                                 {{advert.realestate.realestateName}}
+                                <small> ({{advert.realestate.type.typeName}})</small>
                             </h2>
                             <div class="m-t-md">
                                 <h2 class="product-main-price">${{advert.cost}}
@@ -26,18 +28,17 @@
                                 </h2>
                             </div>
                             <hr>
-                            <h4>Product description</h4>
-                            <div class="small text-muted">
-                                {{advert.description}}
-                            </div>
+                            <!--<h4>Product description</h4>-->
+                            <!--<div class="small text-muted">-->
+                                <!--{{advert.description}}-->
+                            <!--</div>-->
+
                             <dl class="small m-t-md">
-                                <dt>Description lists</dt>
-                                <dd>A description list is perfect for defining terms.</dd>
-                                <dt>Euismod</dt>
-                                <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
-                                <dd>Donec id elit non mi porta gravida at eget metus.</dd>
-                                <dt>Malesuada porta</dt>
-                                <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+                                <dt>Equipment</dt>
+                                <dd ng-repeat="equipment in advert.realestate.technicalEquipments"><i class="fa fa-check" aria-hidden="true"></i> {{equipment.equipmentName}}</dd>
+                                <dd ng-show="advert.realestate.technicalEquipments === 0" ng-cloak>No equipment selected</dd>
+                                <dt>Description </dt>
+                                <dd>{{advert.description}}</dd>
                                 </br>
                                 <dt>Advert raiting: <b>{{advert.advert_rate}}</b></dt>
                                 <dd>
@@ -62,9 +63,11 @@
                             <hr>
                             <div>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Add to cart
+                                    <button class="btn btn-primary btn-sm" ng-show="advert.is_sold && authenticated" ng-cloak disabled><i class="fa fa-times" aria-hidden="true"></i> Sold
                                     </button>
-                                    <button class="btn btn-white btn-sm" ng-click="openMapModal(advert)"><i class="fa fa-map-marker""></i> View on map
+                                    <button class="btn btn-primary btn-sm" ng-show="!advert.is_sold && authenticated" ng-click="buyAdvert(advert)" ng-cloak><i class="fa fa-cart-plus" ></i> Buy
+                                    </button>
+                                    <button class="btn btn-white btn-sm" ng-click="openMapModal(advert)"><i class="fa fa-map-marker"></i> View on map
                                     </button>
                                     <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact with
                                         author
@@ -88,150 +91,13 @@
                 <div class="ibox-content">
                     <h2>Image gallery</h2>
                     <div class="lightBoxGallery">
-                        <a href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/1s.jpg"></a>
-                        <a href="img/gallery/2.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/2s.jpg"></a>
-                        <a href="img/gallery/3.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/3s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/6s.jpg"></a>
-                        <a href="img/gallery/7.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/7s.jpg"></a>
-                        <a href="img/gallery/8.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/8s.jpg"></a>
-                        <a href="img/gallery/9.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/9s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/6s.jpg"></a>
-                        <a href="img/gallery/7.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/7s.jpg"></a>
-                        <a href="img/gallery/2.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/2s.jpg"></a>
-                        <a href="img/gallery/3.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/3s.jpg"></a>
-                        <a href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/1s.jpg"></a>
-                        <a href="img/gallery/9.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/9s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/11.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/11s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/6s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/1s.jpg"></a>
-                        <a href="img/gallery/2.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/2s.jpg"></a>
-                        <a href="img/gallery/3.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/3s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/6s.jpg"></a>
-                        <a href="img/gallery/7.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/7s.jpg"></a>
-                        <a href="img/gallery/8.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/8s.jpg"></a>
-                        <a href="img/gallery/9.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/9s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/11.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/11s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/6s.jpg"></a>
-                        <a href="img/gallery/7.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/7s.jpg"></a>
-                        <a href="img/gallery/2.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/2s.jpg"></a>
-                        <a href="img/gallery/3.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/3s.jpg"></a>
-                        <a href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/1s.jpg"></a>
-                        <a href="img/gallery/9.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/9s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/11.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/11s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/7.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/7s.jpg"></a>
-                        <a href="img/gallery/8.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/8s.jpg"></a>
-                        <a href="img/gallery/9.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/9s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/11.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/11s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/6.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/6s.jpg"></a>
-                        <a href="img/gallery/12.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/12s.jpg"></a>
-                        <a href="img/gallery/4.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/4s.jpg"></a>
-                        <a href="img/gallery/5.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/5s.jpg"></a>
-                        <a href="img/gallery/10.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/10s.jpg"></a>
-                        <a href="img/gallery/11.jpg" title="Image from Unsplash" data-gallery=""><img
-                                src="img/gallery/11s.jpg"></a>
+                        <a ng-repeat="picture in pictures" href="img/gallery/{{picture.pictureName}}" title="Image from Unsplash" data-gallery=""><div style="width: 130px;
+        height: 130px;
+        display:inline-block;
+        vertical-align: top;
+        background-size:cover;
+        background-position:50% 50%;overflow: hidden"><img
+                                src="img/gallery/{{picture.pictureName}}" width="130px"></div></a>
                         <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
                         <div id="blueimp-gallery" class="blueimp-gallery">
                             <div class="slides"></div>
@@ -263,7 +129,7 @@
 			</form>
 			  
 		</div>
-		<div ng-repeat="comment in commentList | orderBy: -comment.date">
+		<div ng-controller="commentController" ng-repeat="comment in commentList | orderBy: -comment.date">
 	        <div class="ibox-title">
 	           <a ui-sref="UserProfile({userId: comment.user.id})"> <h5>{{comment.user.first_name}} {{comment.user.last_name}} </h5></a>
 	            <div class="ibox-tools" ng-show="user.uid === comment.user.id">

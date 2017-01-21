@@ -8,15 +8,16 @@
                 PictureResource.getAdvertMainPicture(item.realestate.id).then(function (item2) {
                     $scope.mainPicture = item2.pictureName;
                     $scope.advert = item;
+
                 })
                 CommentResource.getAllCommentsOfAd(aid).then(function(response){
         			$scope.commentList = response;
         		})
         		
-        		$rootScope.deleteComment = function(id){
-        			console.log("aaaaa");
-        			CommentResource.deleteComment(id);
-        		}
+        		// $scope.deleteComment = function(id){
+        		// 	console.log("aaaaa");
+        		// 	CommentResource.deleteComment(id);
+        		// }
                 
                 
                 AdvertResource.getUserAdverRaiting($scope.user.uid,item.id).then(function(response){
@@ -87,7 +88,19 @@
             		}, function(value) {
             	    $log.info('Modal dismissed at: ' + new Date() + ' with value: ' + value);
             	    });
-            	};
+			};
+
+			PictureResource.getAdvertPictures(aid).then(function (items) {
+				$scope.pictures = items;
+			});
+
+			$scope.buyAdvert = function (advert) {
+                AdvertResource.buyAdvert(advert.id).then(function (item) {
+                	if(item){
+                        advert.is_sold = true;
+					}
+                });
+            }
     })
     
     app.controller('ReportModalCtrl',['$scope','$uibModalInstance','$log','_','ReportResource',function($scope,$uibModalInstance, $log, _,ReportResource) {

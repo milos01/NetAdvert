@@ -41,6 +41,12 @@
             });
         };
         
+        retVal.buyAdvert = function (aid) {
+            return Restangular.one('advert', aid).one('buy').put().then(function (item) {
+                return item;
+            });
+        }
+        
         return retVal;
     })
 })(angular);

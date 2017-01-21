@@ -37,7 +37,7 @@
             CompanyResource.addStaff(cid, userId).then(function (item) {
                 $scope.assignText = "Assigned to " + item.company.company_name;
                 $scope.showSelect = false;
-                socket.emit('notifyUserNewStaff', $scope.user);
+                socket.emit('notifyUserNewStaff', item.company.user.email);
             });
         }
     })

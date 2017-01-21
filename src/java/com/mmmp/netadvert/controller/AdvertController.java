@@ -380,12 +380,11 @@ public class AdvertController {
 	 * This method is part of advert rest service. It allows user to buy realestate
 	 * which is being advertised, if advert is not deleted or previously sold.
 	 * @param aid advert id which is being bought
-	 * @param session
 	 * @return Http status 200 OK
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/buy", method = RequestMethod.PUT)
-	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, HttpSession session,Principal user){
+	public ResponseEntity<Advert> buyAdvert(@PathVariable("id") int aid, Principal user){
 		User u = this.adverService.findUser(user.getName());
 		if(u!=null){
 			Advert a = this.adverService.findAdvert(aid);
@@ -412,6 +411,14 @@ public class AdvertController {
 			return new ResponseEntity<Advert>(a, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+	}
+
+	@RequestMapping(value="/{id}/pictures", method = RequestMethod.GET)
+	public ResponseEntity<List<Picture>> advertPictures(@PathVariable("id") int aid,Principal user){
+		List<Picture> pics = this.adverService.findAdvertPictures(aid);
+
+		return new ResponseEntity<List<Picture>>(pics, HttpStatus.OK);
+
 	}
 	
 	@RequestMapping(value="/user/{id}", method = RequestMethod.GET)

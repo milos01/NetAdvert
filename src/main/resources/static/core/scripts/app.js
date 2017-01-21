@@ -212,6 +212,10 @@
             toastr.info(data.fname+" "+data.lname+" sent request as new company staff.");
         });
 
+		socket.on('userAddedToComp', function (companyName) {
+            toastr.info("You have been assigned as head of "+companyName+" company.");
+        })
+
 	});
 
 	app.controller('testCtr', function ($scope) {

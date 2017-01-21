@@ -16,9 +16,16 @@ io.on('connection', function (socket) {
 
     socket.on('notifyUserNewStaff', function (data) {
         console.log(data);
-        // if(data.email in users){
-            socket.broadcast.to(users["milossm94@hotmail.com"]).emit('newStaff', data);
-        // }
+        if(data in users){
+            socket.broadcast.to(users[data]).emit('newStaff', data);
+        }
+    })
+    
+    socket.on('userAddedToCompany', function (notInfo) {
+        console.log(notInfo);
+        if(notInfo.email in users) {
+            socket.broadcast.to(users[notInfo.email]).emit('userAddedToComp', notInfo.compnayName);
+        }
     })
 });
 

@@ -459,5 +459,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.advertDAO.getAllAdvertsOfUser(user_id);
 	}
 
+	@Override
+	@Transactional
+	public List<Picture> findAdvertPictures(int aid) {
+		return this.pictureDAO.getAdvertPictures(aid);
+	}
+
 
 }

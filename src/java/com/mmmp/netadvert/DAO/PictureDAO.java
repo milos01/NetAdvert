@@ -2,6 +2,8 @@ package com.mmmp.netadvert.DAO;
 
 import com.mmmp.netadvert.model.Picture;
 
+import java.util.List;
+
 public interface PictureDAO {
 	
 	public void addPicture(Picture i);
@@ -14,4 +16,5 @@ public interface PictureDAO {
 
 	public Picture getAdvertMainPicture(int id);
 
+    public List<Picture> getAdvertPictures(int aid);
 }

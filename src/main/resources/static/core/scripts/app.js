@@ -7,7 +7,8 @@
         'ngAnimate',
         'angular-input-stars',
         'ng-currency',
-        'ngMap']);
+        'ngMap',
+        'ngMapAutocomplete']);
 	app.config(	function($stateProvider, $urlRouterProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $urlRouterProvider.otherwise('/');

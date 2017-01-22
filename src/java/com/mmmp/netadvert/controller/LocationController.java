@@ -42,10 +42,10 @@ public class LocationController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		Location loc = new Location();
-		loc.setCity(city);
+		loc.setCity(city.split(",")[0]);
 		loc.setPostalCode(postal);
 		loc.setRegion(region);
-		loc.setStreet(street);
+		loc.setStreet(street.split(",")[0]);
 		loc.setStreetNumber(streetNumber);
 		this.adverService.createLocation(loc);
 		return new ResponseEntity<Location>(loc,HttpStatus.OK);

@@ -1,5 +1,6 @@
 package com.mmmp.netadvert.controller;
 
+import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,10 +104,11 @@ public class AdvertController {
 		Location location = this.adverService.checkForExistingLocation(locStreet, locStreetNumber, locRegion,
 				locCity, locPostalCode);
 		if (location == null) {
+			System.out.println(locStreet.split(",")[0]);
 			location = new Location();
 			location.setCity(locCity);
 			location.setRegion(locRegion);
-			location.setStreet(locStreet);
+			location.setStreet(locStreet.split(",")[0]);
 			location.setPostalCode(locPostalCode);
 			location.setStreetNumber(locStreetNumber);
 			this.adverService.createLocation(location);

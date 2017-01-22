@@ -30,6 +30,9 @@
                         value="${spring.datasource.url}" />
         <property name="username" value="${spring.datasource.username}" />
         <property name="password" value="${spring.datasource.password}" />
+        <property name="hibernate.connection.CharSet" value="utf8" />
+       	<property name="hibernate.connection.characterEncoding" value="utf8"/>
+        <property name="hibernate.connection.useUnicode" value="true"/>
     </bean>
 
     <!-- Hibernate 4 SessionFactory Bean definition -->

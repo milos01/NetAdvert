@@ -30,7 +30,8 @@
     "angular-ui-map": "^0.5.0",
     "ng-currency": "^1.1.5",
     "angular-input-stars-directive": "angular-input-stars#^1.6.3",
-    "ngmap": "^1.17.8"
+    "ngmap": "^1.17.8",
+    "ng-map-autocomplete": "^1.0.3"
   },
   "resolutions": {
     "angular": "1.6.1"

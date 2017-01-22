@@ -226,7 +226,6 @@
         		$scope.newAdvert.rent_sale = false;
         	}        
         };
-        
     })
     
     app.directive('updateSelect2', function ($timeout) {

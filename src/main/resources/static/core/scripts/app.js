@@ -6,8 +6,8 @@
         'lodash',
         'ngAnimate',
         'angular-input-stars',
-        'ng-currency']);
-
+        'ng-currency',
+        'ngMap']);
 	app.config(	function($stateProvider, $urlRouterProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $urlRouterProvider.otherwise('/');

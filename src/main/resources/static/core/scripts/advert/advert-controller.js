@@ -120,56 +120,7 @@
     
     app.controller('mapModalCtrl',['$scope','$uibModalInstance','advertt',function($scope,$uibModalInstance,advertt) {
 		console.log(advertt);
-//		$scope.advertt1 = advertt;
-//		var ad = advertt;
-//		alert(ad.realestate.location.street);
-//		var map;
-//		var marker;
-//
-//		function initMap() {
-//			map = new google.maps.Map(document
-//					.getElementById('map'), {
-//				center : {
-//					lat : -34.397,
-//					lng : 150.644
-//				},
-//				zoom : 16
-//			});
-//			var geocoder = new google.maps.Geocoder();
-//			geocodeAddress(geocoder, map);
-//
-//		}
-//		function geocodeAddress(geocoder, resultsMap) {
-//			var address = ad.realestate.location.street + ","
-//					+ ad.realestate.location.city + ",Srbija";
-//			console.log(address);
-//			geocoder
-//					.geocode(
-//							{
-//								'address' : address
-//							},
-//							function(results, status) {
-//								if (status === google.maps.GeocoderStatus.OK) {
-//									resultsMap
-//											.setCenter(results[0].geometry.location);
-//									var marker = new google.maps.Marker(
-//											{
-//												map : resultsMap,
-//												position : results[0].geometry.location,
-//												title : ad.realestate.location.street
-//
-//											});
-//								} else {
-//									alert('Geocode was not successful for the following reason: '
-//											+ status);
-//								}
-//							});
-//		}
-//
-//		$scope.cancel = function() {
-//			console.log("cancel");
-//			$uibModalInstance.dismiss('cancel');
-//		};
+		
 	}]);
 
     app.controller('addAdvert', function ($rootScope, $location, $scope, _, $log, $stateParams, UsersResource, AdvertResource, PictureResource, RealestateResource) {

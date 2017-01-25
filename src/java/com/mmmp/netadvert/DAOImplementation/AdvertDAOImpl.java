@@ -106,7 +106,7 @@ public class AdvertDAOImpl implements AdvertDAO {
 			if(map.get("size")==null){
 				cr.setMaxResults(12);
 				cr.setFirstResult(pageable.getOffset());
-				pageable = new PageRequest(pageable.getPageNumber(), 12, pageable.getSort());
+				pageable = new PageRequest(pageable.getPageNumber(), 8, pageable.getSort());
 			}
 			else{
 				cr.setMaxResults(pageable.getPageSize());
@@ -274,7 +274,7 @@ public class AdvertDAOImpl implements AdvertDAO {
 			if(map.get("size")==null){
 				cr.setMaxResults(12);
 				cr.setFirstResult(pageable.getOffset());
-				pageable = new PageRequest(pageable.getPageNumber(), 12, pageable.getSort());
+				pageable = new PageRequest(pageable.getPageNumber(), 8, pageable.getSort());
 			}
 			else{
 				cr.setMaxResults(pageable.getPageSize());

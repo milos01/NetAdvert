@@ -8,7 +8,10 @@
         'angular-input-stars',
         'ng-currency',
         'ngMap',
-        'ngMapAutocomplete']);
+        'ngMapAutocomplete',
+        'ng-currency',
+        'rzModule']);
+
 	app.config(	function($stateProvider, $urlRouterProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $urlRouterProvider.otherwise('/');

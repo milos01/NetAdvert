@@ -19,6 +19,12 @@
             	return entries;
             });
         };
+
+        retVal.getTechEquipment = function () {
+            return Restangular.all('realestate/equipment').getList().then(function (items) {
+                return items;
+            });
+        }
         
         
 

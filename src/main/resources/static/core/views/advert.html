@@ -10,8 +10,7 @@
                         <div class="col-md-5">
                             <div class="product-images">
                                 <div>
-                                    <div class="image-imitation" style="padding: 0px;overflow: hidden; height: 400px;">
-                                        <img src="img/gallery/{{mainPicture}}"/>
+                                    <div class="image-imitation" style="background:#fff;padding: 0px;overflow: hidden; height: 400px; background-image: url('img/gallery/{{mainPicture}}'); background-size: 100%; background-repeat: no-repeat">
 
                                     </div>
                                 </div>
@@ -89,8 +88,10 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <h2>Image gallery</h2>
+                    <h2 ng-show="pictures.length != 0" ng-cloak>Image gallery</h2>
+                    <h2 ng-show="pictures.length === 0" ng-cloak>No images to show</h2>
                     <div class="lightBoxGallery">
+
                         <a ng-repeat="picture in pictures" href="img/gallery/{{picture.pictureName}}" title="Image from Unsplash" data-gallery=""><div style="width: 130px;
         height: 130px;
         display:inline-block;
@@ -108,7 +109,9 @@
                             <a class="play-pause"></a>
                             <ol class="indicator"></ol>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>

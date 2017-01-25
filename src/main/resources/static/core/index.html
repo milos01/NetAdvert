@@ -35,11 +35,9 @@
     
     <!-- starts-input CSS  -->
 	<link href="bower_components/angular-input-stars-directive/angular-input-stars.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.0.0/rzslider.min.css"/>
 
 <style>
-    [ng\:cloak], [ng-cloak], .ng-cloak {
-        display: none !important;
-    }
     
 .starRating {
   margin: 0;
@@ -94,17 +92,21 @@
                     <li><a ng-href="/#!/advert" ng-cloak>Add advert</a></li>
                 </ul>
                 <!-- Admin options -->
-                <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Admin'">
-                    <li><a ng-href="/#!/company" ng-cloak>Add company</a></li>
-                </ul>
+                <div ng-show="authenticated && user.role === 'Admin'" ng-cloak >
+                    <ul class="nav navbar-nav" >
+                        <li><a ng-href="/#!/company">Add company</a></li>
+                    </ul>
+                </div>
                 
                 <ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Verifier'">
                     <li><a ng-href="/#!/report" ng-cloak>Reports</a></li>
                 </ul>
-                
-                <ul class="nav navbar-nav" ng-show="authenticated && user.isMain === 1">
-                    <li><a ng-href="/#!/mycompany" ng-cloak>My company</a></li>
-                </ul>
+
+                <div ng-show="authenticated && user.isMain === 1" ng-cloak >
+                    <ul class="nav navbar-nav" >
+                        <li><a ng-href="/#!/mycompany"k>My company</a></li>
+                    </ul>
+                </div>
                 <ul class="nav navbar-nav" ng-show="authenticated">
                     <li><a ng-href="/#!/profile" ng-cloak>{{user.fname}} {{user.lname}}</a></li>
                 </ul>
@@ -224,6 +226,7 @@
 <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleReady"></script>
  --><!-- NetAdvert js -->
 <script src="bower_components/ng-currency/dist/ng-currency.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.0.0/rzslider.min.js"></script>
 
 <script src="core/scripts/app.js"></script>
 <script src="core/scripts/home/home-controller.js"></script>

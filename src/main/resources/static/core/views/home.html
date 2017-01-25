@@ -1,16 +1,102 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>Adverts</h2>
+    <div class="col-lg-12">
+        <h2>
+            <div class="col-md-4" style="">
+                <form role="search" class="navbar-form-custom" style="width: 100%" name="searchForm"
+                      ng-submit="submitSearchForm()">
+
+                    <div class="form-group">
+                        <input type="text" placeholder="Search for something..." class="form-control " name="topsearch"
+                               id="top-search" style="height: 50px;border-bottom: 1px solid #f5f5f5"
+                               ng-model="topsearch">
+                    </div>
+                    <button type="submit" class="btn btn-default" style="float: right;margin-top: -43px"><i
+                            class="fa fa-search" aria-hidden="true"></i></button>
+
+
+                    <p style="float: right;margin-right: -150px;margin-top: -43px">
+                        <a class="btn btn-default" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+                           aria-controls="collapseExample">
+                            Detailed search
+                        </a>
+                    </p>
+
+
+                </form>
+            </div>
+            <div class="collapse col-md-12" id="collapseExample" style="    padding-top: 15px;
+    margin-top: -2px;
+    border-top: 1px solid whitesmoke">
+
+                <span style="font-size: initial;">heating</span> <input type="checkbox" icheck ng-model="testVal"
+                                                                        name="testVal" ng-true-value="true"
+                                                                        ng-change="heatingChanged()">
+                <span style="font-size: initial; margin-left: 10px;">rent</span> <input type="checkbox" icheck
+                                                                                        ng-model="rentVal"
+                                                                                        name="rentVal"
+                                                                                        ng-true-value="true"
+                                                                                        ng-change="rentChanged()">
+                <span style="font-size: initial; margin-left: 10px">sale</span> <input type="checkbox" icheck
+                                                                                       ng-model="saleVal" name="saleVal"
+                                                                                       ng-true-value="true"
+                                                                                       ng-change="saleChanged()">
+                <hr/>
+                <span ng-repeat="eq in equipment" style=" margin-left: 10px">
+                <span  style="font-size: initial;">{{eq.equipmentName}}</span> <input type="checkbox" icheck ng-model="test[eq.equipmentName]"
+                                                                        name="{{eq.equipmentName}}" ng-true-value="true"
+                                                                        ng-change="eqFunc(eq)">
+                </span>
+                <hr/>
+                <div class="col-md-3">
+                    <input class="form-control" type="text" placeholder="City" ng-model="cityVal" name="cityVal" ng-blur="setCity()" ng-readonly="hideCityField">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="removeCity()" style="margin-top: -28px;
+    margin-right: 5px;" ng-show="hideCityField" ng-cloak>&times;</button>
+
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control" type="text" placeholder="Street" ng-model="streetVal" name="streetVal" ng-blur="setStreet()" ng-readonly="hideStreetField">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="removeStreet()" style="margin-top: -28px;
+    margin-right: 5px;" ng-show="hideStreetField" ng-cloak>&times;</button>
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control" type="number" ng-model="postailVal" placeholder="Postal code"
+                           name="postailVal" ng-blur="setPostal()" ng-readonly="hidePostalField">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="removePostal()" style="margin-top: -28px;
+    margin-right: 5px;" ng-show="hidePostalField" ng-cloak>&times;</button>
+                </div>
+                <div class="col-md-3">
+                    <input class="form-control" type="text" placeholder="Region" ng-model="regionVal" name="regionVal" ng-blur="setRegion()" ng-readonly="hideRegionField">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="removeRegion()" style="margin-top: -28px;
+    margin-right: 5px;" ng-show="hideRegionField" ng-cloak>&times;</button>
+                </div>
+                <div class="col-md-12" style="height: 40px">
+                </div>
+
+                <rzslider
+                        rz-slider-model="slider.min"
+                        rz-slider-high="slider.max"
+                        rz-slider-options="slider.options">
+                </rzslider>
+                <div class="col-md-12" style="height: 15px">
+                </div>
+                <rzslider
+                        rz-slider-model="slider2.min"
+                        rz-slider-high="slider2.max"
+                        rz-slider-options="slider2.options2">
+                </rzslider>
+
+            </div>
+        </h2>
         <!--<ol class="breadcrumb">-->
-            <!--<li>-->
-                <!--<a href="index.html">Home</a>-->
-            <!--</li>-->
-            <!--<li>-->
-                <!--<a>E-commerce</a>-->
-            <!--</li>-->
-            <!--<li class="active">-->
-                <!--<strong>Products grid</strong>-->
-            <!--</li>-->
+        <!--<li>-->
+        <!--<a href="index.html">Home</a>-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<a>E-commerce</a>-->
+        <!--</li>-->
+        <!--<li class="active">-->
+        <!--<strong>Products grid</strong>-->
+        <!--</li>-->
         <!--</ol>-->
     </div>
     <div class="col-lg-2">
@@ -21,39 +107,42 @@
     <div class="row">
         <div class="col-md-3" ng-repeat="advert in adverts">
             <a ui-sref="advert({advertId: advert.id})">
-            <div class="ibox">
-                <div class="ibox-content product-box">
+                <div class="ibox">
+                    <div class="ibox-content product-box">
 
-                    <div class="product-imitation" ng-cloak>
-                        {{advert.main_pic}}
-                    </div>
-                    <div class="product-desc">
+                        <div class="product-imitation" style="background-image: url('img/gallery/{{advert.main_pic}}'); background-size: 100%; background-repeat: no-repeat" ng-cloak>
+
+                            <!--{{advert.main_pic}}-->
+                        </div>
+                        <div class="product-desc">
                                 <span class="product-price">
                                     ${{advert.cost}}
                                 </span>
-                        <small class="text-muted">{{advert.realestate.type.typeName}}</small>
-                        <a href="#" class="product-name">{{advert.advertName}}</a>
+                            <small class="text-muted">{{advert.realestate.type.typeName}}</small>
+                            <a href="#" class="product-name">{{advert.advertName}}</a>
 
 
+                            <div class="small m-t-xs">
+                                {{advert.description}}
+                            </div>
+                            <div class="m-t text-righ">
 
-                        <div class="small m-t-xs">
-                            {{advert.description}}
-                        </div>
-                        <div class="m-t text-righ">
-
-                            <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
+                                <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i
+                                        class="fa fa-long-arrow-right"></i> </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </a>
         </div>
     </div>
 </div>
+
+<div class="col-md-12" style="background: #ffffff;text-align: center;padding: 20px 20px;" ng-show="adverts.length === 0" ng-cloak> No results found</div>
 <ul class="pagination">
 
     <li ng-repeat="n in pageList" ng-class="{active: n === page.number}">
-        <a  ng-click="loadNewPage(n)" ng-cloak>{{n}}</a>
+       <a ng-click="loadNewPage(n)" ng-bind="n" ng-cloak></a>
     </li>
 
 </ul>

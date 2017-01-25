@@ -42,7 +42,6 @@ public class SearchController {
 	
 	/**
 	 * This method is part of advert rest service.
-	 * @param search
 	 * @return
 	 */
 	@RequestMapping(value="/search", method = RequestMethod.GET)

@@ -5,8 +5,8 @@
     app.factory('AdvertResource', function (Restangular, _) {
         var retVal = {};
 
-        retVal.getAdverts = function(pageId) {
-            return Restangular.one("advert").get({page:pageId, size:8, sort:"advertName,desc"}).then(function(entries) {
+        retVal.getAdverts = function(pageId, searchwords, heting, rent, sale, city, street, postal_code, region, min, max, amin, amax, ac, fridge, internet, cabletv, phone) {
+            return Restangular.one("search").get({page:pageId, size:8, sort:"advertName,desc", heating: heting, advertName: searchwords, rent: rent, sale: sale, city: city, street: street, postalCode: postal_code, region: region, priceFrom: min, priceTo: max, areaFrom: amin, areaTo: amax, AC: ac, Fridge: fridge, Internet: internet,CableTV: cabletv, Phone:phone }).then(function(entries) {
                 return entries;
             });
         };
@@ -46,6 +46,8 @@
                 return item;
             });
         }
+        
+
         
         return retVal;
     })

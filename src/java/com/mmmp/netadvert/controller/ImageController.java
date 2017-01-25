@@ -53,19 +53,8 @@ public class ImageController {
         if(file==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
-        File convFile = new File( file.getOriginalFilename());
-        file.transferTo(convFile);
-        Image image;
-		try {
-			image = ImageIO.read(convFile);
-			if (image == null) {
-				return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
-	        }
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
-		}
-        
+//        File convFile = new File( file.getOriginalFilename());
+//        file.transferTo(convFile);
         Advert a = this.adverService.findAdvert(id);
         if(a==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
@@ -77,7 +66,7 @@ public class ImageController {
         if(exists = false){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
-		String ss = System.getenv("SystemDrive") + File.separator + "NetAdvertImages";
+		String ss = "/Users/macbookpro/Desktop";
 		if (Files.notExists(Paths.get(ss))){
 			try {
 				Files.createDirectories(Paths.get(ss));
@@ -99,11 +88,11 @@ public class ImageController {
         try{  
         byte barr[]=file.getBytes();  
           
-        BufferedOutputStream bout=new BufferedOutputStream(  
-                 new FileOutputStream(ss+File.separator+filename));  
-        bout.write(barr);  
-        bout.flush();  
-        bout.close();  
+        BufferedOutputStream bout=new BufferedOutputStream(
+                 new FileOutputStream(ss+"/"+filename));
+        bout.write(barr);
+        bout.flush();
+        bout.close();
           
         }catch(Exception e){System.out.println(e);}
         
@@ -115,7 +104,6 @@ public class ImageController {
 	/**
 	 * This method is part of advert rest service. It deletes uploaded advert image
 	 * @param name picture id which is being deleted
-	 * @param session
 	 * @return Http status 200 OK
 	 * @see Advert, Picture
 	 */

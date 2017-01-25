@@ -31,7 +31,8 @@
     "ng-currency": "^1.1.5",
     "angular-input-stars-directive": "angular-input-stars#^1.6.3",
     "ngmap": "^1.17.8",
-    "ng-map-autocomplete": "^1.0.3"
+    "ng-map-autocomplete": "^1.0.3",
+    "angularjs-slider": "^6.0.0"
   },
   "resolutions": {
     "angular": "1.6.1"

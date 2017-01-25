@@ -1,10 +1,10 @@
 package com.mmmp.NetAdvert.web.controller;
 
 import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_id;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.db_advert_count;
 import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_rate;
 import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
 import static com.mmmp.NetAdvert.constants.AdvertConstants.created_at;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.db_advert_count;
 import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
 import static com.mmmp.NetAdvert.constants.AdvertConstants.expire_date;
 import static com.mmmp.NetAdvert.constants.AdvertConstants.is_deleted;
@@ -15,19 +15,20 @@ import static com.mmmp.NetAdvert.constants.LocationConstants.city;
 import static com.mmmp.NetAdvert.constants.LocationConstants.postal_code;
 import static com.mmmp.NetAdvert.constants.LocationConstants.region;
 import static com.mmmp.NetAdvert.constants.LocationConstants.street;
+import static com.mmmp.NetAdvert.constants.LocationConstants.location_id;
 import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.hasItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.mmmp.NetAdvert.TestUtil;
 import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.netadvert.DTO.AdvertDTO;
+import com.mmmp.netadvert.DTO.LocationDTO;
+import com.mmmp.netadvert.DTO.RealestateCategoryDTO;
+import com.mmmp.netadvert.DTO.RealestateDTO;
+import com.mmmp.netadvert.DTO.RealestateTypeDTO;
+import com.mmmp.netadvert.DTO.RoleDTO;
+import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Location;
 import com.mmmp.netadvert.model.Realestate;
@@ -99,11 +107,11 @@ public class AdvertControllerTest {
 	@Test
 	public void testGetAllAdvert() throws Exception{
 		this.mockMvc
-		.perform(get(URL_PREFIX).contentType(contentType)).andExpect(status().isOk())
-				.andExpect(jsonPath("$", hasSize(db_advert_count)))
-				.andExpect(jsonPath("$.[*].id").value(hasItem(advert_id)))
-				.andExpect(jsonPath("$.[*].description").value(hasItem(description)))
-				.andExpect(jsonPath("$.[*].contact").value(hasItem(contact)));
+		.perform(get(URL_PREFIX).contentType(contentType).param("size", 2+"").param("page", "0").param("sort", "advertName, desc")).andExpect(status().isOk())
+				.andExpect(jsonPath("$.content", hasSize(1)))
+				.andExpect(jsonPath("$.content.[*].id").value(hasItem(advert_id)))
+				.andExpect(jsonPath("$.content.[*].description").value(hasItem(description)))
+				.andExpect(jsonPath("$.content.[*].contact").value(hasItem(contact)));
 	}
 	
 	@Test
@@ -160,38 +168,46 @@ public class AdvertControllerTest {
 		a.setRent_sale(rent_sale);
 		a.setUpdated_at(updated_at);
 		
-		String object = TestUtil.json(a);
-		
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
 		this.mockMvc
-		.perform(put(URL_PREFIX +"/"+ 1000+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object))
+		.perform(put(URL_PREFIX +"/"+ 1000+"/buy").principal(p).contentType(contentType))
 				.andExpect(status().isBadRequest());
         
-		logUser.setId(4);
+		logUser.setEmail("xxx@gmail.com");
 		this.mockMvc
-		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object))
+		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").principal(p).contentType(contentType))
+				.andExpect(status().isForbidden());
+		
+		logUser.setId(4);
+		logUser.setEmail("milan@gmail.com");
+		this.mockMvc
+		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").principal(p).contentType(contentType))
 				.andExpect(status().isOk());
 		
 		a.setIs_sold(true);
 		logUser.setId(2);
 		
-		String object2 = TestUtil.json(a);
 		this.mockMvc
-		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object2))
+		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").principal(p).contentType(contentType))
 				.andExpect(status().isBadRequest());
 		
 		a.setDeleted(true);
 		a.setIs_sold(false);
-		String object3 = TestUtil.json(a);
 		this.mockMvc
-		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object3))
+		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").principal(p).contentType(contentType))
 				.andExpect(status().isBadRequest());
 		
 		logUser.setId(2);
 		a.setDeleted(false);
 		a.setIs_sold(false);
-		String object4 = TestUtil.json(a);
 		this.mockMvc
-		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").sessionAttr("logedUser", logUser).contentType(contentType).content(object4))
+		.perform(put(URL_PREFIX +"/"+ advert_id+"/buy").principal(p).contentType(contentType))
 				.andExpect(status().isBadRequest());
 	}
 	
@@ -199,12 +215,12 @@ public class AdvertControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testCreateAdvert() throws Exception{
-		Role r = new Role();
+		RoleDTO r = new RoleDTO();
 		r.setId(2);
 		r.setName("Regular user");
 
-        User logUser = new User();
-        logUser.setId(3);
+        UserDTO logUser = new UserDTO();
+        logUser.setId(2);
         logUser.setEmail("milossm94@hotmail.com");
         logUser.setLast_name("Milos");
         logUser.setLast_name("Obradovic");
@@ -212,173 +228,100 @@ public class AdvertControllerTest {
         logUser.setUser_rate(0);
         logUser.setRole(r);
 
-		RealestateCategory rc = new RealestateCategory();
-		rc.setId(1);
-		rc.setCategoryName("Lot");
+		RealestateCategoryDTO rc = new RealestateCategoryDTO();
+		rc.setRealestateCategoryId(1);
+		rc.setCategoryName("Residential buildings");
 
-		RealestateType rt = new RealestateType();
-		rt.setId(1);
+		RealestateTypeDTO rt = new RealestateTypeDTO();
+		rt.setRealestateTypeId(1);
 		rt.setTypeName("House");
 
-		Location l = new Location();
+		LocationDTO l = new LocationDTO();
+		l.setLocationId(location_id);
 		l.setCity(city);
 		l.setPostalCode(postal_code);
 		l.setRegion(region);
 		l.setStreet(street);
 		l.setStreetNumber(street_number);
 
-		Realestate rls = new Realestate();
+		RealestateDTO rls = new RealestateDTO();
+		rls.setRealestateId(1);
 		rls.setRealestateName("ZUTA KUCA");
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 
-		Advert a = new Advert();
-		a.setUser(logUser);
+		List<Boolean> equpments = new ArrayList<Boolean>();
+		equpments.add(false); equpments.add(true);  equpments.add(true); equpments.add(false); equpments.add(true); 
+		rls.setType(rt);
+		rls.setEquipments(equpments);
+		
+		List<Boolean> equpments2 = new ArrayList<Boolean>();
+		equpments2 = new ArrayList<Boolean>();
+		equpments2.add(true); equpments2.add(false); equpments2.add(true); 
+		
+		
+		AdvertDTO a = new AdvertDTO();
+		a.setAdvertId(3);
+		a.setAdvertUser(logUser);
 		a.setAdvert_rate(advert_rate);
 		a.setContact(contact);
 		a.setDescription(description);
-		a.setDeleted(is_deleted);
+		a.setIs_deleted(is_deleted);
 		a.setIs_sold(is_sold);
 		a.setRent_sale(rent_sale);
+		a.setRealestate(rls);
+		a.setAdvertName("aaa");
+		a.setCost(22222);
+		a.setUpdated_at(updated_at);
+		a.setExpire_date(expire_date);
+		a.setCreated_at(created_at);
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
 		
-		List<Boolean> equpments = new ArrayList<Boolean>();
-		equpments.add(false); equpments.add(true);  equpments.add(false); equpments.add(true); equpments.add(false); 
 		String object = TestUtil.json(a);
-
+		System.out.println(object);
 		this.mockMvc
-				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object)
-						.param("contact", a.getContact())
-						.param("description", a.getDescription())
-						.param("rent_sale",false+"")
-						.param("real_name", rls.getRealestateName())
-						.param("real_type_id", rt.getId() + "")
-						//.param("real_cost", rls.getCost() + "")
-						.param("real_area", rls.getArea() + "")
-						.param("real_category_id", rc.getId() + "")
-						.param("real_heating", rls.isHeating() + "")
-						.param("loc_street", l.getStreet())
-						.param("loc_street_number", l.getStreetNumber() + "")
-						.param("loc_region", l.getRegion())
-						.param("loc_city", l.getCity())
-						.param("loc_postal_code", l.getPostalCode() + "")
-						.param("equipments", equpments.get(0) + "")
-						.param("equipments", equpments.get(1) + "")
-						.param("equipments", equpments.get(2) + "")
-						.param("equipments", equpments.get(3) + "")
-						.param("equipments", equpments.get(4) + ""))
+				.perform(post(URL_PREFIX)
+						.contentType(contentType)
+						.content(object)
+						.principal(p))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.contact").value(a.getContact()))
 				.andExpect(jsonPath("$.description").value(a.getDescription()));
 		
-		rc = null;
+		a.getRealestate().getCategory().setRealestateCategoryId(999);
 		String object2 = TestUtil.json(a);
 		this.mockMvc
-				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object2)
-						.param("contact", a.getContact())
-						.param("description", a.getDescription())
-						.param("rent_sale",false+"")
-						.param("real_name", rls.getRealestateName())
-						.param("real_type_id", rt.getId() + "")
-						//.param("real_cost", rls.getCost() + "")
-						.param("real_area", rls.getArea() + "")
-						.param("real_category_id", 9000+"")
-						.param("real_heating", rls.isHeating() + "")
-						.param("loc_street", l.getStreet())
-						.param("loc_street_number", l.getStreetNumber() + "")
-						.param("loc_region", l.getRegion())
-						.param("loc_city", l.getCity())
-						.param("loc_postal_code", l.getPostalCode() + "")
-						.param("equipments", equpments.get(0) + "")
-						.param("equipments", equpments.get(1) + "")
-						.param("equipments", equpments.get(2) + "")
-						.param("equipments", equpments.get(3) + "")
-						.param("equipments", equpments.get(4) + ""))
-				.andExpect(status().isBadRequest());
+				.perform(post(URL_PREFIX).contentType(contentType).principal(p).content(object2)
+						).andExpect(status().isBadRequest());
 		
-		
-		this.mockMvc
-		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object2)
-				.param("contact", a.getContact())
-				.param("description", a.getDescription())
-				.param("rent_sale",false+"")
-				.param("real_name", rls.getRealestateName())
-				.param("real_type_id", rt.getId() + "")
-				//.param("real_cost", rls.getCost() + "")
-				.param("real_area", rls.getArea() + "")
-				.param("real_category_id", 9000+"")
-				.param("real_heating", rls.isHeating() + "")
-				.param("loc_street", l.getStreet())
-				.param("loc_street_number", l.getStreetNumber() + "")
-				.param("loc_region", l.getRegion())
-				.param("loc_city", l.getCity())
-				.param("loc_postal_code", l.getPostalCode() + "")
-				.param("equipments", equpments.get(2) + "")
-				.param("equipments", equpments.get(3) + "")
-				.param("equipments", equpments.get(4) + ""))
-		.andExpect(status().isBadRequest());
-		
-		
-		rls.setArea(0);
-		//rls.setCost(0);
-		rc = new RealestateCategory();
-		rc.setId(1);
-		rc.setCategoryName("Lot");
+		a.getRealestate().getCategory().setRealestateCategoryId(1);
+		a.getRealestate().setEquipments(equpments2);
 		String object3 = TestUtil.json(a);
 		this.mockMvc
-				.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object3)
-						.param("contact", a.getContact())
-						.param("description", a.getDescription())
-						.param("rent_sale",false+"")
-						.param("real_name", rls.getRealestateName())
-						.param("real_type_id", rt.getId() + "")
-						//.param("real_cost", rls.getCost() + "")
-						.param("real_area", rls.getArea() + "")
-						.param("real_category_id", rc.getId()+"")
-						.param("real_heating", rls.isHeating() + "")
-						.param("loc_street", l.getStreet())
-						.param("loc_street_number", l.getStreetNumber() + "")
-						.param("loc_region", l.getRegion())
-						.param("loc_city", l.getCity())
-						.param("loc_postal_code", l.getPostalCode() + "")
-						.param("equipments", equpments.get(0) + "")
-						.param("equipments", equpments.get(1) + "")
-						.param("equipments", equpments.get(2) + "")
-						.param("equipments", equpments.get(3) + "")
-						.param("equipments", equpments.get(4) + ""))
-				.andExpect(status().isBadRequest());
+		.perform(post(URL_PREFIX).contentType(contentType).principal(p).content(object3)
+	).andExpect(status().isBadRequest());
 		
-		rc = new RealestateCategory();
-		rc.setId(3);
-		rc.setCategoryName("Lot");
-		rls.setArea(55);
-		//rls.setCost(123);
+		a.getRealestate().setEquipments(equpments);
+		rls.setArea(0);
 		String object4 = TestUtil.json(a);
-		
 		this.mockMvc
-		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", logUser).content(object4)
-				.param("contact", a.getContact())
-				.param("description", a.getDescription())
-				.param("rent_sale",false+"")
-				.param("real_name", rls.getRealestateName())
-				.param("real_type_id", rt.getId() + "")
-				//.param("real_cost", rls.getCost() + "")
-				.param("real_area", rls.getArea() + "")
-				.param("real_category_id", rc.getId()+"")
-				.param("real_heating", rls.isHeating() + "")
-				.param("loc_street", l.getStreet())
-				.param("loc_street_number", l.getStreetNumber() + "")
-				.param("loc_region", l.getRegion())
-				.param("loc_city", l.getCity())
-				.param("loc_postal_code", l.getPostalCode() + "")
-				.param("equipments", equpments.get(0) + "")
-				.param("equipments", equpments.get(1) + "")
-				.param("equipments", equpments.get(2) + "")
-				.param("equipments", equpments.get(3) + "")
-				.param("equipments", equpments.get(4) + ""))
-		.andExpect(status().isBadRequest());
+				.perform(post(URL_PREFIX).contentType(contentType).principal(p).content(object4)
+				).andExpect(status().isBadRequest());
+		
+		a.getRealestate().setArea(44);
+		a.getRealestate().getLocation().setCity(null);
+		String object5 = TestUtil.json(a);
+		this.mockMvc
+		.perform(post(URL_PREFIX).contentType(contentType).principal(p).content(object5)
+		).andExpect(status().isBadRequest());
 	}
 	
 	
@@ -386,208 +329,111 @@ public class AdvertControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testUpdateAdvert() throws Exception{
-		Role r = new Role();
+
+		RoleDTO r = new RoleDTO();
 		r.setId(2);
 		r.setName("Regular user");
 
-        User u = new User();
-        u.setId(3);
-        u.setEmail("milossm94@hotmail.com");
-        u.setLast_name("Milos");
-        u.setLast_name("Obradovic");
-        u.setPassword("pass");
-        u.setUser_rate(0);
-        u.setRole(r);
+        UserDTO logUser = new UserDTO();
+        logUser.setId(2);
+        logUser.setEmail("milossm94@hotmail.com");
+        logUser.setLast_name("Milos");
+        logUser.setLast_name("Obradovic");
+        logUser.setPassword("pass");
+        logUser.setUser_rate(0);
+        logUser.setRole(r);
 
-		RealestateCategory rc = new RealestateCategory();
-		rc.setId(1);
-		rc.setCategoryName("Lot");
+		RealestateCategoryDTO rc = new RealestateCategoryDTO();
+		rc.setRealestateCategoryId(1);
+		rc.setCategoryName("Residential buildings");
 
-		RealestateType rt = new RealestateType();
-		rt.setId(1);
+		RealestateTypeDTO rt = new RealestateTypeDTO();
+		rt.setRealestateTypeId(1);
 		rt.setTypeName("House");
 
-		Location l = new Location();
+		LocationDTO l = new LocationDTO();
+		l.setLocationId(location_id);
 		l.setCity(city);
 		l.setPostalCode(postal_code);
 		l.setRegion(region);
 		l.setStreet(street);
 		l.setStreetNumber(street_number);
 
-		Realestate rls = new Realestate();
+		RealestateDTO rls = new RealestateDTO();
+		rls.setRealestateId(1);
 		rls.setRealestateName("ZUTA KUCA");
 		rls.setCategory(rc);
 		rls.setArea(40000);
-		//rls.setCost(123);
 		rls.setHeating(true);
 		rls.setLocation(l);
 
-		Advert a = new Advert();
-		a.setUser(u);
-		a.setId(advert_id);
+		List<Boolean> equpments = new ArrayList<Boolean>();
+		equpments.add(false); equpments.add(true);  equpments.add(true); equpments.add(false); equpments.add(true); 
+		rls.setType(rt);
+		rls.setEquipments(equpments);
+		
+		AdvertDTO a = new AdvertDTO();
+		a.setAdvertId(1);
+		a.setAdvertUser(logUser);
 		a.setAdvert_rate(advert_rate);
 		a.setContact(contact);
 		a.setDescription(description);
-		a.setDeleted(is_deleted);
+		a.setIs_deleted(is_deleted);
 		a.setIs_sold(is_sold);
 		a.setRent_sale(rent_sale);
+		a.setRealestate(rls);
+		a.setAdvertName("aaa");
+		a.setCost(22222);
+		a.setUpdated_at(updated_at);
+		a.setExpire_date(expire_date);
+		a.setCreated_at(created_at);
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
 		
-		List<Boolean> equpments = new ArrayList<Boolean>();
-		equpments.add(false); equpments.add(true);  equpments.add(false); equpments.add(true); equpments.add(false); 
 		String object = TestUtil.json(a);
 
 		this.mockMvc
-				.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object)
-						.param("advert_id", a.getId()+"")
-						.param("contact", a.getContact())
-						.param("description", a.getDescription())
-						.param("rent_sale",false+"")
-						.param("real_name", rls.getRealestateName())
-						.param("real_type_id", rt.getId() + "")
-						//.param("real_cost", rls.getCost() + "")
-						.param("real_area", rls.getArea() + "")
-						.param("real_category_id", rc.getId() + "")
-						.param("real_heating", rls.isHeating() + "")
-						.param("loc_street", l.getStreet())
-						.param("loc_street_number", l.getStreetNumber() + "")
-						.param("loc_region", l.getRegion())
-						.param("loc_city", l.getCity())
-						.param("loc_postal_code", l.getPostalCode() + "")
-						.param("equipments", equpments.get(0) + "")
-						.param("equipments", equpments.get(1) + "")
-						.param("equipments", equpments.get(2) + "")
-						.param("equipments", equpments.get(3) + "")
-						.param("equipments", equpments.get(4) + "")).andDo(CustomMockMvcResultHandlers.print())
+				.perform(put(URL_PREFIX).contentType(contentType).principal(p).content(object)
+				.param("equipments", equpments.get(4) + ""))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.contact").value(a.getContact()))
 				.andExpect(jsonPath("$.description").value(a.getDescription()));
 	
 		String object2 = TestUtil.json(a);
-		u.setId(1);
-		u.setEmail("milan@gmail.com");
-		this.mockMvc
-				.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object2)
-						.param("advert_id", a.getId()+"")
-						.param("contact", a.getContact())
-						.param("description", a.getDescription())
-						.param("rent_sale",false+"")
-						.param("real_name", rls.getRealestateName())
-						.param("real_type_id", rt.getId() + "")
-						//.param("real_cost", rls.getCost() + "")
-						.param("real_area", rls.getArea() + "")
-						.param("real_category_id", rc.getId() + "")
-						.param("real_heating", rls.isHeating() + "")
-						.param("loc_street", l.getStreet())
-						.param("loc_street_number", l.getStreetNumber() + "")
-						.param("loc_region", l.getRegion())
-						.param("loc_city", l.getCity())
-						.param("loc_postal_code", l.getPostalCode() + "")
-						.param("equipments", equpments.get(0) + "")
-						.param("equipments", equpments.get(1) + "")
-						.param("equipments", equpments.get(2) + "")
-						.param("equipments", equpments.get(3) + "")
-						.param("equipments", equpments.get(4) + "")).andDo(CustomMockMvcResultHandlers.print())
-				.andExpect(status().isBadRequest());
+		logUser.setId(1);
+		logUser.setEmail("milan@gmail.com");
 		
-		a.setDeleted(true);
+		this.mockMvc
+				.perform(put(URL_PREFIX).contentType(contentType).principal(p).content(object2)
+		).andExpect(status().isBadRequest());
+		
+		logUser.setEmail("milossm94@hotmail.com");
+		a.setAdvertId(2);
 		String object3 = TestUtil.json(a);
 		this.mockMvc
-		.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object3)
-				.param("advert_id", a.getId()+"")
-				.param("contact", a.getContact())
-				.param("description", a.getDescription())
-				.param("rent_sale",false+"")
-				.param("real_name", rls.getRealestateName())
-				.param("real_type_id", rt.getId() + "")
-				//.param("real_cost", rls.getCost() + "")
-				.param("real_area", rls.getArea() + "")
-				.param("real_category_id", rc.getId() + "")
-				.param("real_heating", rls.isHeating() + "")
-				.param("loc_street", l.getStreet())
-				.param("loc_street_number", l.getStreetNumber() + "")
-				.param("loc_region", l.getRegion())
-				.param("loc_city", l.getCity())
-				.param("loc_postal_code", l.getPostalCode() + "")
-				.param("equipments", equpments.get(0) + "")
-				.param("equipments", equpments.get(1) + "")
-				.param("equipments", equpments.get(2) + "")
-				.param("equipments", equpments.get(3) + "")
-				.param("equipments", equpments.get(4) + "")).andDo(CustomMockMvcResultHandlers.print())
-		.andExpect(status().isBadRequest());
+		.perform(put(URL_PREFIX).contentType(contentType).principal(p).content(object3)
+	).andExpect(status().isBadRequest());
 		
-		a.setDeleted(false);
+		a.setAdvertId(1);
 		String object4 = TestUtil.json(a);
+		logUser.setEmail("xxx@gmail.com");
 		this.mockMvc
-		.perform(put(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object4)
-				.param("advert_id", a.getId()+"")
-				.param("contact", a.getContact())
-				.param("description", a.getDescription())
-				.param("rent_sale",false+"")
-				.param("real_name", rls.getRealestateName())
-				.param("real_type_id", rt.getId() + "")
-				//.param("real_cost", rls.getCost() + "")
-				.param("real_area", rls.getArea() + "")
-				.param("real_category_id", 9999 + "")
-				.param("real_heating", rls.isHeating() + "")
-				.param("loc_street", l.getStreet())
-				.param("loc_street_number", l.getStreetNumber() + "")
-				.param("loc_region", l.getRegion())
-				.param("loc_city", l.getCity())
-				.param("loc_postal_code", l.getPostalCode() + "")
-				.param("equipments", equpments.get(0) + "")
-				.param("equipments", equpments.get(1) + "")
-				.param("equipments", equpments.get(2) + "")
-				.param("equipments", equpments.get(3) + "")
-				.param("equipments", equpments.get(4) + "")).andDo(CustomMockMvcResultHandlers.print())
-		.andExpect(status().isBadRequest());
+		.perform(put(URL_PREFIX).contentType(contentType).principal(p).content(object4)
+		).andExpect(status().isForbidden());
 		
-		
-		rc = new RealestateCategory();
-		rc.setId(3);
-		rc.setCategoryName("Lot");
+		logUser.setEmail("milossm94@hotmail.com");
+	
+		a.getRealestate().setRealestateId(2);
+		String object5 = TestUtil.json(a);
 		this.mockMvc
-		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object4)
-				.param("contact", a.getContact())
-				.param("description", a.getDescription())
-				.param("rent_sale",false+"")
-				.param("real_name", rls.getRealestateName())
-				.param("real_type_id", rt.getId() + "")
-				//.param("real_cost", rls.getCost() + "")
-				.param("real_area", rls.getArea() + "")
-				.param("real_category_id", rc.getId()+"")
-				.param("real_heating", rls.isHeating() + "")
-				.param("loc_street", l.getStreet())
-				.param("loc_street_number", l.getStreetNumber() + "")
-				.param("loc_region", l.getRegion())
-				.param("loc_city", l.getCity())
-				.param("loc_postal_code", l.getPostalCode() + "")
-				.param("equipments", equpments.get(0) + "")
-				.param("equipments", equpments.get(1) + "")
-				.param("equipments", equpments.get(2) + "")
-				.param("equipments", equpments.get(3) + "")
-				.param("equipments", equpments.get(4) + ""))
-		.andExpect(status().isBadRequest());
+		.perform(put(URL_PREFIX).contentType(contentType).principal(p).content(object5)
+		).andExpect(status().isBadRequest());
 		
-		this.mockMvc
-		.perform(post(URL_PREFIX).contentType(contentType).sessionAttr("logedUser", u).content(object4)
-				.param("contact", a.getContact())
-				.param("description", a.getDescription())
-				.param("rent_sale",false+"")
-				.param("real_name", rls.getRealestateName())
-				.param("real_type_id", rt.getId() + "")
-				//.param("real_cost", rls.getCost() + "")
-				.param("real_area", rls.getArea() + "")
-				.param("real_category_id", rc.getId()+"")
-				.param("real_heating", rls.isHeating() + "")
-				.param("loc_street", l.getStreet())
-				.param("loc_street_number", l.getStreetNumber() + "")
-				.param("loc_region", l.getRegion())
-				.param("loc_city", l.getCity())
-				.param("loc_postal_code", l.getPostalCode() + "")
-				.param("equipments", equpments.get(2) + "")
-				.param("equipments", equpments.get(3) + "")
-				.param("equipments", equpments.get(4) + ""))
-		.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -608,12 +454,48 @@ public class AdvertControllerTest {
         logUser.setUser_rate(0);
         logUser.setRole(r);
         
+        
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
+        
     	mockMvc
-		.perform(delete(URL_PREFIX + "/" + 50).sessionAttr("logedUser", logUser).contentType(contentType)).andExpect(status().isInternalServerError());
+		.perform(delete(URL_PREFIX + "/" + 50).principal(p).contentType(contentType)).andExpect(status().isInternalServerError());
 		
         
     	mockMvc
-		.perform(delete(URL_PREFIX + "/" + advert_id).sessionAttr("logedUser", logUser).contentType(contentType)).andExpect(status().isOk());
+		.perform(delete(URL_PREFIX + "/" + advert_id).principal(p).contentType(contentType)).andExpect(status().isOk());
+	
+    	logUser.setEmail("xxxx@hotmail.com");
+      	mockMvc
+    		.perform(delete(URL_PREFIX + "/" + advert_id).principal(p).contentType(contentType)).andExpect(status().isForbidden());
+    	
+	}
+	
+	@Test
+	public void testGetAdvertMainPicture() throws Exception{
+		this.mockMvc
+		.perform(get(URL_PREFIX + "/" + 50+ "/"+"mainPicture").contentType(contentType)).andExpect(status().isBadRequest());
+		
+		this.mockMvc
+		.perform(get(URL_PREFIX + "/" + 1+ "/"+"mainPicture").contentType(contentType)).andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void testAdvertPictures() throws Exception{
+		this.mockMvc
+		.perform(get(URL_PREFIX + "/" + 1+ "/"+"pictures").contentType(contentType)).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetAllAdvertsOfUser() throws Exception{
+		this.mockMvc
+		.perform(get(URL_PREFIX + "/" + "user"+ "/"+2).contentType(contentType)).andExpect(jsonPath("$", hasSize(2))).andExpect(status().isOk());
 	}
 	
     public static class CustomMockMvcResultHandlers {

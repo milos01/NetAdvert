@@ -46,7 +46,7 @@ public class AdvertRatingController {
 	 * @see Advert
 	 */
 	@RequestMapping(value="/{id}/rating", method = RequestMethod.POST)
-	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid, HttpSession session,@RequestBody AdvertNewRate addedRating,Principal user){
+	public ResponseEntity<Advert> addAdvertRating(@PathVariable("id") int aid,@RequestBody AdvertNewRate addedRating,Principal user){
 		User u = this.adverService.findUser(user.getName());
 		System.out.println("Aaaaaaaaaaaaa");
 		if(u==null){
@@ -230,13 +230,18 @@ public class AdvertRatingController {
 		
 		return new ResponseEntity<Advert>(a, HttpStatus.OK);
 	}
-	
+	/**
+	 * The method returns whether the user has the advert or not
+	 * @param idU - user id
+	 * @param idA - advert id
+	 * @return AdvertRating object httpstatus 200 ok
+	 */
 	@RequestMapping(value="/findUserAdvertRait", method = RequestMethod.GET)
 	public ResponseEntity<AdvertRating> getUserAndAdRait(@RequestParam("user_id") int idU,@RequestParam("advert_id") int idA){
 		
 		AdvertRating ar = this.adverService.getUserOfAdvertRaiting(idU, idA);
 		if (ar==null){
-			return new ResponseEntity<AdvertRating>(HttpStatus.OK);
+			return new ResponseEntity<AdvertRating>(HttpStatus.BAD_REQUEST);
 		}
 		
 		return new ResponseEntity<AdvertRating>(ar,HttpStatus.OK);

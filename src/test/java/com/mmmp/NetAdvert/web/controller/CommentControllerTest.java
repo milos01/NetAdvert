@@ -1,5 +1,12 @@
 package com.mmmp.NetAdvert.web.controller;
 
+import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
+import static com.mmmp.NetAdvert.constants.CommentConstants.advert_id;
+import static com.mmmp.NetAdvert.constants.CommentConstants.comment_id;
+import static com.mmmp.NetAdvert.constants.CommentConstants.comment_text;
+import static com.mmmp.NetAdvert.constants.CommentConstants.datum;
+import static com.mmmp.NetAdvert.constants.CommentConstants.db_comments_count;
 import static com.mmmp.NetAdvert.constants.LocationConstants.city;
 import static com.mmmp.NetAdvert.constants.LocationConstants.postal_code;
 import static com.mmmp.NetAdvert.constants.LocationConstants.region;
@@ -7,20 +14,15 @@ import static com.mmmp.NetAdvert.constants.LocationConstants.street;
 import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static com.mmmp.NetAdvert.constants.CommentConstants.comment_text;
-import static com.mmmp.NetAdvert.constants.CommentConstants.comment_id;
-import static com.mmmp.NetAdvert.constants.CommentConstants.datum;
-import static com.mmmp.NetAdvert.constants.CommentConstants.advert_id;
-import static com.mmmp.NetAdvert.constants.CommentConstants.db_comments_count;
+
 import java.nio.charset.Charset;
+import java.security.Principal;
 import java.sql.Date;
 
 import javax.annotation.PostConstruct;
@@ -41,6 +43,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.mmmp.NetAdvert.TestUtil;
 import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.netadvert.DTO.AdvertDTO;
+import com.mmmp.netadvert.DTO.CommentDTO;
+import com.mmmp.netadvert.DTO.NewCommentDTO;
+import com.mmmp.netadvert.DTO.UserDTO;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Comment;
 import com.mmmp.netadvert.model.Location;
@@ -131,25 +137,34 @@ public class CommentControllerTest {
 		comment.setDate(datum);
 		comment.setText(comment_text);
 		
-		String object = TestUtil.json(comment);
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return u.getEmail();
+			}
+		};
+		NewCommentDTO comm = new NewCommentDTO();
+		comm.setText(comment_text);
+		comm.setAdvert_id(a.getId());
+		String object = TestUtil.json(comm);
 		
 		this.mockMvc.perform(post(URL_PREFIX)
-				.contentType(contentType).sessionAttr("logedUser", u).param("advert_id", a.getId()+"").param("comment", comment.getText()).content(object))
+				.contentType(contentType).principal(p).content(object))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.text").value(comment.getText()));
 		
-		comment.setAdvert(null);
-		String object2 = TestUtil.json(comment);
+		comm.setAdvert_id(999);
+		String object2 = TestUtil.json(comm);
 		this.mockMvc.perform(post(URL_PREFIX)
-				.contentType(contentType).sessionAttr("logedUser", u).param("advert_id", 999+"").param("comment", comment.getText()).content(object2))
-		.andExpect(status().isInternalServerError());
+				.contentType(contentType).principal(p).content(object2))
+		.andExpect(status().isBadRequest());
 		
-		comment.setText(null);
-		String object3 = TestUtil.json(comment);
+		comm.setText(null);
+		String object3 = TestUtil.json(comm);
 		this.mockMvc.perform(post(URL_PREFIX)
-				.contentType(contentType).sessionAttr("logedUser", u).param("advert_id", a.getId()+"").param("comment", "").content(object3))
-		.andExpect(status().isInternalServerError());
-//		jsonPath("$.[*].id").value(hasItem(report_id))
+				.contentType(contentType).principal(p).content(object3))
+		.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -169,8 +184,5 @@ public class CommentControllerTest {
 		mockMvc.perform(delete(URL_PREFIX + "/delete/"+comment_id))
 		.andExpect(status().isOk());
 		
-		mockMvc.perform(delete(URL_PREFIX + "/delete/"+1200))
-		.andExpect(status().isInternalServerError());
-//		  .andExpect(jsonPath("$", hasSize(db_comments_count)));
 	}
 }

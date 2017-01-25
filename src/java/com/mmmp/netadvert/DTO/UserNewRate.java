@@ -12,5 +12,4 @@ public class UserNewRate {
 		this.rate = rate;
 	}
 	
-	
 }

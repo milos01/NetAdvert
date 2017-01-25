@@ -49,7 +49,7 @@ public class ReportController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if (repo.getReportDescription().equals("")||repo.getReportDescription()==null){
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Report rep = new Report();
@@ -91,6 +91,9 @@ public class ReportController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			if (r.getVisited()==1){
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			if (r.getVerified()==1){
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			r.setVerified(verReport.getVerify());

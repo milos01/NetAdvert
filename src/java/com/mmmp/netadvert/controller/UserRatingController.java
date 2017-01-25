@@ -225,6 +225,12 @@ public class UserRatingController {
 		return new ResponseEntity<User>(a, HttpStatus.OK);
 	}
 	
+	/**
+	 * The method returns whether the user has the user or not
+	 * @param idU - user id who ratign
+	 * @param idUP - rated user id
+	 * @return
+	 */
 	@RequestMapping(value="/findUserUserRait", method = RequestMethod.GET)
 	public ResponseEntity<UserRating> getUserUserRate(@RequestParam("user_id") int idU,@RequestParam("user_idP") int idUP){
 		UserRating ur = this.adverService.getUserOfUserRaiting(idU, idUP);

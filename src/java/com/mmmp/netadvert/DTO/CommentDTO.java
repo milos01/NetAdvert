@@ -8,6 +8,7 @@ public class CommentDTO {
 	
 	private UserDTO user;
 	
+	private AdvertDTO advert;
 
 	private Date date;
 	
@@ -45,6 +46,12 @@ public class CommentDTO {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+	public AdvertDTO getAdvert() {
+		return advert;
+	}
+
+	public void setAdvert(AdvertDTO advert) {
+		this.advert = advert;
+	}
 	
 }

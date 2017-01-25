@@ -46,7 +46,7 @@ public class CommentController {
 		Advert advert = this.adverService.findAdvert(commentt.getAdvert_id());
 		
 		if (advert==null){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		Comment comment = new Comment();
@@ -56,7 +56,7 @@ public class CommentController {
 		comment.setDate(currentDate);
 		
 		if (commentt.getText()==null || commentt.getText().equals("")){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		comment.setText(commentt.getText());

@@ -1,24 +1,23 @@
 package com.mmmp.NetAdvert.web.controller;
 
 
-import static com.mmmp.NetAdvert.constants.UserConstants.*;
+import static com.mmmp.NetAdvert.constants.UserConstants.DB_COUNT;
+import static com.mmmp.NetAdvert.constants.UserConstants.DB_EMAIL;
+import static com.mmmp.NetAdvert.constants.UserConstants.DB_FIRST_NAME;
+import static com.mmmp.NetAdvert.constants.UserConstants.DB_LAST_NAME;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
+import java.security.Principal;
 
 import javax.annotation.PostConstruct;
-
-import com.mmmp.netadvert.NetAdvertApplication;
-
-import com.mmmp.NetAdvert.TestUtil;
-import com.mmmp.NetAdvert.constants.UserConstants;
-import com.mmmp.netadvert.model.Role;
-import com.mmmp.netadvert.model.User;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +33,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import com.mmmp.NetAdvert.TestUtil;
+import com.mmmp.NetAdvert.constants.UserConstants;
+import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.netadvert.DTO.UserDTO;
+import com.mmmp.netadvert.model.Role;
+import com.mmmp.netadvert.model.User;
 
 
 /**
@@ -77,7 +78,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.[*].email").value(hasItem(DB_EMAIL)))
                 .andExpect(jsonPath("$.[*].first_name").value(hasItem(DB_FIRST_NAME)))
                 .andExpect(jsonPath("$.[*].last_name").value(hasItem(DB_LAST_NAME)))
-                .andExpect(jsonPath("$.[*].password").value(hasItem(DB_PASSWORD)))
                 .andExpect(jsonPath("$.[*].user_rate").value(hasItem(UserConstants.DB_USER_RATE.doubleValue())))
                 .andExpect(jsonPath("$.[*].role.id").value(hasItem(UserConstants.DB_USER_ROLE_ID.intValue())));
     }
@@ -118,16 +118,25 @@ public class UserControllerTest {
         logUser.setRole(r);
 
 
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setEmail("test@testnew");
         user.setFirst_name("fnnew");
         user.setLast_name("lnnew");
         user.setPassword("passnew");
         user.setUser_rate(1);
-
+        
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
+		
         String json = TestUtil.json(user);
         System.out.print(json);
-        mockMvc.perform(put(URL_PREFIX + "/user").sessionAttr("logedUser", logUser).contentType(contentType).content(json))
+        mockMvc.perform(put(URL_PREFIX + "/user")
+        		.principal(p).contentType(contentType).content(json))
                 .andExpect(status().isOk());
     }
 
@@ -153,7 +162,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email").value("milosa942@gmail.com"))
                 .andExpect(jsonPath("$.first_name").value("Milos"))
                 .andExpect(jsonPath("$.last_name").value("Andric"))
-                .andExpect(jsonPath("$.password").value("pass"))
                 .andExpect(jsonPath("$.user_rate").value(1));
 //                .andExpect(jsonPath("$.role.id").value(2));
     }
@@ -202,7 +210,15 @@ public class UserControllerTest {
         logUser.setUser_rate(0);
         logUser.setRole(r);
 
-        mockMvc.perform(put(URL_PREFIX + "/user/2/advert/1/expiredate").sessionAttr("logedUser", logUser).contentType(contentType))
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
+        
+        mockMvc.perform(put(URL_PREFIX + "/user/2/advert/1/expiredate").principal(p).contentType(contentType))
                 .andExpect(status().isOk());
 
     }

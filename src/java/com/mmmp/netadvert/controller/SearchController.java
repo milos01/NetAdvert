@@ -76,10 +76,17 @@ public class SearchController {
 				}
 			}
 		}
+		System.out.println(" *************************** ");
+		try{
+			Page<Advert> retList = this.adverService.searchAdverts(map, tech, pageable);
+			return new ResponseEntity<Page<Advert>>(retList, HttpStatus.OK);
+		}catch(Exception e){
+			return new ResponseEntity<Page<Advert>>(HttpStatus.NOT_FOUND);
+		}
 		
-		Page<Advert> retList = this.adverService.searchAdverts(map, tech, pageable);
-	
-		return new ResponseEntity<Page<Advert>>(retList, HttpStatus.OK);
+		
+		
+		
 	}
 	
 	public static Integer tryParseInteger(String text) {

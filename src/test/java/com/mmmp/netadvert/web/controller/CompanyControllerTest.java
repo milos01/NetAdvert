@@ -1,8 +1,17 @@
 package com.mmmp.NetAdvert.web.controller;
 
-import com.mmmp.netadvert.NetAdvertApplication;
-import com.mmmp.NetAdvert.TestUtil;
-import com.mmmp.netadvert.model.Company;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.charset.Charset;
+
+import javax.annotation.PostConstruct;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +26,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.annotation.PostConstruct;
-import java.nio.charset.Charset;
-
-import static com.mmmp.NetAdvert.constants.ReportConstants.db_count_reports;
-import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
-import static com.mmmp.NetAdvert.constants.ReportConstants.text;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.mmmp.NetAdvert.TestUtil;
+import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.netadvert.DTO.NewCompanyDTO;
 
 /**
  * Created by milosandric on 16/12/2016.
@@ -57,27 +56,24 @@ public class CompanyControllerTest {
 
     @Test
     public void getCompany() throws Exception {
-        mockMvc.perform(get(URL_PREFIX + "/company/2"))
+        mockMvc.perform(get(URL_PREFIX + "/company/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id").value(2))
-                .andExpect(jsonPath("$.company_name").value("TestComp"))
-                .andExpect(jsonPath("$.user.id").value(1));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.company_name").value("comp1"))
+                .andExpect(jsonPath("$.user.id").value(2));
     }
 
     @Test
     public void getAllCompanyUsers() throws Exception {
-        mockMvc.perform(get(URL_PREFIX + "/company/2/allusers"))
+        mockMvc.perform(get(URL_PREFIX + "/company/1/allusers"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(2)))
-                .andExpect(jsonPath("$.[*].email").value(hasItem("milossm94@hotmail.com")))
-                .andExpect(jsonPath("$.[*].first_name").value(hasItem("Milos")))
-                .andExpect(jsonPath("$.[*].last_name").value(hasItem("Obradovic")))
-                .andExpect(jsonPath("$.[*].password").value(hasItem("pass")))
-                .andExpect(jsonPath("$.[*].user_rate").value(hasItem(4.0)))
-                .andExpect(jsonPath("$.[*].role.id").value(hasItem(2)));
+                .andExpect(jsonPath("$.[*].id").value(hasItem(1)))
+                .andExpect(jsonPath("$.[*].company.id").value(hasItem(1)))
+                .andExpect(jsonPath("$.[*].user.first_name").value(hasItem("Milan")))
+                .andExpect(jsonPath("$.[*].user.last_name").value(hasItem("Milanovic")));
     }
 
 
@@ -85,11 +81,11 @@ public class CompanyControllerTest {
     @Transactional
     @Rollback(true)
     public void postNewCompany() throws Exception {
-        Company cmp = new Company();
+    	NewCompanyDTO cmp = new NewCompanyDTO();
         cmp.setCompany_name("TestComp3");
-
+        cmp.setUser_email("milan@gmail.com");
         String json = TestUtil.json(cmp);
-        mockMvc.perform(post(URL_PREFIX + "/company").contentType(contentType).param("u_id", "1").content(json))
+        mockMvc.perform(post(URL_PREFIX + "/company").contentType(contentType).content(json))
                 .andExpect(status().isOk());
     }
 
@@ -97,15 +93,18 @@ public class CompanyControllerTest {
     @Transactional
     @Rollback(true)
     public void postUserForCompany() throws Exception {
-        mockMvc.perform(post(URL_PREFIX + "/company/2/user/1").contentType(contentType))
+        mockMvc.perform(post(URL_PREFIX + "/company/1/user/6").contentType(contentType))
                 .andExpect(status().isOk());
+        
+        mockMvc.perform(post(URL_PREFIX + "/company/1/user/5").contentType(contentType))
+        .andExpect(status().isBadRequest());
     }
 
     @Test
     @Transactional
     @Rollback(true)
     public void acceptUserTest() throws Exception {
-        mockMvc.perform(get(URL_PREFIX + "/company/2/activate/2"))
+        mockMvc.perform(get(URL_PREFIX + "/company/1/activate/5"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType));
     }

@@ -13,6 +13,8 @@ public class RoleDTO {
         this(role.getId(), role.getName());
     }
 
+    public RoleDTO(){}
+    
     public RoleDTO(int id, String name) {
         this.id = id;
         this.name = name;

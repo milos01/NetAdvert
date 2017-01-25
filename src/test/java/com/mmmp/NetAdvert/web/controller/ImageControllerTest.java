@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 
 import javax.annotation.PostConstruct;
 
@@ -84,6 +85,14 @@ public class ImageControllerTest {
         logUser.setUser_rate(1);
         logUser.setRole(r);
         
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return logUser.getEmail();
+			}
+		};
+        
         String ss = System.getenv("SystemDrive") + File.separator + "NetAdvertTestImages";
 		if (Files.notExists(Paths.get(ss))){
 			try {
@@ -96,26 +105,26 @@ public class ImageControllerTest {
 		FileInputStream fi1 = new FileInputStream(f);
 		MockMultipartFile fstmp = new MockMultipartFile("file", f.getName(), "multipart/form-data",fi1);
 		MvcResult result = this.mockMvc
-		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).sessionAttr("logedUser", logUser).param("realestate", "1").param("is_profile", "false"))
+		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).principal(p).param("realestate", "1").param("is_profile", "false"))
 				.andExpect(status().isOk()).andReturn();
 		
 		String content = result.getResponse().getContentAsString();
         this.image_name = content.split("\"")[5];
         this.mockMvc
-		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).sessionAttr("logedUser", logUser).param("realestate", "999").param("is_profile", "false"))
+		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).principal(p).param("realestate", "999").param("is_profile", "false"))
 				.andExpect(status().isBadRequest());
         
         r.setId(1);
         logUser.setRole(r);
         this.mockMvc
-		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).sessionAttr("logedUser", logUser).param("realestate", "999").param("is_profile", "false"))
+		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).principal(p).param("realestate", "999").param("is_profile", "false"))
 				.andExpect(status().isBadRequest());
         
         f=new File(ss+File.separator+"text.txt");
         fi1 = new FileInputStream(f);
 		fstmp = new MockMultipartFile("file", f.getName(), "multipart/form-data",fi1);
         this.mockMvc
-		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).sessionAttr("logedUser", logUser).param("realestate", "1").param("is_profile", "false"))
+		.perform(MockMvcRequestBuilders.fileUpload(URL_PREFIX +"/upload").file(fstmp).principal(p).param("realestate", "1").param("is_profile", "false"))
 				.andExpect(status().isBadRequest());
         
         

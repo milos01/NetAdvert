@@ -1,5 +1,8 @@
 package com.mmmp.NetAdvert.web.controller;
 
+import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_id;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
+import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
 import static com.mmmp.NetAdvert.constants.LocationConstants.city;
 import static com.mmmp.NetAdvert.constants.LocationConstants.postal_code;
 import static com.mmmp.NetAdvert.constants.LocationConstants.region;
@@ -8,19 +11,17 @@ import static com.mmmp.NetAdvert.constants.LocationConstants.street_number;
 import static com.mmmp.NetAdvert.constants.ReportConstants.db_count_reports;
 import static com.mmmp.NetAdvert.constants.ReportConstants.report_id;
 import static com.mmmp.NetAdvert.constants.ReportConstants.text;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.advert_id;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.description;
-import static com.mmmp.NetAdvert.constants.AdvertConstants.contact;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
+import java.security.Principal;
 import java.sql.Date;
 
 import javax.annotation.PostConstruct;
@@ -31,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -41,6 +44,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.mmmp.NetAdvert.TestUtil;
 import com.mmmp.netadvert.NetAdvertApplication;
+import com.mmmp.netadvert.DTO.VerifyReportDTO;
+import com.mmmp.netadvert.DTO.newReportDTO;
 import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Location;
 import com.mmmp.netadvert.model.Realestate;
@@ -74,7 +79,9 @@ public class ReportControllerTest {
 
 	@Test
 	public void testAllReports() throws Exception {
-		mockMvc.perform(get(URL_PREFIX)).andExpect(status().isOk()).andExpect(content().contentType(contentType))
+		mockMvc.perform(get(URL_PREFIX))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$", hasSize(db_count_reports)))
 				.andExpect(jsonPath("$.[*].id").value(hasItem(report_id)))
 				.andExpect(jsonPath("$.[*].reportDescription").value(hasItem(text)));
@@ -139,21 +146,39 @@ public class ReportControllerTest {
 		rep.setReportDescription(text);
 		rep.setUser(u);
 		rep.setVerified(0);
-		String object = TestUtil.json(rep);
+		rep.setVisited(0);
+		
 
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return u.getEmail();
+			}
+		};
+		
+		newReportDTO repO = new newReportDTO();
+		repO.setAdvert_id(a.getId());
+		repO.setReportDescription(rep.getReportDescription());
+		
+		String object = TestUtil.json(repO);
+		
 		this.mockMvc.perform(post(URL_PREFIX)
-				.contentType(contentType).sessionAttr("logedUser", u).param("reportDescription", rep.getReportDescription()).param("advert_id", a.getId()+"").content(object)).andExpect(status().isOk());
+				.contentType(contentType)
+				.principal(p)
+				.content(object))
+		.andExpect(status().isOk());
 
-		rep.setAdvert(null);
-		String object2 = TestUtil.json(rep);
+		repO.setAdvert_id(111);
+		String object2 = TestUtil.json(repO);
 		this.mockMvc.perform(post(URL_PREFIX)
-				.contentType(contentType).sessionAttr("logedUser", u).param("reportDescription", rep.getReportDescription()).param("advert_id", 111+"").content(object2)).andExpect(status().isInternalServerError());
+				.contentType(contentType).principal(p).content(object2)).andExpect(status().isNotFound());
 
-		rep.setAdvert(a);
-		rep.setReportDescription("");
-		String object3 = TestUtil.json(rep);
+		repO.setAdvert_id(a.getId());
+		repO.setReportDescription("");
+		String object3 = TestUtil.json(repO);
 		this.mockMvc.perform(post(URL_PREFIX)
-				.contentType(contentType).sessionAttr("logedUser", u).param("reportDescription", "").param("advert_id", a.getId()+"").content(object3)).andExpect(status().isInternalServerError());
+				.contentType(contentType).principal(p).content(object3)).andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -218,33 +243,50 @@ public class ReportControllerTest {
 		rep.setUser(u);
 		rep.setVerified(0);
 		rep.setId(555);
-		String object2 = TestUtil.json(rep);
-		this.mockMvc.perform(put(URL_PREFIX+"/update")
-				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object2)).andExpect(status().isInternalServerError());
+		
+		Principal p =  new Principal() {
+			
+			@Override
+			public String getName() {
+				return u.getEmail();
+			}
+		};
+		
+		VerifyReportDTO obj = new VerifyReportDTO();
+		obj.setReport_id(rep.getId());
+		obj.setVerify(0);
+		String object2 = TestUtil.json(obj);
+		this.mockMvc.perform(put(URL_PREFIX)
+				.contentType(contentType)
+				.principal(p)
+				.content(object2))
+		.andExpect(status().isBadRequest());
 
-		rep.setId(3);
-		rep.setVerified(1);
-		String object3 = TestUtil.json(rep);
-		this.mockMvc.perform(put(URL_PREFIX+"/update")
-				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object3)).andExpect(status().isInternalServerError());
+		obj.setReport_id(3);
+		obj.setVerify(1);
+		String object3 = TestUtil.json(obj);
+		this.mockMvc.perform(put(URL_PREFIX)
+				.contentType(contentType).principal(p).content(object3)).andExpect(status().isBadRequest());
 
 		Role roleN = new Role();
 		roleN.setId(2);
 		roleN.setName("Regular user");
 		u.setRole(roleN);
-		rep.setId(2);
-		rep.setVerified(0);
-		String object4 = TestUtil.json(rep);
-		this.mockMvc.perform(put(URL_PREFIX+"/update")
-				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object4)).andExpect(status().isForbidden());
+		u.setEmail("milan@gmail.com");
+		obj.setReport_id(2);
+		obj.setVerify(0);
+		String object4 = TestUtil.json(obj);
+		this.mockMvc.perform(put(URL_PREFIX)
+				.contentType(contentType).principal(p).content(object4)).andExpect(status().isForbidden());
 		
 		
-		rep.setId(2);
-		rep.setVerified(0);
+		obj.setReport_id(2);
+		obj.setVerify(0);
 		u.setRole(r);
-		String object = TestUtil.json(rep);
-		this.mockMvc.perform(put(URL_PREFIX+"/update")
-				.contentType(contentType).sessionAttr("logedUser", u).param("report_id", rep.getId()+"").param("verify", 1+"").content(object)).andExpect(status().isOk());
+		u.setEmail("doslicmm@live.com");
+		String object = TestUtil.json(obj);
+		this.mockMvc.perform(put(URL_PREFIX)
+				.contentType(contentType).principal(p).content(object)).andExpect(status().isOk());
 		
 	}
 	

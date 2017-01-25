@@ -101,9 +101,9 @@ public class UserController {
      * @see User
      */
     @RequestMapping(value="/api/user", method=RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@RequestBody UserDTO user, HttpSession session){
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO user,Principal p){
         System.err.print(user.getFirst_name()+" "+user.getLast_name() + user.getEmail());
-            User us = (User)this.adverService.findUser(user.getEmail());
+            User us = (User)this.adverService.findUser(p.getName());
             if (user != null) {
                 us.setFirst_name(user.getFirst_name());
                 us.setLast_name(user.getLast_name());
@@ -240,9 +240,8 @@ public class UserController {
      * @see Advert
      */
     @RequestMapping(value="/api/user/{uid}/advert/{aid}/expiredate", method=RequestMethod.PUT)
-    public ResponseEntity<Advert> updateAdvertExpireDate(HttpSession session, @PathVariable("uid") int uid, @PathVariable("aid") int aid){
-        User user = (User)session.getAttribute("logedUser");
-        user = this.adverService.findUser("milossm94@hotmail.com");
+    public ResponseEntity<Advert> updateAdvertExpireDate(Principal u, @PathVariable("uid") int uid, @PathVariable("aid") int aid){
+        User user = this.adverService.findUser(u.getName());
         if(user == null || user.getId()!=uid){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -262,7 +261,7 @@ public class UserController {
                 a.setExpire_date(d);
             }
             else{
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

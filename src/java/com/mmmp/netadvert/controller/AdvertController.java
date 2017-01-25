@@ -60,8 +60,7 @@ public class AdvertController {
 	 * @see Advert
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Advert> createAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session,Principal user) {
-
+	public ResponseEntity<Advert> createAdvert(@RequestBody AdvertDTO advertDTO,Principal user) {
 		User u = this.adverService.findUser(user.getName());
 		if(u==null){
 	        return new ResponseEntity<> (HttpStatus.FORBIDDEN);
@@ -73,6 +72,7 @@ public class AdvertController {
 		}
 		boolean check = false;
 		RealestateType type = null;
+
 		for (RealestateType t : rc.getTypes()) {
 			if (t.getId() == advertDTO.getRealestate().getType().getRealestateTypeId()) {
 				check = true;
@@ -144,9 +144,9 @@ public class AdvertController {
 		}
 		else{
 			this.adverService.addRealestate(r);
+			
 		}
 		Realestate rs = this.adverService.findRealestate(r.getId());
-		
 		for (int i = 0; i < equipmentList.size(); i++) {
 			if (equipments.get(i) == true) {
 				rs.getTechnicalEquipments().add(equipmentList.get(i));
@@ -359,6 +359,12 @@ public class AdvertController {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Advert>> getAllAdverts(@RequestParam Map<String, String> params, Pageable page){
 		Page<Advert> advertList = this.adverService.allAdvertsPage(params, page);
+		System.out.println(params.get("size"));
+		int p = Integer.parseInt(params.get("page"));
+		System.out.println(advertList.getTotalPages() +" *************************** " + p);
+		if (p>advertList.getTotalPages()){
+			return new ResponseEntity<Page<Advert>>(HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<Page<Advert>>(advertList, HttpStatus.OK);
 	}
 

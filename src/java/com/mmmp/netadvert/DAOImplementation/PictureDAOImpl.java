@@ -45,6 +45,14 @@ public class PictureDAOImpl implements PictureDAO {
 		}
 		return p;
 	}
+	
+	@Override
+	public void deletePictureById(int id){
+		Session session = this.sessionFactory.getCurrentSession();		
+		Query query=session.createQuery("delete from Picture p where p.id=:id");
+		query.setParameter("id", id);
+		query.executeUpdate();
+	}
 
 	@Override
 	public Picture findPictureByName(String name) {

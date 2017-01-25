@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,6 @@ import com.mmmp.netadvert.model.Advert;
 import com.mmmp.netadvert.model.Picture;
 import com.mmmp.netadvert.model.User;
 import com.mmmp.netadvert.service.AdverService;
-
 @RestController
 public class ImageController {
 	@Autowired
@@ -36,7 +36,6 @@ public class ImageController {
 	/**
 	 * This method is part of advert rest service. Method uploads realestate image and sets if uploaded picture is profile picture.
 	 * @param file picture that is being uploaded
-	 * @param session
 	 * @param id realestate id for which is picture added
 	 * @param isProfile parameter if picture is profile
 	 * @return Http status 200 OK
@@ -45,7 +44,7 @@ public class ImageController {
 	 * @see Advert, Picture
 	 */
 	@RequestMapping(value="/api/upload", method=RequestMethod.POST)
-	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file,HttpSession session, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile,Principal user) throws IllegalStateException, IOException{
+	public ResponseEntity<Picture> uploadImages(@RequestParam("file") MultipartFile file, @RequestParam("realestate") int id, @RequestParam("is_profile") boolean isProfile,Principal user) throws IllegalStateException, IOException{
 		User u=this.adverService.findUser(user.getName());
         if(u==null){
         	return new ResponseEntity<> (HttpStatus.FORBIDDEN);
@@ -53,8 +52,7 @@ public class ImageController {
         if(file==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
-//        File convFile = new File( file.getOriginalFilename());
-//        file.transferTo(convFile);
+
         Advert a = this.adverService.findAdvert(id);
         if(a==null){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
@@ -66,14 +64,10 @@ public class ImageController {
         if(exists = false){
         	return new ResponseEntity<> (HttpStatus.BAD_REQUEST);
         }
-		String ss = "/Users/macbookpro/Desktop";
-		if (Files.notExists(Paths.get(ss))){
-			try {
-				Files.createDirectories(Paths.get(ss));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+
+        
+        String ss = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "img" + File.separator + "gallery";
+
 		Date dd = new Date();
         String filename=id + "_" + dd.getTime() + "_" + file.getOriginalFilename();  
         
@@ -81,20 +75,24 @@ public class ImageController {
         
         pic.setPictureName(filename);
         pic.setProfile(false);
+        System.out.println(a.getAdvertName());
+        System.out.println(a.getId());
         pic.setAdvert(a);
         pic.setUser(u);
         pic.setProfile(isProfile);
-          
+          System.out.println(file.getBytes().length);
         try{  
         byte barr[]=file.getBytes();  
+
+  
+        BufferedOutputStream bout=new BufferedOutputStream(  
+                 new FileOutputStream(ss+File.separator+filename));  
+        bout.write(barr);  
+        bout.flush();  
+        bout.close();  
           
-        BufferedOutputStream bout=new BufferedOutputStream(
-                 new FileOutputStream(ss+"/"+filename));
-        bout.write(barr);
-        bout.flush();
-        bout.close();
-          
-        }catch(Exception e){System.out.println(e);}
+        }catch(Exception e){
+        	System.out.println("bbb");System.out.println(e);}
         
         this.adverService.addPicture(pic);
         
@@ -120,7 +118,7 @@ public class ImageController {
 		if(pic.getUser().getId()!=u.getId()){
 			return new ResponseEntity<Void> (HttpStatus.FORBIDDEN);
 		}
-		this.adverService.deletePicture(pic);
+		this.adverService.deletePictureById(pic.getId());
 		return new ResponseEntity<Void> (HttpStatus.OK);
 	}
 

@@ -135,7 +135,7 @@
                     $scope.searchValue = $scope.topsearch;
                 }
                 angular.forEach(items.content, function(value, key) {
-                    PictureResource.getAdvertMainPicture(value.realestate.id).then(function (item) {
+                    PictureResource.getAdvertMainPicture(value.id).then(function (item) {
                         value.main_pic = item.pictureName;
                     })
                 });

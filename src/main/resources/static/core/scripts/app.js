@@ -10,7 +10,8 @@
         'ngMap',
         'ngMapAutocomplete',
         'ng-currency',
-        'rzModule']);
+        'rzModule',
+        'ngCookies']);
 
 	app.config(	function($stateProvider, $urlRouterProvider, $httpProvider) {
 		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
@@ -101,11 +102,21 @@
                 }
             })
             .state('addAdvert', {
-                url: "/advert",
+                url: "/newadvert",
                 views: {
                     'mainView@': {
                         templateUrl: "core/views/addAdvert.html",
-                        controller: 'addAdvert'
+                        controller: 'addAdvert1'
+                    }
+                }
+            })
+            .state('addAdvert.images', {
+                url: "/images",
+                parent: "addAdvert",
+                views: {
+                    'mainView@': {
+                        templateUrl: "core/views/uploadImages.html",
+                        controller: 'addAdvert1'
                     }
                 }
             })

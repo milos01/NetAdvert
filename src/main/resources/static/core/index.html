@@ -28,6 +28,10 @@
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
     <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    
+    <!-- Load Dropzone CSS -->
+    <link href="bower_components/dropzone/dist/basic.css" rel="stylesheet" />
+    <link href="bower_components/dropzone/dist/dropzone.css" rel="stylesheet" />
 
     <!-- Main Inspinia CSS files -->
     <link href="css/animate.css" rel="stylesheet">
@@ -38,6 +42,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/6.0.0/rzslider.min.css"/>
 
 <style>
+    
+    .wizard > .steps > ul > li
+{
+    width: 20%;
+}
     
 .starRating {
   margin: 0;
@@ -89,7 +98,7 @@
             <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="navigation">
 				<!-- Regular user options -->
 				<ul class="nav navbar-nav" ng-show="authenticated && user.role === 'Regular user'">
-                    <li><a ng-href="/#!/advert" ng-cloak>Add advert</a></li>
+                    <li><a ng-href="/#!/newadvert" ng-cloak>Add advert</a></li>
                 </ul>
                 <!-- Admin options -->
                 <div ng-show="authenticated && user.role === 'Admin'" ng-cloak >
@@ -104,9 +113,10 @@
 
                 <div ng-show="authenticated && user.isMain === 1" ng-cloak >
                     <ul class="nav navbar-nav" >
-                        <li><a ng-href="/#!/mycompany"k>My company</a></li>
+                        <li><a ng-href="/#!/mycompany">My company</a></li>
                     </ul>
                 </div>
+
                 <ul class="nav navbar-nav" ng-show="authenticated">
                     <li><a ng-href="/#!/profile" ng-cloak>{{user.fname}} {{user.lname}}</a></li>
                 </ul>
@@ -208,6 +218,10 @@
 <!-- iCheck -->
 <script src="js/plugins/iCheck/icheck.min.js"></script>
 
+<!-- Load Dropzone JS -->
+<script src="bower_components/dropzone/dist/dropzone.js"></script>
+
+<script src="/bower_components/angular-cookies/angular-cookies.js"></script>
 <!--<script src="js/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>-->
 <!--<script src="js/ui-router/angular-ui-router.min.js"></script>-->
 <!--<script src="js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"></script>-->

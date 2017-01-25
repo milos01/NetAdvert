@@ -10,6 +10,8 @@ public interface PictureDAO {
 	
 	public void deletePicture(Picture i);
 	
+	public void deletePictureById(int id);
+	
 	public Picture findPicture(int id);
 	
 	public Picture findPictureByName(String name);

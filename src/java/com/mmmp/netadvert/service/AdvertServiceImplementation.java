@@ -465,5 +465,11 @@ public class AdvertServiceImplementation implements AdverService {
 		return this.pictureDAO.getAdvertPictures(aid);
 	}
 
+	@Override
+	@Transactional
+	public void deletePictureById(int id) {
+		this.pictureDAO.deletePictureById(id);
+	}
+
 
 }

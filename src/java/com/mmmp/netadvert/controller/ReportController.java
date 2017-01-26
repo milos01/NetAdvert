@@ -35,8 +35,6 @@ public class ReportController {
 	/**
 	 * Method creates a new report for a particular ad. If the ad exists, a report is created and returned 200 ok.
 	 *  If an ad does not exist returns a 404 not found.
-	 * @param text - text of the report
-	 * @param advert_id - id of advert that are reported as not suitable
 	 * @return Report object, Http response 200 ok
 	 */
 	@RequestMapping(method = RequestMethod.POST)

@@ -338,7 +338,6 @@
                 for (i = 0; i < items.totalPages; i++) {
                     pageList[i] = i;
                 }
-                console.log(items.totalPages);
                 $scope.page = items;
                 $scope.pageList = pageList;
                 $scope.adverts = items.content;
